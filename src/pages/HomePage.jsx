@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../css/homepage.css'; // Make sure this path is correct
+import '../css/homepage.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 const HomePage = () => {
   const [data, setData] = useState([]);
@@ -11,7 +11,6 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Thay thế 'API_URL_NEW_PRODUCTS' bằng URL API để lấy dữ liệu sản phẩm mới
         const response = await axios.get('https://localhost:7188/api/milks');
         setData(response.data);
       } catch (error) {
@@ -94,12 +93,12 @@ const HomePage = () => {
         <div className="hercontainer">
           <h2>Sản phẩm mới</h2>
           <div className="product-section">
-          <button className="prev-button" onClick={moveToPreviousProduct}>&lt;</button>
-          <button className="next-button" onClick={moveToNextProduct}>&gt;</button>
+            <button className="prev-button" onClick={moveToPreviousProduct}>&lt;</button>
+            <button className="next-button" onClick={moveToNextProduct}>&gt;</button>
             <div className="product-grid-container">
               <div className="product-grid new-product-grid">
                 {data.map((product => (
-                  <div className={`product-item ${product.length === currentProduct ? 'active' : ''}`} key={product.milkId}>
+                  <div className='product-item' key={product.milkId}>
                     {product.milkPictures && product.milkPictures.length > 0 && (
                       <a href='/' key={product.milkPictures[0].milkPictureId}>
                         <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
@@ -111,57 +110,61 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          {/* <div className="product-section">
-              <button className="prev-button">&lt;</button>
-              <button className="next-button">&gt;</button>
-              <div className="product-grid-container">
-                <div className="product-grid new-product-grid">
-                  {data.map((product, index) => (
-                    <div className="product-item" key={index}>
-                      {dataMilkPicture.map((picture, index) => (
-                        <a href="Chitietdonhang.html" key={index}>
-                        <img src={picture.picture} alt={product.milkName} className="product-image" />
+          <div className="product-section">
+            <button className="prev-button">&lt;</button>
+            <button className="next-button">&gt;</button>
+            <div className="product-grid-container">
+              <div className="product-grid new-product-grid">
+                {data.map((product => (
+                  <div className='product-item' key={product.milkId}>
+                    {product.milkPictures && product.milkPictures.length > 0 && (
+                      <a href='/' key={product.milkPictures[0].milkPictureId}>
+                        <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
                       </a>
-                    ))}
-                      <p className="product-name">{product.milkName}</p>
-                    </div>
-                  ))}
-                </div>
+                    )}
+                    <p className="product-name">{product.milkName}</p>
+                  </div>
+                )))}
               </div>
-            </div> */}
+            </div>
+          </div>
           <h2>Sản phẩm ưu đãi</h2>
           <div className="product-section">
             <button className="prev-button">&lt;</button>
             <button className="next-button">&gt;</button>
-            {/* <div className="product-grid-container">
-                <div className="product-grid new-preferential-product-grid">
-                  {preferentialProducts.map((product, index) => (
-                    <div className="product-item" key={index}>
-                      <a href="Chitietdonhang.html">
-                        <img src={product.imageUrl} alt={product.name} className="product-image" />
+            <div className="product-grid-container">
+              <div className="product-grid new-product-grid">
+                {data.map((product => (
+                  <div className='product-item' key={product.milkId}>
+                    {product.milkPictures && product.milkPictures.length > 0 && (
+                      <a href='/' key={product.milkPictures[0].milkPictureId}>
+                        <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
                       </a>
-                      <p className="product-name">{product.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
+                    )}
+                    <p className="product-name">{product.milkName}</p>
+                  </div>
+                )))}
+              </div>
+            </div>
           </div>
           <h2>Sản phẩm khác</h2>
           <div className="product-section">
             <button className="prev-button">&lt;</button>
             <button className="next-button">&gt;</button>
-            {/* <div className="product-grid-container">
-                <div className="product-grid other-product-grid">
-                  {otherProducts.map((product, index) => (
-                    <div className="product-item" key={index}>
-                      <a href="Chitietdonhang.html">
-                        <img src={product.imageUrl} alt={product.name} className="product-image" />
+            <div className="product-grid-container">
+              <div className="product-grid new-product-grid">
+                {data.map((product => (
+                  <div className='product-item' key={product.milkId}>
+                    {product.milkPictures && product.milkPictures.length > 0 && (
+                      <a href='/' key={product.milkPictures[0].milkPictureId}>
+                        <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
                       </a>
-                      <p className="product-name">{product.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </div> */}
+                    )}
+                    <p className="product-name">{product.milkName}</p>
+                  </div>
+                )))}
+              </div>
+            </div>
           </div>
         </div>
       </main>
