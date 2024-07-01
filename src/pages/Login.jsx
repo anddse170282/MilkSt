@@ -15,7 +15,7 @@ function LoginComponent() {
                     <a href="HomePage.html"><img src="img/Hanalogo.jpg" width="150" height="150" alt="Logo" /></a>
                 </div>
             </header>
-            <form id="login-form" action="OTP.html" method="post">
+            <form id="login-form" action="OTP.jsx" method="post">
                 <h2>Đăng nhập</h2>
                 <p>Đăng nhập hoặc Đăng ký ngay tài khoản</p>
                 <div id="error-message" style={{ display: phoneValid ? 'none' : 'block' }}>
