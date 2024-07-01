@@ -180,7 +180,7 @@
     border-radius: 8px;
   }
   
-  .prev-button, .next-button {
+  /* .prev-button, .next-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -211,6 +211,36 @@
   
   .next-button {
     right: -40px;
+  } */
+
+  .prev-button, .next-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff; /* Thêm màu nền cho nút */
+    border: 2px solid #FF469E;
+    border-radius: 50%; /* Đổi hình dạng thành hình tròn */
+    cursor: pointer;
+    z-index: 1;
+    font-size: 24px;
+    color: #FF469E;
+    width: 40px; /* Đổi kích thước theo ý muốn */
+    height: 40px; /* Đổi kích thước theo ý muốn */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .prev-button::before, .next-button::before {
+    content: ""; /* Bỏ đi pseudo-element này */
+  }
+  
+  .prev-button {
+    left: -40px;
+  }
+  
+  .next-button {
+    right: -40px;
   }
   
   .product-grid-container {
@@ -224,7 +254,7 @@
   }
   
   .product-item {
-    min-width: calc(100% / 3); /* Each item takes up one-third of the container */
+    min-width: calc(100% / 4); /* Each item takes up one-third of the container */
     box-sizing: border-box;
     text-align: center;
     border: 1px solid #ddd;
