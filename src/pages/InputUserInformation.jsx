@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import './inputinfor.css'; // Đảm bảo đường dẫn này chính xác
+import './productInfo.css'; // Đảm bảo đường dẫn này chính xác
 
 function UserInformationForm() {
     const [formData, setFormData] = useState({
