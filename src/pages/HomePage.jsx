@@ -110,24 +110,6 @@ const HomePage = () => {
               </div>
             </div>
           </div>
-          <div className="product-section">
-            <button className="prev-button">&lt;</button>
-            <button className="next-button">&gt;</button>
-            <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
-                {data.map((product => (
-                  <div className='product-item' key={product.milkId}>
-                    {product.milkPictures && product.milkPictures.length > 0 && (
-                      <a href='/' key={product.milkPictures[0].milkPictureId}>
-                        <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
-                      </a>
-                    )}
-                    <p className="product-name">{product.milkName}</p>
-                  </div>
-                )))}
-              </div>
-            </div>
-          </div>
           <h2>Sản phẩm ưu đãi</h2>
           <div className="product-section">
             <button className="prev-button">&lt;</button>

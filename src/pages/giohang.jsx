@@ -1,127 +1,171 @@
 import React, { useState, useEffect } from 'react';
-import './giohang.css'; // Assuming CSS is adapted for React and renamed to Cart.css
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '../css/giohang.css';
 
-function giohangComponent() {
-    const [cartItems, setCartItems] = useState([
-        { id: 1, name: 'Product 1', quantity: 1, price: 100000 },
-        { id: 2, name: 'Product 2', quantity: 1, price: 100000 },
-        { id: 3, name: 'Product 3', quantity: 1, price: 100000 }
-    ]);
-    const [selectedItems, setSelectedItems] = useState(new Set());
+const Cart = () => {
+    const [cartItems, setCartItems] = useState([]);
     const [subtotal, setSubtotal] = useState(0);
     const [discount, setDiscount] = useState(0);
-    const [total, setTotal] = useState(0);
-    const [showVouchers, setShowVouchers] = useState(false);
-
+    const [voucherListVisible, setVoucherListVisible] = useState(false);
+  
     useEffect(() => {
-        calculateSubtotal();
-    }, [cartItems, selectedItems]);
-
-    useEffect(() => {
-        setTotal(subtotal - discount);
-    }, [subtotal, discount]);
-
-    const calculateSubtotal = () => {
-        const subtotal = cartItems.reduce((acc, item) => {
-            if (selectedItems.has(item.id)) {
-                return acc + (item.quantity * item.price);
-            }
-            return acc;
-        }, 0);
-        setSubtotal(subtotal);
+      // Fetch cart items from API
+      axios.get('/api/cart-items')
+        .then(response => setCartItems(response.data))
+        .catch(error => console.error('Error fetching cart items:', error));
+    }, []);
+  
+    const applyDiscount = (discountType) => {
+      let discountAmount = 0;
+      if (discountType.includes('%')) {
+        const percentage = parseInt(discountType.replace('Voucher giảm ', '').replace('%', ''));
+        discountAmount = subtotal * (percentage / 100);
+      } else {
+        discountAmount = parseInt(discountType.replace('Voucher giảm ', '').replace(' ₫', ''));
+      }
+      setDiscount(discountAmount);
     };
-
-    const handleSelectItem = (id) => {
-        const newSelectedItems = new Set(selectedItems);
-        if (newSelectedItems.has(id)) {
-            newSelectedItems.delete(id);
-        } else {
-            newSelectedItems.add(id);
+  
+    const updateTotals = () => {
+      let newSubtotal = 0;
+      cartItems.forEach(item => {
+        if (item.selected) {
+          newSubtotal += item.quantity * item.price;
         }
-        setSelectedItems(newSelectedItems);
+      });
+      setSubtotal(newSubtotal);
     };
-
-    const handleSelectAll = (event) => {
-        if (event.target.checked) {
-            setSelectedItems(new Set(cartItems.map(item => item.id)));
-        } else {
-            setSelectedItems(new Set());
-        }
+  
+    const toggleVoucherList = () => {
+      setVoucherListVisible(!voucherListVisible);
     };
-
-    const handleQuantityChange = (id, quantity) => {
-        const updatedItems = cartItems.map(item => {
-            if (item.id === id) {
-                return { ...item, quantity: quantity };
-            }
-            return item;
-        });
-        setCartItems(updatedItems);
+  
+    const handleItemChange = (index, field, value) => {
+      const newCartItems = [...cartItems];
+      newCartItems[index][field] = value;
+      setCartItems(newCartItems);
+      updateTotals();
     };
-
-    const handleDeleteItem = (id) => {
-        const updatedItems = cartItems.filter(item => item.id !== id);
-        setCartItems(updatedItems);
-        setSelectedItems(prev => {
-            const newSet = new Set(prev);
-            newSet.delete(id);
-            return newSet;
-        });
+  
+    const handleDeleteItem = (index) => {
+      const newCartItems = [...cartItems];
+      newCartItems.splice(index, 1);
+      setCartItems(newCartItems);
+      updateTotals();
     };
-
-    const applyDiscount = (type) => {
-        if (type.includes('%')) {
-            const percentage = parseInt(type.replace('Voucher giảm ', '').replace('%', ''));
-            setDiscount(subtotal * (percentage / 100));
-        } else {
-            const amount = parseInt(type.replace('Voucher giảm ', '').replace(' ₫', ''));
-            setDiscount(amount);
-        }
-        setShowVouchers(false);
-    };
-
+  
+    const total = subtotal - discount;
+  
     return (
-        <div className="cart-container">
-            <table className="cart-table">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" onChange={handleSelectAll} /> CHỌN TẤT CẢ ({selectedItems.size} MỤC)</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Giá tiền</th>
-                        <th>Xoá</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {cartItems.map(item => (
-                        <tr key={item.id}>
-                            <td><input type="checkbox" checked={selectedItems.has(item.id)} onChange={() => handleSelectItem(item.id)} /></td>
-                            <td><img src="img_placeholder.png" alt="IMG" width="50" /></td>
-                            <td><input type="number" value={item.quantity} className="quantity" min="1" onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))} /></td>
-                            <td>{item.price} ₫</td>
-                            <td><button className="delete-btn" onClick={() => handleDeleteItem(item.id)}>Xoá</button></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div className="cart-summary">
-                <button onClick={() => setShowVouchers(!showVouchers)}>Voucher ưu đãi</button>
-                {showVouchers && (
-                    <div className="voucher-list">
-                        <ul>
-                            <li onClick={() => applyDiscount('Voucher giảm 10%')}>Voucher giảm 10%</li>
-                            <li onClick={() => applyDiscount('Voucher giảm 20.000 ₫')}>Voucher giảm 20.000 ₫</li>
-                            <li onClick={() => applyDiscount('Voucher giảm 50.000 ₫')}>Voucher giảm 50.000 ₫</li>
-                        </ul>
-                    </div>
-                )}
-                <p>Tiền phụ: <span>{subtotal} ₫</span></p>
-                <p>Voucher ưu đãi: <span>{discount} ₫</span></p>
-                <p className="total">Thành Tiền: <span>{total} ₫</span></p>
-                <a href="thanhtoan.html"><button>Xác nhận giỏ hàng</button></a>
+      <div className="cart-container">
+        <header className="header">
+          <div className="logo-container">
+            <a href="HomePage.html"><img src="Hanalogo.jpg" width="150" height="150" alt="Logo" /></a>
+          </div>
+          <div className="header-content">
+            <div className="contact-info">
+              <div className="phone"><span>Điện thoại: 0986777514</span></div>
+              <div className="address"><span>Địa Chỉ: D5 .......</span></div>
+              <div className="email"><span>Email: hanafpt@gmail.com</span></div>
+              <a href="#"><img src="taikhoan.jpg" alt="Tài khoản" width="50" height="50" /></a>
             </div>
+            <div className="header-content-row2">
+              <div className="search-bar-container">
+                <input type="text" placeholder="Tìm kiếm..." />
+                <button type="submit"><img src="search.png" alt="Tìm Kiếm" width="19" height="19" /></button>
+              </div>
+              <div className="user-cart-container">
+                <a href="giohang.html"><img src="giohang.jpg" width="30" height="30" alt="Giỏ hàng" /></a>
+              </div>
+              <div className="notification-container">
+                <a href="#"><img src="bell.png" width="30" height="30" alt="Thông báo" /></a>
+              </div>
+            </div>
+            <nav className="navigation-menu">
+              <ul>
+                <li><a href="HomePage.html">Trang chủ</a></li>
+                <li><a href="#">Sữa bột</a></li>
+                <li><a href="#">Sữa tươi</a></li>
+                <li><a href="#">Sữa chua</a></li>
+                <li><a href="#">Sữa hạt dinh dưỡng</a></li>
+              </ul>
+            </nav>
+          </div>
+        </header>
+        <table className="cart-table">
+          <thead>
+            <tr>
+              <th>
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    const selected = e.target.checked;
+                    const newCartItems = cartItems.map(item => ({ ...item, selected }));
+                    setCartItems(newCartItems);
+                    updateTotals();
+                  }}
+                /> CHỌN TẤT CẢ
+              </th>
+              <th>Tên sản phẩm</th>
+              <th>Số lượng</th>
+              <th>Giá tiền</th>
+              <th>Xoá</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartItems.map((item, index) => (
+              <tr key={index}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={item.selected || false}
+                    onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
+                  />
+                </td>
+                <td><img src="sua.jpg" alt="IMG" width="50" /></td>
+                <td>
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
+                    min="1"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    value={item.price}
+                    onChange={(e) => handleItemChange(index, 'price', parseInt(e.target.value))}
+                    min="0"
+                  /> ₫
+                </td>
+                <td>
+                  <button className="delete-btn" onClick={() => handleDeleteItem(index)}>Xoá</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="cart-summary">
+          <button onClick={toggleVoucherList}>Voucher ưu đãi</button>
+          {voucherListVisible && (
+            <div className="voucher-list">
+              <ul>
+                <li onClick={() => applyDiscount('Voucher giảm 10%')}>Voucher giảm 10%</li>
+                <li onClick={() => applyDiscount('Voucher giảm 20.000 ₫')}>Voucher giảm 20.000 ₫</li>
+                <li onClick={() => applyDiscount('Voucher giảm 50.000 ₫')}>Voucher giảm 50.000 ₫</li>
+              </ul>
+            </div>
+          )}
+          <p>Tiền phụ: <span>{subtotal} ₫</span></p>
+          <p>Voucher ưu đãi: <span>{discount} ₫</span></p>
+          <p className="total">Thành Tiền: <span>{total} ₫</span></p>
+          <a href="thanhtoan.html"><button>Xác nhận giỏ hàng</button></a>
         </div>
+      </div>
     );
-}
+  };
 
 export default CartComponent;
