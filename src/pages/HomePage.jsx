@@ -1,9 +1,8 @@
-// HomePageComponent.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/homepage.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+
 const HomePage = () => {
   const [data, setData] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(0);
@@ -11,7 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://localhost:7188/api/milks');
+        const response = await axios.get('  ');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -30,7 +29,6 @@ const HomePage = () => {
 
   return (
     <>
-
       <main>
         <div className="container">
           <div className="main-image">
@@ -52,7 +50,7 @@ const HomePage = () => {
             <button className="prev-button" onClick={moveToPreviousProduct}>&lt;</button>
             <button className="next-button" onClick={moveToNextProduct}>&gt;</button>
             <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
+              <div className="product-grid new-product-grid" style={{ transform: `translateX(-${currentProduct * 100}%)` }}>
                 {data.map((product => (
                   <div className='product-item' key={product.milkId}>
                     {product.milkPictures && product.milkPictures.length > 0 && (
@@ -68,10 +66,10 @@ const HomePage = () => {
           </div>
           <h2>Sản phẩm ưu đãi</h2>
           <div className="product-section">
-            <button className="prev-button">&lt;</button>
-            <button className="next-button">&gt;</button>
+            <button className="prev-button" onClick={moveToPreviousProduct}>&lt;</button>
+            <button className="next-button" onClick={moveToNextProduct}>&gt;</button>
             <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
+              <div className="product-grid new-product-grid" style={{ transform: `translateX(-${currentProduct * 100}%)` }}>
                 {data.map((product => (
                   <div className='product-item' key={product.milkId}>
                     {product.milkPictures && product.milkPictures.length > 0 && (
@@ -87,10 +85,10 @@ const HomePage = () => {
           </div>
           <h2>Sản phẩm khác</h2>
           <div className="product-section">
-            <button className="prev-button">&lt;</button>
-            <button className="next-button">&gt;</button>
+            <button className="prev-button" onClick={moveToPreviousProduct}>&lt;</button>
+            <button className="next-button" onClick={moveToNextProduct}>&gt;</button>
             <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
+              <div className="product-grid new-product-grid" style={{ transform: `translateX(-${currentProduct * 100}%)` }}>
                 {data.map((product => (
                   <div className='product-item' key={product.milkId}>
                     {product.milkPictures && product.milkPictures.length > 0 && (
