@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import InputUserInformation from './pages/InputUserInformation';
 import Login from './pages/Login';
 import Layout from './components/Layout';
+import './App.css'; 
 function App() {
   return (
     <BrowserRouter>

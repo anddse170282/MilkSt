@@ -1,6 +1,7 @@
 // src/components/Header.jsx
 import React from 'react';
 import './Header.css'; // Create this file for the specific CSS of the header
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Header = () => {
   return (
@@ -23,27 +24,27 @@ const Header = () => {
             <div className="search-bar-container">
               <input type="text" placeholder="Tìm kiếm..." />
               <button type="submit">
-                <img src="search.png"  width="19" height="19" />
+              <i className="bi-search icon-small"></i>
               </button>
             </div>
             <div className="user-cart-container">
               <a href="giohang.html">
-                <img src="giohang.jpg" width="30" height="30" alt="Giỏ hàng" />
+              <i className="bi-cart-fill icon-small"></i>
               </a>
             </div>
             <div className="notification-container">
               <a href="#">
-                <img src="bell.png" width="30" height="30" alt="Thông báo" />
+              <i className="bi-bell-fill icon-small"></i>
               </a>
             </div>
           </div>
           <nav className="navigation-menu">
             <ul>
-              <li><a href="#">Trang chủ</a></li>
-              <li><a href="#">Sữa bột</a></li>
-              <li><a href="#">Sữa tươi</a></li>
-              <li><a href="#">Sữa chua</a></li>
-              <li><a href="#">Sữa hạt dinh dưỡng</a></li>
+              <li><a href="/">Trang chủ</a></li>
+              <li><a href="/">Sữa bột</a></li>
+              <li><a href="/">Sữa tươi</a></li>
+              <li><a href="/">Sữa chua</a></li>
+              <li><a href="/">Sữa hạt dinh dưỡng</a></li>
             </ul>
           </nav>
         </div>
