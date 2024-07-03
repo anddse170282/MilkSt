@@ -1,13 +1,12 @@
+/* Header Styles */
 .header {
   display: flex;
   align-items: center;
-  /* Căn giữa theo chiều dọc */
   width: 100%;
   padding: 10px 0;
 }
 
 .contact-info {
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,7 +43,6 @@
   flex-grow: 1;
   margin-right: 20px;
   width: 10px;
-
 }
 
 .search-bar-container input[type="text"] {
@@ -53,9 +51,7 @@
   border: 2px solid #FF469E;
   border-top-left-radius: 13px;
   border-bottom-left-radius: 13px;
-
 }
-
 
 .search-bar-container button[type="submit"] {
   padding: 8px 20px;
@@ -87,28 +83,19 @@
   margin-right: 20px;
 }
 
-
-
-
-
-/* Định dạng cho navigation menu */
-/* Định dạng cho navigation menu */
+/* Navigation Menu Styles */
 .navigation-menu ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
-  /* Căn giữa các mục */
-  background-color: #fff;
-  /* Màu nền của menu */
-  border-radius: 20px;
-  /* Bo góc của menu */
+  justify-content: center; /* Căn giữa các mục */
+  background-color: #fff; /* Màu nền của menu */
+  border-radius: 20px; /* Bo góc của menu */
 }
 
 .navigation-menu li {
-  margin: 0 5px;
-  /* Khoảng trắng giữa các mục */
+  margin: 0 5px; /* Khoảng trắng giữa các mục */
 }
 
 .navigation-menu li a {
@@ -117,31 +104,31 @@
   text-align: center;
   padding: 10px 88px;
   text-decoration: none;
-  background-color: #FF469E;
-  /* Màu nền của nút */
-  border-top-left-radius: 20px;
-  /* Bo góc trên bên trái */
-  border-bottom-left-radius: 20px;
-  /* Bo góc dưới bên trái */
-  border-top-right-radius: 20px;
-  /* Bo góc trên bên phải */
+  background-color: #FF469E; /* Màu nền của nút */
+  border-top-left-radius: 20px; /* Bo góc trên bên trái */
+  border-bottom-left-radius: 20px; /* Bo góc dưới bên trái */
+  border-top-right-radius: 20px; /* Bo góc trên bên phải */
 }
 
 .navigation-menu li a:hover {
-  background-color: #f0a9a9;
-  /* Màu nền khi hover */
+  background-color: #f0a9a9; /* Màu nền khi hover */
 }
 
-
+/* Cart Container Styles */
 .cart-container {
   display: flex;
   justify-content: space-between;
-  margin: 20px;
+  flex-direction: column; /* Sắp xếp các phần tử thành cột */
+  align-items: center;
+  margin-top: 50px; /* Thêm khoảng cách phía trên để bảng di chuyển xuống */
+  margin-bottom: 20px;
 }
 
+/* Cart Table Styles */
 .cart-table {
-  width: 70%;
+  width: 100%;
   border-collapse: collapse;
+  margin-top: 30px; /* Thêm khoảng cách phía trên để bảng di chuyển xuống */
 }
 
 .cart-table th,
@@ -155,11 +142,14 @@
   background-color: #f2f2f2;
 }
 
+/* Cart Summary Styles */
 .cart-summary {
   width: 25%;
   padding: 20px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
+  margin-top: 30px;
+  border-radius: 1%;
 }
 
 .cart-summary p {
@@ -182,11 +172,13 @@
   cursor: pointer;
 }
 
-
+/* Center Content */
 div.center {
   display: flex;
   justify-content: center;
 }
+
+/* Voucher List Styles */
 .voucher-list {
   background-color: white;
   border: 1px solid #ddd;
@@ -210,24 +202,21 @@ div.center {
 .voucher-list li:hover {
   background-color: #f0f0f0;
 }
+
+/* Footer Styles */
 footer {
   font-family: Arial, sans-serif;
 }
 
 .footer-top {
-  background-color: #ec4899;
-  /* Pink color */
+  background-color: #ec4899; /* Pink color */
   color: white;
-padding-top: 20px;
-padding-bottom: 90px;
+  padding-top: 20px;
+  padding-bottom: 90px;
 }
 
 .container {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  /* Chia thành 12 cột bằng nhau */
-  gap: 16px;
-  /* Khoảng cách giữa các cột */
+  display: flex;
   margin: 0 auto;
   width: 80%;
 }
@@ -261,14 +250,12 @@ padding-bottom: 90px;
   text-align: center;
 }
 
-
 .footer-bottom img {
   margin-right: 10px; /* Thêm khoảng cách giữa hình ảnh và văn bản */
 }
 
 .footer-column {
-  grid-column: span 4;
-  /* Mỗi footer-column sẽ chiếm 4 cột */
+  grid-column: span 4; /* Mỗi footer-column sẽ chiếm 4 cột */
 }
 
 .bi {
