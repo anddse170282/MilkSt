@@ -10,7 +10,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('  ');
+        const response = await axios.get('https://localhost:7188/api/milks');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
