@@ -28,7 +28,7 @@ const Header = () => {
               </button>
             </div>
             <div className="user-cart-container">
-              <a href="giohang.html">
+              <a href="/cart">
               <i className="bi-cart-fill icon-small"></i>
               </a>
             </div>
