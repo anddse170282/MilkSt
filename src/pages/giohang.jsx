@@ -62,7 +62,7 @@ const Cart = () => {
     <>
       <div className="cart-container">
         <div className='container'>
-          <div className='col-md-9'>
+          <div className='col-md-9 cart-table-container'>
             <table className="cart-table">
               <thead>
                 <tr>

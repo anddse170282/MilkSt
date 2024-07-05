@@ -142,6 +142,13 @@
   background-color: #f2f2f2;
 }
 
+.cart-table-container {
+  flex: 1;
+  max-height: 60vh; /* Adjust the height as necessary */
+  overflow-y: auto; /* Adds a vertical scrollbar if needed */
+  margin-bottom: 20px; /* Adds some space below the table */
+}
+
 /* Cart Summary Styles */
 .cart-summary {
   width: 25%;
