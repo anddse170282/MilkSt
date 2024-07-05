@@ -9,13 +9,28 @@ const Cart = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [voucherListVisible, setVoucherListVisible] = useState(false);
+  const [milks, setMilks] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     // Fetch cart items from API
-    axios.get('https://localhost:7188/api/order-details')
+    axios.get(`https://localhost:7188/api/order-details?orderId=${orderId}`)
       .then(response => setCartItems(response.data))
       .catch(error => console.error('Error fetching cart items:', error));
   }, []);
+
+  useEffect(() => {
+    //Fetch milks from API
+    const allMilks = axios.get('https://localhost:7188/api/milks')
+      .then(response => setMilks(response.data))
+      .catch(error => console.error('Error fetching milks:', error));
+  }, []);
+
+  useEffect(() => {
+    axios.get('https://localhost:7188/api/orders')
+      .then(response => setOrders(response.data))
+      .catch(error => console.error('Error fetching order:', error));
+  })
 
   const applyDiscount = (discountType) => {
     let discountAmount = 0;
@@ -56,13 +71,17 @@ const Cart = () => {
     updateTotals();
   };
 
-  const total = subtotal - discount;
+  const getProductById = (id) => {
+    return milks.find(milk => milk.milkId === id);
+  };
+
+  const result = subtotal - discount;
 
   return (
     <>
       <div className="cart-container">
         <div className='container'>
-          <div className='col-md-9 cart-table-container'>
+          <div className='col-md-10 cart-table-container'>
             <table className="cart-table">
               <thead>
                 <tr>
@@ -75,7 +94,7 @@ const Cart = () => {
                         setCartItems(newCartItems);
                         updateTotals();
                       }}
-                    /> CHỌN TẤT CẢ
+                    />ALL
                   </th>
                   <th>Tên sản phẩm</th>
                   <th>Số lượng</th>
@@ -84,41 +103,45 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {cartItems.map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={item.selected || false}
-                        onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
-                      />
-                    </td>
-                    <td><img src="" alt="IMG" width="50" /></td>
-                    <td>
-                      <input
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
-                        min="1"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={item.price}
-                        onChange={(e) => handleItemChange(index, 'price', parseInt(e.target.value))}
-                        min="0"
-                      /> ₫
-                    </td>
-                    <td>
-                      <button className="delete-btn" onClick={() => handleDeleteItem(index)}>Xoá</button>
-                    </td>
-                  </tr>
-                ))}
+                {cartItems.map((item, index) => {
+                  const product = getProductById(item.milkId);
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={item.selected || false}
+                          onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
+                        />
+                      </td>
+                      <td>
+                        {product && product.milkPictures && product.milkPictures.length > 0 && (
+                          <img src={product.milkPictures[0].picture} alt={product.milkName} width="50" />
+                        )}
+                        {product ? product.milkName : 'Không xác định'}
+                      </td>
+
+                      <td>
+                        <input
+                          type="number"
+                          value={item.quantity}
+                          onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
+                          min="1"
+                        />
+                      </td>
+                      <td>
+                        {product ? product.price : 'Không xác định'} ₫
+                      </td>
+                      <td>
+                        <button className="delete-btn" onClick={() => handleDeleteItem(index)}>Xoá</button>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-          <div className="cart-summary col-md-3">
+          <div className="cart-summary col-md-2">
             <div className='col'><button onClick={toggleVoucherList}>Voucher ưu đãi</button></div>
             <div className='col'>
               {voucherListVisible && (
@@ -133,8 +156,8 @@ const Cart = () => {
             </div>
             <p>Tiền phụ: <span>{subtotal} ₫</span></p>
             <p>Voucher ưu đãi: <span>{discount} ₫</span></p>
-            <p className="total">Thành Tiền: <span>{total} ₫</span></p>
-            <a href="thanhtoan.html"><button>Xác nhận giỏ hàng</button></a>
+            <p className="total">Thành Tiền: <span>{result} ₫</span></p>
+            <a href=""><button>Xác nhận giỏ hàng</button></a>
           </div>
         </div>
       </div>
