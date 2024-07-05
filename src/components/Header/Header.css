@@ -1,7 +1,7 @@
 .header {
     display: flex;
     align-items: center; /* Căn giữa theo chiều dọc */
-    width: 100%;
+    width: max-content;
     padding: 10px 0;
   }
   
@@ -116,4 +116,6 @@
   .navigation-menu li a:hover {
     background-color: #f0a9a9; /* Màu nền khi hover */
   }
-  
+  .icon-small{
+    font-size: 1.2em;
+  }
