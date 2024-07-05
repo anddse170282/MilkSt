@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Layout from './components/Layout';
 import Cart from './pages/giohang';
 import Pay from './pages/thanhtoan';
+import Pay from './pages/SearchPage';
 import MoMoPaymentPage from './pages/MoMoPayment';  // Import MoMoPaymentPage
 
 
@@ -22,7 +23,7 @@ function App() {
           <Route path="/pay" element={<Pay/>} />
           <Route path="/cart" element={<Cart/>} />
           <Route path="/momo-payment" element={<MoMoPaymentPage />} />
-
+          <Route path="/SearchPage" element={<SearchPage />} />
           {/* Add more routes here */}
         </Routes>
       </Layout>
