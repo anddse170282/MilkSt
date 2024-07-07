@@ -1,164 +1,134 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh; /* viewport height */
-    margin: 0; /* remove body margin */
-    background-color: #f9f9f9;
-    background-image: url('blackgroup.jpg'); /* Set the background image */
-    background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Do not repeat the image */
+/* login.css */
+.login-body {
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/LoginBackRound%2Fblackgroup.jpg?alt=media&token=baad803b-55ac-4018-8533-098c206dddee');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 204vh;
 }
 
-.header {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    padding: 10px;
+.logoLogin {
+  position: absolute;
+  top: 5%;
+  left: 4%;
 }
 
-.logo-container {
-    flex: 0 0 auto;
-    margin-right: 20px;
-    display: flex;
-    align-items: left;
-  }
-
-form {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 300px; /* Adjust width as needed */
+.w-1 {
+  width: 41%;
+  margin: auto;
 }
 
-/* Other styles remain unchanged */
-
-h2 {
-    margin-bottom: 10px;
+.w-2 {
+  width: 97%;
+  margin: auto;
 }
 
-p2 {
-    margin-bottom: 20px;
-    color: #666;
+.flex {
+  display: flex;
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.flex-col {
+  flex-direction: column;
 }
 
-input[type="checkbox"] {
-    margin-right: 10px;
+.gap-4 {
+  gap: 1rem;
 }
 
-label {
-    font-size: 12px;
-    color: #666;
+.rounded-lg {
+  border-radius: 0.5rem;
 }
 
-label a {
-    color: #000;
-    text-decoration: none;
+.p-4 {
+  padding: 1rem;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #ff4081;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 16px;
-    cursor: not-allowed;
+.text-center {
+  text-align: center;
 }
 
-button:enabled {
-    cursor: pointer;
+.leading-normal {
+  line-height: 1.5;
 }
 
-img.center {
-    margin-top: 100px ;
-    display: flex;
-    justify-content: center;
+.text-black {
+  color: #000;
 }
 
-#error-message {
-    color: red;
-    font-size: 12px;
-    display: none;
-    margin-bottom: 10px;
+.font-medium {
+  font-weight: 500;
 }
 
-footer {
-    font-family: Arial, sans-serif;
-  }
+.text-3xl {
+  font-size: 1.875rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.btn-custom {
+  width: 100%;
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  color: #000;
+}
+
+.btn-custom:hover {
+  cursor: pointer;
+}
+
+.btn-custom:disabled {
+  background-color: #ccc;
+}
+
+.btn-custom.accepted {
+  background-color: #ff69b4;
+  color: #fff;
+}
+
+.otp-input-custom input {
+  text-align: center;
+  font-size: 1.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #000000;
+}
+
+.otp-input-custom input:focus {
+  border-color: #ff69b4;
+  outline: none;
+}
+
+.terms-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Đặt phần tử ở bên trái */
+  gap: 0.5rem; /* Khoảng cách giữa checkbox và nhãn */
+  margin-top: 1rem; /* Khoảng cách trên cho phần tử này */  
+}
+
+/* Đảm bảo các kiểu CSS cho checkbox và nhãn */
+.terms-container input[type="checkbox"] {
+  margin: 0;
   
-  .footer-top {
-    background-color: #ec4899;
-    /* Pink color */
-    color: white;
-  padding-top: 20px;
-  padding-bottom: 90px;
-  }
-  
-  .container {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    /* Chia thành 12 cột bằng nhau */
-    gap: 16px;
-    /* Khoảng cách giữa các cột */
-    margin: 0 auto;
-    width: 80%;
-  }
-  
-  .footer-column h2 {
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-  
-  .flex-container {
-    display: flex;
-    gap: 16px;
-  }
-  
-  .flex-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .flex-item img {
-    margin-right: 8px;
-  }
-  
-  .footer-bottom {
-    background-color: #e4e4e7; /* Màu nền xám nhạt */
-    color: #f5f5f7; /* Màu chữ xám đậm */
-    display: flex;
-    align-items: center; /* Căn chỉnh các mục ở giữa theo chiều dọc */
-    justify-content: center; /* Căn giữa các mục theo chiều ngang */
-    text-align: center;
-  }
-  
-  
-  .footer-bottom img {
-    margin-right: 10px; /* Thêm khoảng cách giữa hình ảnh và văn bản */
-  }
-  
-  .footer-column {
-    grid-column: span 4;
-    color: #fff;
-    /* Mỗi footer-column sẽ chiếm 4 cột */
-  }
-  
-  .bi {
-    font-size: 42px; /* Tăng kích thước của icon */
-    color: #ffffff; /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
-  }
+}
+
+.terms-container label {
+  margin: 0;
+
+}
+
