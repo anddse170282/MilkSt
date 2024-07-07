@@ -1,39 +1,58 @@
-// src/components/ProductInfo.jsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import '../css/productInfo.css'; // Make sure this path is correct
+import { useParams, useNavigate } from 'react-router-dom';
+import * as milkService from '../api/milkService';
+import * as brandService from '../api/brandService';
+import '../css/productInfo.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useParams } from 'react-router-dom';
 
 const ProductInfo = () => {
-  const [product, setProduct] = useState([]);
-  const [comment, setComment] = useState([]);
-  const [user, setUser] = useState([]);
-  const [member, setMember] = useState([]);
-  const { milkId } = useParams();
+  const [product, setProduct] = useState({});
+  const [brandName, setBrandName] = useState('');
+  const [quantity, setQuantity] = useState(1); // State to manage product quantity
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`https://localhost:7188/api/milks/${milkId}`)
-      .then(response => {
-        setProduct(response.data);
-      })
-      .catch(error => {
-        console.error("There was an error fetching the product data!", error);
-      });
-  }, []);
+    const fetchProduct = async () => {
+      try {
+        if (id) {
+          const productData = await milkService.getProductsById(id);
+          console.log('Fetched product:', productData);
+          setProduct(productData);
 
-  // useEffect(() => {
-  //   const fetchComment = async () => {
-  //     try {
-  //       const response = await axios.get(`https://localhost:7188/api/comments`);
-  //       setComment(response.data);
-  //     }
-  //     catch (error) {
-  //       console.error("There was an error fetching the comment data!", error);
-  //     }
-  //   };
-  //   fetchComment();
-  // }, []);
+          const brandData = await brandService.getBrandById(productData.brandId);
+          console.log('Fetched brand:', brandData);
+          setBrandName(brandData.brandName);
+        }
+      } catch (error) {
+        console.error("There was an error fetching the product or brand data!", error);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  const handleBuyNow = () => {
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    cart.push({ ...product, quantity });
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    navigate('/cart');
+  };
+
+  const handleAddToCart = () => {
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    cart.push({ ...product, quantity });
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    console.log("Product added to cart:", product);
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(prevQuantity => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
 
   return (
     <div>
@@ -52,8 +71,15 @@ const ProductInfo = () => {
               <p><strong>{product.milkName}</strong></p>
               <p><i className="fas fa-glass-milk"></i> Dung tích {product.capacity}</p>
               <p><strong>Giá tiền: {product.price} ₫</strong></p>
-              <button className="buy-now-btn">Mua ngay</button>
-              <button className="buy-now-btn">Thêm vào giỏ hàng</button>
+
+              <div className="quantity-container">
+                <button onClick={decreaseQuantity}>-</button>
+                <span>{quantity}</span>
+                <button onClick={increaseQuantity}>+</button>
+              </div>
+
+              <button className="buy-now-btn" onClick={handleBuyNow}>Mua ngay</button>
+              <button className="buy-now-btn" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
             </div>
           </div>
         </div>
@@ -75,7 +101,7 @@ const ProductInfo = () => {
                   </tr>
                   <tr>
                     <td><h5>Thương hiệu:</h5></td>
-                    <td>{product.brandId}</td>
+                    <td>{brandName}</td>
                   </tr>
                   <tr>
                     <td><h5>Độ tuổi phù hợp:</h5></td>
@@ -96,87 +122,18 @@ const ProductInfo = () => {
         </div>
 
         <div className="col-md-11" style={{ paddingLeft: '15%' }}>
-          <h2>Sản tương tự</h2>
-          {/* <div className="product-section">
-            <button className="prev-button">&lt;</button>
-            <button className="next-button">&gt;</button>
-            <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
-                {similarProducts.map((product, index) => (
-                  <div className="product-item" key={index}>
-                    <a href={`/product/${product.milkId}`}><img src={product.imageUrl} alt={`Product ${index + 1}`} className="product-image" /></a>
-                    <p className="product-name">{product.milkName}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div> */}
-        </div>
-
-        <div className="col-mt-12" style={{ paddingLeft: '15%' }}>
-          <h2>Lượt đánh giá</h2>
-          {/* <span>0.0/5.0</span>
-          <button type="button" className="btn btn-link">Mới nhất</button>
-          <button type="button" className="btn btn-link">Cũ nhất</button>
-          <br className="danh-gia-sao" />
-          <div id="rating">
-            <h5><span> Đánh giá</span></h5>
-            {[...Array(5)].map((_, i) => (
-              <React.Fragment key={i}>
-                <input type="radio" id={`star${5 - i}`} name="rating" value={5 - i} />
-                <label className="full" htmlFor={`star${5 - i}`} title={`${5 - i} stars`}></label>
-                <input type="radio" id={`star${5 - i}half`} name="rating" value={`${5 - i}.5`} />
-                <label className="half" htmlFor={`star${5 - i}half`} title={`${5 - i}.5 stars`}></label>
-              </React.Fragment>
-            ))}
-          </div>
-
-          <div className="form-group">
-            <textarea className="form-control" id="comment" rows="3" placeholder="Chia sẻ, đánh giá về sản phẩm của HANA Milk Store"></textarea>
-            <input type="file" onChange={readURL} />
-            <img id="selectedImage" width="10%" height="10%" alt="Selected" />
-          </div>
-          <button type="button" className="btn btn-primary">Đăng</button> */}
+          <h2>Sản phẩm tương tự</h2>
+          {/* Similar products section */}
         </div>
 
         <div className="col-mt-12" style={{ paddingLeft: '15%', paddingTop: '5%' }}>
           <h2><label htmlFor="comment">Bình luận</label></h2>
-          {/* {comment.map((comment, index) => (
-            <div className="row md-2" key={index}>
-              <div className="col-md-2">
-                <img src="{review.avatarUrl}" alt="Ảnh khách" width="50%" height="90%" className="rounded-circle border" />
-              </div>
-              <div className="col-md-5">
-                <h5>{review.name}</h5>
-                <span className="star-rating">{'★'.repeat(review.rating)}</span>
-                <p>{review.date}</p>
-              </div>
-              <div className="col-md-10">
-                <textarea id="comment" rows="4" className="form-control" defaultValue={review.comment}></textarea>
-              </div>
-              <div className="row">
-                <button type="button" className="btn btn-primary">Trả lời</button>
-              </div>
-            </div>
-          ))} */}
+          {/* Comments section */}
         </div>
 
         <div className="col-mt-12" style={{ paddingLeft: '15%' }}>
           <h2>Sản phẩm mới</h2>
-          {/* <div className="product-section">
-            <button className="prev-button">&lt;</button>
-            <button className="next-button">&gt;</button>
-            <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
-                {newProducts.map((product, index) => (
-                  <div className="product-item" key={index}>
-                    <a href={`/product/${product.id}`}><img src={product.imageUrl} alt={`Product ${index + 1}`} className="product-image" /></a>
-                    <p className="product-name">{product.name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div> */}
+          {/* New products section */}
         </div>
       </main>
     </div>
@@ -184,5 +141,3 @@ const ProductInfo = () => {
 };
 
 export default ProductInfo;
-
-

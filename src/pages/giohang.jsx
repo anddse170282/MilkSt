@@ -13,24 +13,10 @@ const Cart = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // Fetch cart items from API
-    axios.get(`https://localhost:7188/api/order-details?orderId=1`)
-      .then(response => setCartItems(response.data))
-      .catch(error => console.error('Error fetching cart items:', error));
+    // Fetch cart items from session storage
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    setCartItems(cart);
   }, []);
-
-  useEffect(() => {
-    //Fetch milks from API
-    const allMilks = axios.get('https://localhost:7188/api/milks')
-      .then(response => setMilks(response.data))
-      .catch(error => console.error('Error fetching milks:', error));
-  }, []);
-
-  useEffect(() => {
-    axios.get('https://localhost:7188/api/orders')
-      .then(response => setOrders(response.data))
-      .catch(error => console.error('Error fetching order:', error));
-  })
 
   const applyDiscount = (discountType) => {
     let discountAmount = 0;
@@ -61,6 +47,7 @@ const Cart = () => {
     const newCartItems = [...cartItems];
     newCartItems[index][field] = value;
     setCartItems(newCartItems);
+    sessionStorage.setItem('cart', JSON.stringify(newCartItems));
     updateTotals();
   };
 
@@ -68,6 +55,7 @@ const Cart = () => {
     const newCartItems = [...cartItems];
     newCartItems.splice(index, 1);
     setCartItems(newCartItems);
+    sessionStorage.setItem('cart', JSON.stringify(newCartItems));
     updateTotals();
   };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import '../css/searchpage.css';
+import '../css/SearchPage.css';
 
 const SearchPage = () => {
   const [products, setProducts] = useState([]);

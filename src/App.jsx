@@ -9,6 +9,7 @@ import Cart from './pages/giohang';
 import Pay from './pages/thanhtoan';
 import SearchPage from './pages/SearchPage';
 import MoMoPaymentPage from './pages/MoMoPayment';  // Import MoMoPaymentPage
+import ProductInfo from './pages/ProductInfo';  // Import ProductInfo
 
 import './App.css'; 
 function App() {
@@ -31,6 +32,7 @@ const LayoutWrapper = () => (
       <Route path="/cart" element={<Cart />} />
       <Route path="/momo-payment/:amount" element={<MoMoPaymentPage />} />
       <Route path="/searchpage" element={<SearchPage />} />
+      <Route path="/productinfo/:id" element={<ProductInfo />} />
       {/* Add more routes here */}
     </Routes>
   </Layout>
