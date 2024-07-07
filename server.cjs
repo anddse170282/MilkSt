@@ -2,9 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const crypto = require('crypto');
+const cors = require('cors'); // Import cors package
 
 const momo = express();
 momo.use(bodyParser.json());
+
+// Cấu hình CORS cho phép yêu cầu từ http://localhost:5173
+momo.use(cors({
+  origin: 'http://localhost:5173', // Chỉ cho phép yêu cầu từ http://localhost:5173
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization',
+}));
 
 momo.post('/momo-payment', async (req, res) => {
   const { amount, orderInfo } = req.body;

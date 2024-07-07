@@ -14,7 +14,7 @@ const Cart = () => {
 
   useEffect(() => {
     // Fetch cart items from API
-    axios.get(`https://localhost:7188/api/order-details?orderId=${orderId}`)
+    axios.get(`https://localhost:7188/api/order-details?orderId=1`)
       .then(response => setCartItems(response.data))
       .catch(error => console.error('Error fetching cart items:', error));
   }, []);
@@ -157,7 +157,7 @@ const Cart = () => {
             <p>Tiền phụ: <span>{subtotal} ₫</span></p>
             <p>Voucher ưu đãi: <span>{discount} ₫</span></p>
             <p className="total">Thành Tiền: <span>{result} ₫</span></p>
-            <a href=""><button>Xác nhận giỏ hàng</button></a>
+            <a href="/pay"><button>Xác nhận giỏ hàng</button></a>
           </div>
         </div>
       </div>
