@@ -10,19 +10,14 @@ footer {
   padding-bottom: 135px;
   }
   
-  .container {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    /* Chia thành 12 cột bằng nhau */
-    gap: 16px;
-    /* Khoảng cách giữa các cột */
-    margin: 0 auto;
-    width: 80%;
-  }
-  
   .footer-column h2 {
+    text-align: left;
     font-weight: bold;
     margin-bottom: 16px;
+  }
+
+  .footer-column p {
+    text-align: left;
   }
   
   .flex-container {
@@ -32,6 +27,7 @@ footer {
   
   .flex-item {
     display: flex;
+    text-align: left;
     align-items: center;
     margin-bottom: 10px;
   }
@@ -49,17 +45,15 @@ footer {
     text-align: center;
   }
   
-  
   .footer-bottom img {
     margin-right: 10px; /* Thêm khoảng cách giữa hình ảnh và văn bản */
-  }
-  
-  .footer-column {
-    grid-column: span 4;
-    /* Mỗi footer-column sẽ chiếm 4 cột */
   }
   
   .bi {
     font-size: 42px; /* Tăng kích thước của icon */
     color: #ffffff; /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
+  }
+
+  .text {
+    margin-top: 10px;
   }
