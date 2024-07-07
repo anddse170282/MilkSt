@@ -30,7 +30,7 @@ const Login = () => {
             navigate('/');
         }
         else {
-            navigate('/input');
+            navigate('/customerform');
         }
     };
 

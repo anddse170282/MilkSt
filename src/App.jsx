@@ -10,13 +10,14 @@ import Pay from './pages/thanhtoan';
 import SearchPage from './pages/SearchPage';
 import MoMoPaymentPage from './pages/MoMoPayment';  // Import MoMoPaymentPage
 import ProductInfo from './pages/ProductInfo';  // Import ProductInfo
-
+import CustomerForm from './pages/CustomerForm';
 import './App.css'; 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/customerform" element={<CustomerForm />} />
         <Route path="*" element={<LayoutWrapper />} />
       </Routes>
     </BrowserRouter>

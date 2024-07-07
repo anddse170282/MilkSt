@@ -5,13 +5,14 @@ import Footer from './Footer/Footer';
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const noHeaderRoutes = ['/login']; // Add paths that do not require header
+  //const noHeaderRoutes = ['/login', '/customerform']; // Add paths that do not require header
 
-  const shouldRenderHeader = !noHeaderRoutes.includes(location.pathname);
+  //const shouldRenderHeader = !noHeaderRoutes.includes(location.pathname);
 
   return (
     <>
-      {shouldRenderHeader && <Header />}
+      {//shouldRenderHeader && 
+      <Header />}
       {children}
       <Footer />
     </>
