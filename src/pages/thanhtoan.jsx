@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/thanhtoan.css';
 import { useParams, Link } from 'react-router-dom'; // Import Link
+import {getUserByUserId} from '../api/userService';
+import {getOrdersById} from '../api/orderService';
 
 const Invoice = () => {
   const [data, setData] = useState({});
@@ -11,10 +13,10 @@ const Invoice = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://localhost:7188/api/users/1`);
-        setData(response.data);
+        const response = await getUserByUserId(1);
+        setData(response);
       } catch (error) {
-        console.error('Error fetching users:', error);
+          
       }
     };
     fetchData();
@@ -23,8 +25,8 @@ const Invoice = () => {
   useEffect(() => {
     const fetchDataOrder = async () => {
       try {
-        const response = await axios.get(`https://localhost:7188/api/orders/1`);
-        setDataOrder(response.data);
+        const response = await getOrdersById(1);
+        setDataOrder(response);
       } catch (error) {
         console.error('Error fetching orders:', error);
       }
@@ -78,7 +80,7 @@ const Invoice = () => {
           </div>
 
           <div className="user-cart-container">
-            <Link to="/momo-payment">
+            <Link to={`/momo-payment/${dataOrder.amount}`}>
               <button type="button" className="pay-button">Thanh toán</button>
             </Link>
           </div>

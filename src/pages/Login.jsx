@@ -7,6 +7,8 @@ import { auth } from "../firebase.config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast, Toaster } from "react-hot-toast";
 import '../css/login.css';
+import { getUserByFilter } from '../api/userService';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [otp, setOtp] = useState("");
@@ -16,6 +18,21 @@ const Login = () => {
     const [termsAgreed, setTermsAgreed] = useState(false);
     const [step, setStep] = useState(1);
     const [isOtpValid, setIsOtpValid] = useState(false);
+    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+
+    function checkPhoneExist(phone) {
+        toast.success("👍Login Success");
+        getUserByFilter(phone)
+            .then(response => setUsers(response))
+            .catch(console.error('Error fetching users:'));
+        if(users == null){
+            navigate('/');
+        }
+        else {
+            navigate('/input');
+        }
+    };
 
     useEffect(() => {
         setIsOtpValid(otp.length === 6);
@@ -27,7 +44,7 @@ const Login = () => {
                 "recaptcha-container",
                 {
                     size: "invisible",
-                    callback: (response) => {
+                    callback: () => {
                         onSignup();
                     },
                     "expired-callback": () => { },
@@ -53,7 +70,7 @@ const Login = () => {
             })
             .catch((error) => {
                 console.log(error);
-                setLoading(false);
+                // setLoading(false);
                 toast.error("Gửi mã OTP thất bại. Vui lòng thử lại.");
             });
     }
@@ -92,15 +109,13 @@ const Login = () => {
                         <Toaster toastOptions={{ duration: 4000 }} />
                         <div id="recaptcha-container"></div>
                         {user ? (
-                            <h2 className="text-center text-white font-medium text-2xl">
-                                👍Login Success
-                            </h2>
+                            checkPhoneExist(ph)
                         ) : (
                             <>
                                 {step === 1 ? (
                                     <div className="w-1 flex flex-col gap-4 rounded-lg p-4 bg-white">
                                         <h1 className="text-center leading-normal text-black font-medium text-3xl mb-6">
-                                            Hana Store  
+                                            Hana Store
                                         </h1>
                                         <h1 className="text-center leading-normal text-black font-medium text-3x3 mb-1">
                                             Đăng nhập hoặc Đăng ký ngay tài khoản

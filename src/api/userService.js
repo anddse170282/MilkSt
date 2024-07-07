@@ -12,6 +12,11 @@ const getMemberbyMemberId = async (memberId) => {
     return response.data;
 }
 
+const getUserByFilter = async (phone) => {
+    const response = await axios.get(`${API_URL}/users?phone=${phone}`);
+    return response.data;
+}
+
 const updateUser = async (user) => {
     const response = await axios.put(`${API_URL}/users/${user.userId}`, user);
     return response.data;
@@ -19,5 +24,6 @@ const updateUser = async (user) => {
 export {
     getUserByUserId,
     getMemberbyMemberId,
-    updateUser
+    updateUser,
+    getUserByFilter
 }

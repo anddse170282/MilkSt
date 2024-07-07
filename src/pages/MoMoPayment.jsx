@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-// const {amount} = useParams();
+
 const MoMoPaymentPage = () => {
+  const {amount} = useParams();
   useEffect(() => {
     const initiatePayment = async () => {
       try {
         const response = await axios.post('http://localhost:5000/momo-payment', {
-          amount: 50000,
+          amount: amount,
           orderInfo: 'pay with MoMo'
         });
 

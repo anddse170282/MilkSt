@@ -29,7 +29,7 @@ const LayoutWrapper = () => (
       <Route path="/input" element={<InputUserInformation />} />
       <Route path="/pay" element={<Pay />} />
       <Route path="/cart" element={<Cart />} />
-      <Route path="/momo-payment" element={<MoMoPaymentPage />} />
+      <Route path="/momo-payment/:amount" element={<MoMoPaymentPage />} />
       <Route path="/searchpage" element={<SearchPage />} />
       {/* Add more routes here */}
     </Routes>
