@@ -12,8 +12,11 @@
   background-repeat: no-repeat; /* Do not repeat the image */
 }
 
-.container {
-  text-align: center;
+
+.logoLogin {
+  position: absolute;
+  top: 5%;
+  left: 4%;
 }
 
 form {

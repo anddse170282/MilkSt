@@ -18,16 +18,17 @@ function CustomerForm() {
   };
 
   return (
-    <div>
-      <header className="header">
-        <div className="container">
-          <div className="logo-container">
-            <a href="HomePage.html">
-              <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Logo%20Footer%2Fdep2.png?alt=media&token=08b080e1-c883-4c89-ba4f-76f8f0a57b00" width="150" height="150" alt="Logo" />
-            </a>
-          </div>
-        </div>
-      </header>
+    <div className="background">
+            <section className="login-section">
+                <div className="login-row">
+                    <div className="logoLogin">
+                        <header>
+                            <a href="\">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Logo%20Footer%2Fdep2.png?alt=media&token=08b080e1-c883-4c89-ba4f-76f8f0a57b00" width="150" height="150" alt="Logo" />
+                            </a>
+                        </header>
+                    </div>
+                    </div>
 
       <div className="form-section">
         <form action="/submit-form" method="post" encType="multipart/form-data">
@@ -93,6 +94,7 @@ function CustomerForm() {
           </div>
         </form>
       </div>
+      </section>
     </div>
   );
 }
