@@ -21,6 +21,10 @@ const updateUser = async (user) => {
     const response = await axios.put(`${API_URL}/users/${user.userId}`, user);
     return response.data;
 }
+
+const addUser = async (user) => {
+    
+}
 export {
     getUserByUserId,
     getMemberbyMemberId,

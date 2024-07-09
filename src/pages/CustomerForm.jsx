@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/customerform.css';
+import { useLocation } from 'react-router-dom';
 
 function CustomerForm() {
+  const [imagePreview, setImagePreview] = useState(null);
+  const location = useLocation();
+  const [phone, setPhone] = useState('');
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const phoneFromQuery = queryParams.get('phone');
+    if (phoneFromQuery) {
+      setPhone(phoneFromQuery);
+    }
+  }, [location.search]);
+
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
+    phone: phone,
     dob: '',
     gender: '',
     address: '',
     image: null
   });
-  const [imagePreview, setImagePreview] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
