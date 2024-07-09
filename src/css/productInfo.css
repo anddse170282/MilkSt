@@ -78,21 +78,52 @@ input[type="file"] {
 .gender-options label {
     font-weight: normal;
 }
-
-button {
+.quantity-wrapper {
+    display: flex;
+    align-items: baseline;
+    justify-content: left;
+    gap: 0px; /* Add space between the elements */
+  }
+  
+  .quantity-container {
+    background-color: #ff69b4;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: solid #FF469E;
+    cursor: pointer;
+  }
+  
+.quantity-container{
     background-color: #ff69b4; /* Màu hồng */
     color: white; /* Màu chữ trắng */
-    padding: 10px 20px; /* Khoảng cách bên trong */
-    border-radius: 5px; /* Bo tròn góc */
-    border: none; /* Xóa viền */
+    padding: 5px 20px; /* Khoảng cách bên trong */
+    border-radius: 10px; /* Bo tròn góc */
+    border: solid #FF469E; /* Xóa viền */
     cursor: pointer; /* Con trỏ chuột dạng tay */
-    width: 100%; /* Chiều rộng 100% */
     margin-top: 20px; /* Khoảng cách trên */
+    margin-right: 20px; /* Khoảng cách giữa các nút */
+    margin-left: 20px;
 }
 
-button:hover {
-    background-color: #ff1493;
-}
+.buy-now-btn {
+    padding: 10px 20px;
+    color: #fff; /* Màu chữ trắng */
+    background-color: #FF469E; /* Màu nền hồng */
+    border: solid #FF469E; /* Không viền */
+    border-radius: 10px; /* Bo tròn viền */
+    cursor: pointer; /* Con trỏ chuột khi di chuyển vào nút */
+    margin-right: 10px; /* Khoảng cách giữa các nút */
+    font-size: 16px; /* Adjust the font size here */
+    margin-top: 20px; /* Khoảng cách trên */
+    margin-right: 20px; /* Khoảng cách giữa các nút */
+    margin-left: 10px;
+  }
+  
+  .buy-now-btn:hover {
+    background-color: #f0a9a9; /* Màu nền khi hover */
+  }
+  
 
 .form-group p {
     font-size: 12px;
@@ -134,3 +165,5 @@ div.center {
     font-size: 14px;
     color: #fff;
   }
+
+  
