@@ -72,17 +72,19 @@ const ProductInfo = () => {
               <p><i className="fas fa-glass-milk"></i> Dung tích {product.capacity}</p>
               <p><strong>Giá tiền: {product.price} ₫</strong></p>
 
-              <div className="quantity-container">
-                <button onClick={decreaseQuantity}>-</button>
+              <div className="quantity-wrapper">
+                <h2>Số lượng</h2>
+                <button className="quantity-container" onClick={decreaseQuantity}>-</button>
                 <span>{quantity}</span>
-                <button onClick={increaseQuantity}>+</button>
+                <button className="quantity-container" onClick={increaseQuantity}>+</button>
               </div>
 
-              <button className="buy-now-btn" onClick={handleBuyNow}>Mua ngay</button>
-              <button className="buy-now-btn" onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
+              <button className="buy-now-btn" onClick={handleBuyNow}> Mua ngay</button>
+              <button className="buy-now-btn" onClick={handleAddToCart}> Thêm vào giỏ hàng</button>
             </div>
           </div>
         </div>
+
 
         <div className="col-mt-7">
           <div className="row" style={{ paddingLeft: '10%' }}>
