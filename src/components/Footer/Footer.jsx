@@ -20,13 +20,13 @@ const Footer = () => {
             <p>Bán sỉ: 0819711117</p>
           </div>
           <div className="col-md-4">
-            <h2>Chấp nhận thanh toán</h2>
+            <h3>Chấp nhận thanh toán</h3>
             <img
               src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Logo%20Footer%2Fmomo.png?alt=media&token=2dd2f91c-582c-4cf7-93b5-1026a1324667"
               width="30%"
               alt="Momo"
             />
-            <h2 className='text'>Phương tiện vận chuyển</h2>
+            <h4 className='text'>Phương tiện vận chuyển</h4>
             <div className="flex-container">
               <div className='col-md-1'></div>
               <img
