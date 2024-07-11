@@ -6,6 +6,7 @@ import * as commentService from '../api/commentService';
 import '../css/productInfo.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const ProductInfo = () => {
   const [product, setProduct] = useState({});
@@ -13,6 +14,7 @@ const ProductInfo = () => {
   const [quantity, setQuantity] = useState(1); // State to manage product quantity
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const [showCommentForm, setShowCommentForm] = useState(false); // State to control comment form visibility
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -55,7 +57,6 @@ const ProductInfo = () => {
     fetchReviews();
   }, []);
 
-
   const fetchReviews = () => {
     try {
       const response = getComments(id);
@@ -72,6 +73,7 @@ const ProductInfo = () => {
       setReviews([response.data, ...reviews]);
       setRating(0);
       setComment('');
+      setShowCommentForm(false); // Hide the comment form after submission
     } catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -86,7 +88,7 @@ const ProductInfo = () => {
   };
 
   return (
-    <div>
+    <div className="product-info">
       <main>
         <div className="col-md-12">
           <div className="row" style={{ paddingBottom: '7%' }}>
@@ -115,7 +117,6 @@ const ProductInfo = () => {
             </div>
           </div>
         </div>
-
 
         <div className="col-mt-7">
           <div className="row" style={{ paddingLeft: '10%' }}>
@@ -160,67 +161,92 @@ const ProductInfo = () => {
         </div>
 
         <div className="container my-5">
-      <div className="text-center mb-4">
-        <h2>Đánh giá</h2>
-        <div className="h4">0.0/5.0</div>
-        <div className="text-muted">Có 20 lượt đánh giá</div>
-      </div>
-      <div className="d-flex justify-content-center mb-4">
-        <button className="btn btn-outline-primary mr-2">Mới nhất</button>
-        <button className="btn btn-outline-secondary">Cũ nhất</button>
-      </div>
-      <div className="text-center mb-4">
-        <button className="btn btn-warning mr-2">5 ⭐</button>
-        <button className="btn btn-warning mr-2">4 ⭐</button>
-        <button className="btn btn-warning mr-2">3 ⭐</button>
-        <button className="btn btn-warning mr-2">2 ⭐</button>
-        <button className="btn btn-warning">1 ⭐</button>
-      </div>
+          <div className="text-center mb-4">
+            <h2>Đánh giá</h2>
+            <div className="h4">0.0/5.0</div>
+            <div className="text-muted">Có 20 lượt đánh giá</div>
+          </div>
+          <div className="d-flex justify-content-center mb-4">
+            <button className="btn btn-outline-primary mr-2">Mới nhất</button>
+            <button className="btn btn-outline-secondary">Cũ nhất</button>
+          </div>
+          <div className="row">
+            <div className="col-12 mb-4">
+              <div className="list-group d-flex flex-wrap">
+                {reviews.map((review, index) => (
+                  <div className="list-group-item col-md-6" key={index}>
+                    <div className="d-flex w-100 justify-content-between">
+                      <h5 className="mb-1">{review.reviewerName}</h5>
+                      <small>{review.date}</small>
+                    </div>
+                    <div className="mb-1">
+                      {[...Array(review.rating)].map((_, i) => (
+                        <span key={i} className="text-warning">⭐</span>
+                      ))}
+                    </div>
+                    <p className="mb-1">{review.comment}</p>
+                    <div className="d-flex">
+                      {review.images.map((img, idx) => (
+                        <img src={img} alt={`Review ${index} image ${idx}`} key={idx} className="img-thumbnail mr-2" />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
 
-      <div className="row">
-        <div className="col-12 mb-4">
-          <div className="list-group d-flex flex-wrap">
-            {reviews.map((review, index) => (
-              <div className="list-group-item col-md-6" key={index}>
-                <div className="d-flex w-100 justify-content-between">
-                  <h5 className="mb-1">{review.reviewerName}</h5>
-                  <small>{review.date}</small>
-                </div>
-                <div className="mb-1">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <span key={i} className="text-warning">⭐</span>
-                  ))}
-                </div>
-                <p className="mb-1">{review.comment}</p>
-                <div className="d-flex">
-                  {review.images.map((img, idx) => (
-                    <img src={img} alt={`Review ${index} image ${idx}`} key={idx} className="img-thumbnail mr-2" />
-                  ))}
+          <div className="text-center mt-4">
+            <button className="btn btn-primary" onClick={() => setShowCommentForm(true)}>
+              Viết đánh giá
+            </button>
+          </div>
+
+          {showCommentForm && (
+            <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Bình luận</h5>
+                    <button type="button" className="close" onClick={() => setShowCommentForm(false)} aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <form onSubmit={handleSubmit}>
+                      <div className="form-group text-center">
+                        <label htmlFor="rating">Đánh giá:</label>
+                        <div>
+                          {[5, 4, 3, 2, 1].map((star) => (
+                            <button
+                              type="button"
+                              key={star}
+                              className={`btn ${rating >= star ? 'btn-warning' : 'btn-outline-secondary'}`}
+                              onClick={() => setRating(star)}
+                            >
+                              {star} ⭐
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="form-group">
+                        <label htmlFor="comment">Bình luận:</label>
+                        <textarea
+                          id="comment"
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                          className="form-control"
+                          required
+                        ></textarea>
+                      </div>
+                      <button type="submit" className="btn btn-success">Đăng</button>
+                    </form>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="col-12">
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="comment">Bình luận</label>
-              <textarea
-                id="comment"
-                className="form-control"
-                placeholder="Chia sẻ, đánh giá về sản phẩm cho HANA MilkStore"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                required
-              />
             </div>
-            <button type="submit" className="btn btn-primary mt-2">Đăng</button>
-          </form>
+          )}
         </div>
-      </div>
-    </div>
-
 
         <div className="col-mt-12" style={{ paddingLeft: '15%' }}>
           <h2>Sản phẩm mới</h2>
