@@ -8,8 +8,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 const Footer = () => {
   return (
     <footer>
-      <div className="footer-top">
-        <div className="container">
+      <div className="footer-top2">
+        <div className="containerfooter">
           <div className="footer-column col-md-4">
             <h2>Về chúng tôi</h2>
             <p>Website hoạt động dưới sự cho phép của:</p>

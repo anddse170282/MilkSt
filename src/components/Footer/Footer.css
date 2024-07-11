@@ -1,75 +1,100 @@
 footer {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
+}
+
+.footer-top2 {
+	background-color: #ec4899;
+	color: white;
+	padding-top: 20px;
+	padding-bottom: 90px;
+}
+
+.footer-column h2 {
+  color: #e4e4e7;
+  text-align: left;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.footer-column p {
+  text-align: left;
+}
+
+.flex-container {
+  display: flex;
+  gap: 16px;
+}
+
+.flex-item {
+  display: flex;
+  text-align: left;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.flex-item img {
+  margin-right: 8px;
+}
+
+.footer-bottom {
+  background-color: #e4e4e7; /* Màu nền xám nhạt */
+  color: #4b5563; /* Màu chữ xám đậm */
+  display: flex;
+  align-items: center; /* Căn chỉnh các mục ở giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa các mục theo chiều ngang */
+  text-align: center;
+}
+
+.footer-bottom img {
+  margin-right: 10px; /* Thêm khoảng cách giữa hình ảnh và văn bản */
+}
+
+.bi {
+  font-size: 42px; /* Tăng kích thước của icon */
+  color: #ffffff; /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
+}
+
+.text {
+  margin-top: 10px;
+}
+
+.footer-column h3 {
+  color: #e4e4e7;
+}
+
+.footer-column h4 {
+  color: #e4e4e7;
   }
-  
-  .footer-top {
+
+  .container {
     background-color: #ec4899;
-    /* Pink color */
-    color: white;
-  padding-top: 20px;
-  padding-bottom: 135px;
-  }
-  
-  .footer-column h2 {
-    color: #e4e4e7;
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 16px;
+    /* background-color: #ffecec; */
+    border-radius: 10px;
+    padding: 20px;
+
+    display: flex;
+    margin: 0 auto;
+
+    max-width: 1320px;
+
+  padding-right: calc(var(--bs-gutter-x) * .5);
+  padding-left: calc(var(--bs-gutter-x) * .5);
+
+
+
   }
 
-  .footer-column p {
-    text-align: left;
-  }
-  
-  .flex-container {
-    display: flex;
-    gap: 16px;
-  }
-  
-  .flex-item {
-    display: flex;
-    text-align: left;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .flex-item img {
-    margin-right: 8px;
-  }
-  
-  .footer-bottom {
-    background-color: #e4e4e7; /* Màu nền xám nhạt */
-    color: #4b5563; /* Màu chữ xám đậm */
-    display: flex;
-    align-items: center; /* Căn chỉnh các mục ở giữa theo chiều dọc */
-    justify-content: center; /* Căn giữa các mục theo chiều ngang */
+  .containerfooter {
+    background-color: #ec4899;
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
     text-align: center;
+    gap: 16px;
+    display: flex;
+    margin: 0 auto;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 1320px;
+    height : 300px;
   }
-  
-  .footer-bottom img {
-    margin-right: 10px; /* Thêm khoảng cách giữa hình ảnh và văn bản */
-  }
-  
-  .bi {
-    font-size: 42px; /* Tăng kích thước của icon */
-    color: #ffffff; /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
-  }
-
-  .text {
-    margin-top: 10px;
-  }
-
-  .footer-column h3 {
-    color: #e4e4e7;
-  }
-
-  .footer-column h4 {
-    color: #e4e4e7;
-    }
-
-    .container {
-      background-color: #ec4899;
-      /* background-color: #ffecec; */
-      border-radius: 10px;
-      padding: 20px;
-    }
