@@ -6,6 +6,7 @@ import { getAllProducts } from '../api/milkService';
 import { getAllVouchers } from '../api/voucherService';
 import { Modal, Button, Form } from 'react-bootstrap';
 
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
@@ -18,15 +19,6 @@ const Cart = () => {
     // Get cart items from sessionStorage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
     setCartItems(storedCart);
-  }, []);
-
-  useEffect(() => {
-    // Fetch cart items from API
-    getOrderDetailsByOrderId(4)
-      .then(response => {
-        setCartItems(response);
-      })
-      .catch(error => console.error('Error fetching cart items:', error));
   }, []);
 
   useEffect(() => {
@@ -158,19 +150,19 @@ const Cart = () => {
           </div>
           <div className="cart-summary col-md-2">
             <div className='col'>
-              <button onClick={() => setShowVoucherModal(true)}>Voucher ưu đãi</button>
+              <button className="button-uudai" onClick={() => setShowVoucherModal(true)}>Voucher ưu đãi</button>
             </div>
             <p>Tiền phụ: <span>{subtotal} ₫</span></p>
             {selectedVoucher && (
               <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%</span></p>
             )}
             <p className="total">Thành Tiền: <span>{result} ₫</span></p>
-            <a href="/pay"><button>Xác nhận giỏ hàng</button></a>
+            <a href="/pay"><button className="button-uudai">Xác nhận giỏ hàng</button></a>
           </div>
         </div>
       </div>
 
-      <Modal show={showVoucherModal} onHide={() => setShowVoucherModal(false)} size="lg">
+      <Modal show={showVoucherModal} onHide={() => setShowVoucherModal(false)} size="md">
         <Modal.Header closeButton>
           <Modal.Title>Chọn Voucher</Modal.Title>
         </Modal.Header>
@@ -179,30 +171,44 @@ const Cart = () => {
             <ul className="voucher-list">
               {vouchers.map(voucher => (
                 <li key={voucher.voucherId} onClick={() => handleVoucherClick(voucher)}>
-                  <div className="d-flex justify-content-between" >
-                    <span>{voucher.title}</span>
-                    <Form.Check
-                      type="radio"
-                      name="voucher"
-                      checked={selectedVoucher && selectedVoucher.voucherId === voucher.voucherId}
-                      onChange={() => handleVoucherClick(voucher)}
-                    />
+                  <div className="d-flex justify-content-between">
+                    {/* Column 1 */}
+                    <div className="col-3 TenGiamGia">
+                      <span className="FontTenGiamGia">{voucher.title}</span>
+                    </div>
+
+                    {/* Column 2 */}
+                    <div className="col-7 detail">
+                      <div className="TatCa">Tất cả sản phẩm </div>
+                      <div className="TuNgay">Từ ngày: {voucher.startDate} đến hết ngày: {voucher.endDate}</div>
+                      <div className="SoLuong">Số lượng: <span className="SoLuong2"> {voucher.quantity}</span></div>
+                    </div>
+
+                    {/* Column 3 */}
+                    <div className="col-2 tickcheck">
+                      <Form.Check
+                        type="radio"
+                        name="voucher"
+                        checked={selectedVoucher && selectedVoucher.voucherId === voucher.voucherId}
+                        onChange={() => handleVoucherClick(voucher)}
+                      />
+                    </div>
                   </div>
-                  <div>Từ ngày: {voucher.startDate} đến hết ngày: {voucher.endDate} </div>
-                  <div>Số lượng: {voucher.quantity}</div>
+
                 </li>
               ))}
             </ul>
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowVoucherModal(false)}>
-            Trở lại
+          <Button className="delete" onClick={() => setShowVoucherModal(false)}>
+            <div className='button-cancel'>Trở lại</div>
           </Button>
-          <Button variant="primary" onClick={() => setShowVoucherModal(false)}>
-            OK
+          <Button className="delete" onClick={() => setShowVoucherModal(false)}>
+            <div className="button-OK">OK</div>
           </Button>
         </Modal.Footer>
+
       </Modal>
     </>
   );

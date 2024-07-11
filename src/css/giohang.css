@@ -193,6 +193,7 @@ div.center {
   padding: 10px;
   position: absolute;
   z-index: 100;
+  width: 96%;
 }
 
 .voucher-list ul {
@@ -272,4 +273,117 @@ footer {
 .modal-body-scrollable {
   max-height: 10000px; /* Điều chỉnh chiều cao tối đa theo ý bạn */
   overflow-y: auto;
+  padding-bottom: 400px;
+}
+
+.modal-title {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+}
+
+.tickcheck {
+  background-color: #DF678C;
+  border-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.TatCa {
+  font-size: 17px;
+  padding-top: 10px;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  padding-bottom: 10px;
+
+}
+
+.TuNgay {
+  color: #ddd;
+  font-family: 'Times New Roman', sans-serif;
+  font-size: 15px;
+  padding-bottom: 10px;
+
+}
+
+.SoLuong {
+  color: #ddd;
+  font-size: 15px;
+  font-family: 'Arial', sans-serif;
+  padding-bottom: 10px;
+
+}
+
+.SoLuong2 {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+.detail {
+  background-color: #DF678C;
+  margin-right: 5px;
+}
+
+.TenGiamGia {
+  background-color: #DF678C;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.FontTenGiamGia {
+  font-size: 18px;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+.button-cancel {
+  color: rgb(88, 84, 84); /* Màu chữ */
+  background-color: rgb(255, 255, 255); /* Màu nền */
+  padding: 10px 20px; /* Kích thước nút */
+  border-radius: 5px; /* Bo góc */
+  border: 2px solid rgb(88, 84, 84); /* Đổi màu viền thành màu đen */
+}
+
+
+.button-OK {
+  color: white; /* Màu chữ */
+  background-color: rgb(206, 134, 39); /* Màu nền */
+  padding: 10px 30px; /* Kích thước nút */
+  border-radius: 5px; /* Bo góc */
+}
+
+.delete {
+  border: none; /* Xóa border */
+  background-color: transparent; /* Để button trong suốt */
+  cursor: pointer; /* Con trỏ chuột khi rê chuột qua */
+}
+
+
+.btn:hover {
+  background-color :#f0a9d5;
+}
+
+.button-cancel:hover {
+  border-color: #f0a9d5; /* Màu viền khi hover là màu đen */
+}
+
+.button-uudai {
+  background-color: #FFD700; /* Màu nền mặc định của button */
+  color: black; /* Màu chữ mặc định của button */
+
+  /* Các thuộc tính padding, border-radius, ... */
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.button-uudai:hover {
+  background-color: #f26db0; /* Màu nền khi hover */
+  color: white; /* Màu chữ khi hover */
 }
