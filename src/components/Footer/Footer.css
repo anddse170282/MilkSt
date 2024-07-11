@@ -66,23 +66,7 @@ footer {
   color: #e4e4e7;
   }
 
-  .container {
-    background-color: #ec4899;
-    /* background-color: #ffecec; */
-    border-radius: 10px;
-    padding: 20px;
-
-    display: flex;
-    margin: 0 auto;
-
-    max-width: 1320px;
-
-  padding-right: calc(var(--bs-gutter-x) * .5);
-  padding-left: calc(var(--bs-gutter-x) * .5);
-
-
-
-  }
+  
 
   .containerfooter {
     background-color: #ec4899;
