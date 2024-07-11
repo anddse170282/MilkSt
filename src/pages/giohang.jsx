@@ -22,15 +22,26 @@ const Cart = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get cart items from sessionStorage
-    const storedUser = JSON.parse(sessionStorage.getItem('user'));
-    if (storedUser && storedUser.length > 0) {
-      setUser(storedUser[0]);
-    }
+    const fetchUserAndMemberData = async () => {
+      const storedUser = JSON.parse(sessionStorage.getItem('user'));
+      if (storedUser && storedUser.length > 0) {
+        const currentUser = storedUser[0];
+        setUser(currentUser);
+
+        try {
+          const memberData = await userService.getMemberByUserId(currentUser.userId);
+          setMember(memberData[0]);
+        } catch (error) {
+          console.error('Error fetching member data:', error);
+        }
+      }
+    };
+
+    fetchUserAndMemberData();
   }, []);
 
   useEffect(() => {
-    // Get cart items from sessionStorage
+    // Retrieve cart items from session storage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
     setCartItems(storedCart);
   }, []);
@@ -102,20 +113,18 @@ const Cart = () => {
       console.error('User not found or userId is undefined');
       return;
     }
-  
+
     try {
-      const memberData = await userService.getMemberByUserId(user.userId);
-      setMember(memberData[0]);
       const orderData = {
         memberId: member.memberId,
         orderStatus: 'Chưa Thanh Toán',
       };
-  
+
       console.log("Creating order with data:", orderData); // Log order data
-  
+
       const order = await orderService.createOrder(orderData);
       console.log("Order created:", order); // Log created order
-  
+
       for (let index = 0; index < cartItems.length; index++) {
         const item = cartItems[index];
         const orderDetail = {

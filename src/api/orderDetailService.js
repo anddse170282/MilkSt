@@ -8,7 +8,7 @@ const getOrderDetailsByOrderId = async (orderId) => {
 }
 const createOrderDetail = async (orderDetail) => {
     try {
-      const response = await axios.post(`${API_URL}/orderDetails`, orderDetail, {
+      const response = await axios.post(`${API_URL}/order-details`, orderDetail, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -21,7 +21,7 @@ const createOrderDetail = async (orderDetail) => {
     
     const updateOrderDetail = async (orderDetail) => {
         try {
-        const response = await axios.put(`${API_URL}/orderDetails/${orderDetail.orderDetailId}`, orderDetail, {
+        const response = await axios.put(`${API_URL}/order-details/${orderDetail.orderDetailId}`, orderDetail, {
             headers: {
             'Content-Type': 'application/json',
             },
@@ -33,7 +33,7 @@ const createOrderDetail = async (orderDetail) => {
     };
     const deleteOrderDetail = async (orderDetailId) => {
         try {
-        const response = await axios.delete(`${API_URL}/orderDetails/${orderDetailId}`);
+        const response = await axios.delete(`${API_URL}/order-details/${orderDetailId}`);
         return response.data;
         } catch (error) {
         throw new Error(error.response ? error.response.data.message : error.message);

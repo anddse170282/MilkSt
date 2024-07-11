@@ -1,51 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import '../css/thanhtoan.css';
-import {Link, useLocation } from 'react-router-dom';
+import {Link, useLocation  } from 'react-router-dom';
 import {getUserByUserId} from '../api/userService';
 import {getOrdersById} from '../api/orderService';
 
 const Invoice = () => {
   const location = useLocation();
-  const [orderId, setOrderId] = useState(0);
-  const [userId, setUserId] = useState(0);
   const [data, setData] = useState({});
   const [dataOrder, setDataOrder] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const orderFromQuery = queryParams.get('orderId');
-    const userFromQuery = queryParams.get('userId');
-    if (orderFromQuery && userFromQuery) {
-      setOrderId(orderFromQuery);
-      setUserId(userFromQuery);
-    }
-  }, [location.search]);
+  // Function to extract query parameters
+  const getQueryParams = () => {
+    return new URLSearchParams(location.search);
+  };
 
   useEffect(() => {
+    const queryParams = getQueryParams();
+    const userId = queryParams.get('userId');
+    const orderId = queryParams.get('orderId');
+
     const fetchData = async () => {
       try {
-        const response = await getUserByUserId(userId);
-        setData(response);
+        if (userId) {
+          const response = await getUserByUserId(userId);
+          console.log(response);
+          setData(response);
+        }
       } catch (error) {
         console.error('Error fetching user:', error);
       }
     };
-    fetchData();
-  }, []);
+    if (userId) {
+      fetchData();
+    }
+  }, [location.search]);
 
   useEffect(() => {
+    const queryParams = getQueryParams();
+    const orderId = queryParams.get('orderId');
+
     const fetchData = async () => {
       try {
-        const response = await getOrdersById(orderId);
-        setDataOrder(response);
+        if (orderId) {
+          const response = await getOrdersById(orderId);
+          console.log(response);
+          setDataOrder(response);
+        }
       } catch (error) {
         console.error('Error fetching order:', error);
       }
     };
-    fetchData();
-  }, []);
+    if (orderId) {
+      fetchData();
+    }
+  }, [location.search]);
 
   const enableEditing = () => {
     setIsEditing(true);
