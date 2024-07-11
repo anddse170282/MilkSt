@@ -68,7 +68,7 @@ const HomePage = () => {
     return productsToShow.map((product) => (
       <div className='product-item' key={product.milkId}>
         {product.milkPictures && product.milkPictures.length > 0 && (
-          <Link to={`/productinfo/${product.milkId}`} key={product.milkPictures[0].milkPictureId}>
+          <Link to={`/product-info/${product.milkId}`} key={product.milkPictures[0].milkPictureId}>
             <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
           </Link>
         )}
