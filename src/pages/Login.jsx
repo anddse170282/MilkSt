@@ -23,15 +23,19 @@ const Login = () => {
 
     function checkPhoneExist(phone) {
         toast.success("👍Login Success");
-        getUserByFilter(phone)
-            .then(response => setUsers(response))
-            .catch(console.error('Error fetching users:'));
-        if(users == null){
-            navigate('/');
+        try {
+            const response = getUserByFilter(phone)
+            if (response && response.length > 0) {
+                navigate('/');
+            }
+            else {
+                navigate(`/customerform?phone=${phone}`);
+            }
         }
-        else {
-            navigate('/customerform');
+        catch (error) {
+            console.error('Error fetching users:', error);
         }
+
     };
 
     useEffect(() => {
@@ -70,7 +74,7 @@ const Login = () => {
             })
             .catch((error) => {
                 console.log(error);
-                // setLoading(false);
+                setLoading(false);
                 toast.error("Gửi mã OTP thất bại. Vui lòng thử lại.");
             });
     }
