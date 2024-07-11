@@ -1,121 +1,185 @@
 .header {
-    display: flex;
-    align-items: center; /* Căn giữa theo chiều dọc */
-    width: max-content;
-    padding: 10px 0;
-  }
+  display: flex;
+  align-items: center;
+  /* Căn giữa theo chiều dọc */
+  width: max-content;
+  padding: 10px 0;
+}
+
+.contact-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+}
+
+.header-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header-content-row2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.logo-container {
+  flex: 0 0 auto;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  /* Đã chỉnh sửa từ inline sang center */
+  flex-grow: 0;
+  /* Đã chỉnh sửa từ 1 sang 0 để không chiếm hết không gian */
+  margin-right: 20px;
+  width: 10px;
+  /* Thiết lập chiều rộng cụ thể, bạn có thể thay đổi giá trị này */
+}
+
+.search-bar-container input[type="text"] {
+  padding: 10px;
+  border: 2px solid #FF469E;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-top-left-radius: 13px;
+  border-bottom-left-radius: 13px;
+  width: calc(100% - 60px);
+  /* Đảm bảo input và button cùng khớp nhau */
+}
+
+.search-bar-container button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #FF469E;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-top-right-radius: 13px;
+  border-bottom-right-radius: 13px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 48px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.phone-color {
+  color: #e6468e;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.phone {
+  font-family: 'Times New Roman', sans-serif;
+}
+
+.email {
+  font-family: 'Times New Roman', sans-serif;
+}
+
+.email-color {
+  color: #e6468e;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+}
+
+.cam-on {
+  font-family: 'Times New Roman', sans-serif;
   
-  .contact-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 0;
-  }
-    .header-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-  }
-  .header-content-row2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 10px 0;
-    margin-bottom: 10px;
-  }
-    
-  .logo-container {
-    flex: 0 0 auto;
-    margin-right: 20px;
-    display: flex;
-    align-items: center;
-  }
-  .search-bar-container {
-    display: flex;
-    align-items: inline;
-    flex-grow: 1;
-    margin-right: 20px;
-    width: auto;
-    
-  }
-    
-  .search-bar-container input[type="text"] {
-    padding: 10px;
-    border: 2px solid #FF469E;
-    border-top-left-radius: 13px;
-    border-bottom-left-radius: 13px;
-    
-  }
-  .search-bar-container button[type="submit"] {
-    padding: 10px 20px;
-    background-color: #FF469E;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-top-right-radius: 13px;
-    border-bottom-right-radius: 13px;
-    width: fit-content;
-    height: 40px;
-    margin-top: 0;
-  }
-  
-  .user-cart-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-cart-container a {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-  
-  .notification-container{
-    display: flex;
-    align-items: center;
-  }
-  .notification-container a{
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-  
-  
-    
-  
-    
-    /* Định dạng cho navigation menu */
-    /* Định dạng cho navigation menu */
-  .navigation-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center; /* Căn giữa các mục */
-    background-color: #fff; /* Màu nền của menu */
-    border-radius: 20px; /* Bo góc của menu */
-  }
-  
-  .navigation-menu li {
-    margin: 0 5px; /* Khoảng trắng giữa các mục */
-  }
-  
-  .navigation-menu li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 10px 88px;
-    text-decoration: none;
-    background-color: #FF469E; /* Màu nền của nút */
-    border-top-left-radius: 20px; /* Bo góc trên bên trái */
-    border-bottom-left-radius: 20px; /* Bo góc dưới bên trái */
-    border-top-right-radius: 20px; /* Bo góc trên bên phải */
-  }
-  
-  .navigation-menu li a:hover {
-    background-color: #f0a9a9; /* Màu nền khi hover */
-  }
-  .icon-small{
-    font-size: 1.2em;
-  }
+}
+
+.user-cart-container {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  margin-bottom: 22px;
+}
+
+.user-cart-container a {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.user-cart-container i {
+  font-size: 35px;
+  /* Điều chỉnh kích thước icon trong user-cart-container */
+  color: rgb(152, 152, 152);
+}
+
+.notification-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 22px;
+
+}
+
+.notification-container a {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+
+.notification-container i {
+  font-size: 35px;
+  color: rgb(152, 152, 152);
+}
+
+
+
+/* Định dạng cho navigation menu */
+/* Định dạng cho navigation menu */
+.navigation-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  /* Căn giữa các mục */
+  background-color: #fff;
+  /* Màu nền của menu */
+  border-radius: 20px;
+  /* Bo góc của menu */
+}
+
+.navigation-menu li {
+  margin: 0 5px;
+  /* Khoảng trắng giữa các mục */
+}
+
+.navigation-menu li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 88px;
+  text-decoration: none;
+  background-color: #FF469E;
+  /* Màu nền của nút */
+  border-top-left-radius: 20px;
+  /* Bo góc trên bên trái */
+  border-bottom-left-radius: 20px;
+  /* Bo góc dưới bên trái */
+  border-top-right-radius: 20px;
+  /* Bo góc trên bên phải */
+}
+
+.navigation-menu li a:hover {
+  background-color: #f0a9a9;
+  /* Màu nền khi hover */
+}
+
+.icon-small {
+  font-size: 1.2em;
+}
