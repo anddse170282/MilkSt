@@ -129,12 +129,21 @@
   width: auto;
   border-collapse: collapse;
   margin-top: 30px; /* Thêm khoảng cách phía trên để bảng di chuyển xuống */
-  border-radius: 5px;
+  border-radius: 25px;
+}
+
+.bogocAll {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.bogocAll2 {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .cart-table th,
 .cart-table td {
-  border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
 }
@@ -156,8 +165,10 @@
   padding: 20px;
   border: 1px solid #ddd;
   background-color: #f9f9f9;
-  margin-top: 30px;
-  border-radius: 1%;
+  margin-top: 10px;
+  border-radius: 25px;
+  margin-bottom: 10px;
+
 }
 
 .cart-summary p {
@@ -224,6 +235,8 @@ footer {
 }
 
 .container {
+  border-radius: 25px;
+  background-color: #e676b2;
   display: flex;
   margin: 0 auto; 
 }

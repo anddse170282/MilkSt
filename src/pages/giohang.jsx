@@ -151,7 +151,7 @@ const Cart = () => {
             <table className="cart-table">
               <thead>
                 <tr>
-                  <th>
+                  <th className="bogocAll">
                     <input
                       type="checkbox"
                       onChange={(e) => {
@@ -165,7 +165,7 @@ const Cart = () => {
                   <th>Tên sản phẩm</th>
                   <th>Số lượng</th>
                   <th>Giá tiền</th>
-                  <th>Xoá</th>
+                  <th className="bogocAll2">Xoá</th>
                 </tr>
               </thead>
               <tbody>
