@@ -172,14 +172,16 @@ hr {
 
 .total {
     display: flex;
-    justify-content: space-between;
     font-size: 18px;
     margin-bottom: 20px;
 }
 
 .price {
+    font-size: 20px;
     color: red;
     font-weight: bold;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
 }
 
 .pay-button {
@@ -204,4 +206,21 @@ hr {
 div.center {
     display: flex;
     justify-content: center;
+}
+
+.invoice-container {
+	background-color: #ffffff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	width: 640px;
+	border: 2px solid #ff66b2;
+	margin: 20px auto;
+}
+
+.ThanhTien {
+    font-family: 'Arial', sans-serif;
+    padding-right: 7px;
+    padding-top: 4px;
 }

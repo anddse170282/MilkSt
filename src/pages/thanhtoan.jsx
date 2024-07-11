@@ -88,7 +88,7 @@ const Invoice = () => {
           )}
           <hr />
           <div className="total">
-            <span>Thành Tiền</span>
+            <span className="ThanhTien">Thành Tiền :</span>
             <span className="price">{dataOrder.amount || 0} ₫</span>
           </div>
 
