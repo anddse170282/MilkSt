@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { addUser } from '../api/userService';
+import { storage } from '../firebase.config';
 import '../css/customerform.css';
-import { useLocation } from 'react-router-dom';
 
 function CustomerForm() {
   const [imagePreview, setImagePreview] = useState(null);
   const location = useLocation();
   const [phone, setPhone] = useState('');
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    userName: '',
+    phone: '',
+    dateOfBirth: '',
+    gender: '',
+    address: '',
+    profilePicture: null,
+  });
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const phoneFromQuery = queryParams.get('phone');
     if (phoneFromQuery) {
       setPhone(phoneFromQuery);
+      setFormData((prevFormData) => ({ ...prevFormData, phone: phoneFromQuery }));
     }
   }, [location.search]);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: phone,
-    dob: '',
-    gender: '',
-    address: '',
-    image: null
-  });
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   const handleImageChange = (e) => {
@@ -37,16 +41,52 @@ function CustomerForm() {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
-      setFormData({ ...formData, image: file });
+      setFormData((prevFormData) => ({ ...prevFormData, profilePicture: file }));
     } else {
       setImagePreview(null);
-      setFormData({ ...formData, image: null });
+      setFormData((prevFormData) => ({ ...prevFormData, profilePicture: null }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { userName, phone, dateOfBirth, gender, address, profilePicture } = formData;
+
+    console.log('Form data before submit:', formData);
+
+    if (userName && phone && dateOfBirth && gender && address && profilePicture) {
+      try {
+        const imageName = `${phone}`;
+        const imageRef = ref(storage, `UserImage/${imageName}`);
+        
+        await uploadBytes(imageRef, profilePicture);
+        const imageUrl = await getDownloadURL(imageRef);
+        
+        const userData = {
+          ...formData,
+          dateOfBirth: new Date(dateOfBirth).toISOString(),
+          profilePicture: imageUrl
+        };
+        
+        // Log userData to check structure before sending
+        console.log('Sending user data:', userData);
+        
+        await addUser(userData);
+
+        console.log('User created successfully');
+        alert('User created successfully');
+        navigate('/');
+      } catch (error) {
+        console.error('Error creating user:', error);
+      }
+    } else {
+      console.log('Please fill out all fields');
     }
   };
 
   const isFormValid = () => {
-    const { name, phone, dob, gender, address, image } = formData;
-    return name && phone && dob && gender && address && image;
+    const { userName, phone, dateOfBirth, gender, address, profilePicture } = formData;
+    return userName && phone && dateOfBirth && gender && address && profilePicture;
   };
 
   return (
@@ -64,21 +104,21 @@ function CustomerForm() {
           </div>
 
           <div className="form-section">
-            <form action="/submit-form" method="post" encType="multipart/form-data">
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
               <h2>Điền thông tin khách hàng</h2>
               <div className="form-content">
                 <div className="form-left">
                   <div className="form-group">
-                    <label htmlFor="name">Ba/Mẹ</label><br />
-                    <input type="text" id="name" name="name" placeholder="Nguyễn A" value={formData.name} onChange={handleChange} required /><br />
+                    <label htmlFor="userName">Ba/Mẹ</label><br />
+                    <input type="text" id="userName" name="userName" placeholder="Nguyễn A" value={formData.userName} onChange={handleChange} required /><br />
                   </div>
                   <div className="form-group">
                     <label htmlFor="phone">Số điện thoại</label><br />
                     <input type="tel" id="phone" name="phone" placeholder="0123456789" value={formData.phone} onChange={handleChange} required /><br />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="dob">Ngày sinh</label><br />
-                    <input type="text" id="dob" name="dob" placeholder="01/01/1999" value={formData.dob} onChange={handleChange} required /><br />
+                    <label htmlFor="dateOfBirth">Ngày sinh</label><br />
+                    <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="01/01/1999" value={formData.dateOfBirth} onChange={handleChange} required /><br />
                   </div>
                   <div className="form-group">
                     <label htmlFor="gender">Giới tính</label><br />
@@ -109,8 +149,8 @@ function CustomerForm() {
                       </div>
                       <input
                         type="file"
-                        id="image"
-                        name="image"
+                        id="profilePicture"
+                        name="profilePicture"
                         accept=".jpeg, .jpg, .png"
                         onChange={handleImageChange}
                         required
@@ -120,8 +160,8 @@ function CustomerForm() {
                 </div>
               </div>
               <div className='button'>
-                <button type="submit" id="submit-btn" disabled>
-                  <a class href="/">Xác nhận</a>
+                <button type="submit" id="submit-btn" disabled={!isFormValid()}>
+                  Xác nhận
                 </button>
               </div>
             </form>

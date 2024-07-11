@@ -21,22 +21,20 @@ const Login = () => {
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
 
-    function checkPhoneExist(phone) {
-        toast.success("👍Login Success");
+    async function checkPhoneExist(phone) {
         try {
-            const response = getUserByFilter(phone)
+            const response = await getUserByFilter(phone);
             if (response && response.length > 0) {
+                toast.success("👍 Login Success");
                 navigate('/');
-            }
-            else {
+            } else {
+                toast.success("👍 Registering new user");
                 navigate(`/customerform?phone=${phone}`);
             }
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Error fetching users:', error);
         }
-
-    };
+    }
 
     useEffect(() => {
         setIsOtpValid(otp.length === 6);
@@ -84,9 +82,9 @@ const Login = () => {
         window.confirmationResult
             .confirm(otp)
             .then(async (res) => {
-                console.log(res);
                 setUser(res.user);
                 setLoading(false);
+                checkPhoneExist(ph); // Call checkPhoneExist after successful OTP verification
             })
             .catch((err) => {
                 console.log(err);
@@ -112,74 +110,68 @@ const Login = () => {
                     <div>
                         <Toaster toastOptions={{ duration: 4000 }} />
                         <div id="recaptcha-container"></div>
-                        {user ? (
-                            checkPhoneExist(ph)
-                        ) : (
-                            <>
-                                {step === 1 ? (
-                                    <div className="w-1 flex flex-col gap-4 rounded-lg p-4 bg-white">
-                                        <h1 className="text-center leading-normal text-black font-medium text-3xl mb-6">
-                                            Hana Store
-                                        </h1>
-                                        <h1 className="text-center leading-normal text-black font-medium text-3x3 mb-1">
-                                            Đăng nhập hoặc Đăng ký ngay tài khoản
-                                        </h1>
-                                        <PhoneInput
-                                            country={"vn"}
-                                            value={ph || "+84"}
-                                            onChange={setPh}
-                                            containerClass="phone-input-custom"
-                                        />
-                                        <div className="terms-container">
-                                            <input
-                                                style={{ marginBottom: '45px' }}
-                                                type="checkbox"
-                                                id="terms-of-service"
-                                                name="terms-of-service"
-                                                checked={termsAgreed}
-                                                onChange={(e) => setTermsAgreed(e.target.checked)}
+                        {step === 1 ? (
+                            <div className="w-1 flex flex-col gap-4 rounded-lg p-4 bg-white">
+                                <h1 className="text-center leading-normal text-black font-medium text-3xl mb-6">
+                                    Hana Store
+                                </h1>
+                                <h1 className="text-center leading-normal text-black font-medium text-3x3 mb-1">
+                                    Đăng nhập hoặc Đăng ký ngay tài khoản
+                                </h1>
+                                <PhoneInput
+                                    country={"vn"}
+                                    value={ph || "+84"}
+                                    onChange={setPh}
+                                    containerClass="phone-input-custom"
+                                />
+                                <div className="terms-container">
+                                    <input
+                                        style={{ marginBottom: '45px' }}
+                                        type="checkbox"
+                                        id="terms-of-service"
+                                        name="terms-of-service"
+                                        checked={termsAgreed}
+                                        onChange={(e) => setTermsAgreed(e.target.checked)}
 
-                                            />
-                                            <label htmlFor="terms-of-service">
-                                                Bằng cách nhấp vào Send Code, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách quyền riêng tư</a> của chúng tôi.
-                                            </label>
-                                        </div>
-                                        <button
-                                            onClick={onSignup}
-                                            className={`btn-custom ${canSubmit ? 'accepted' : ''}`}
-                                            disabled={!canSubmit}
-                                        >
-                                            {loading && <CgSpinner size={20} className="loading-icon mt-1 animate-spin" />}
-                                            <span>Send code via SMS</span>
-                                        </button>
-                                    </div>
-                                ) : step === 2 ? (
-                                    <div className="w-2 flex flex-col gap-4 rounded-lg p-4 bg-white">
-                                        <label htmlFor="otp" className="font-bold text-xl text-dark text-center">
-                                            Hãy nhập mã OTP đã được gửi qua tin nhắn
-                                            <br />
-                                        </label>
-                                        <OtpInput
-                                            value={otp}
-                                            onChange={setOtp}
-                                            OTPLength={6}
-                                            otpType="number"
-                                            disabled={false}
-                                            autoFocus
-                                            className="otp-input-custom"
-                                        />
-                                        <button
-                                            onClick={onOTPVerify}
-                                            className={`btn-custom ${isOtpValid ? 'accepted' : ''}`}
-                                            disabled={!isOtpValid}
-                                        >
-                                            {loading && <CgSpinner size={20} className="loading-icon mt-1 animate-spin" />}
-                                            <span>Xác Nhận OTP</span>
-                                        </button>
-                                    </div>
-                                ) : null}
-                            </>
-                        )}
+                                    />
+                                    <label htmlFor="terms-of-service">
+                                        Bằng cách nhấp vào Send Code, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a> và <a href="#">Chính sách quyền riêng tư</a> của chúng tôi.
+                                    </label>
+                                </div>
+                                <button
+                                    onClick={onSignup}
+                                    className={`btn-custom ${canSubmit ? 'accepted' : ''}`}
+                                    disabled={!canSubmit}
+                                >
+                                    {loading && <CgSpinner size={20} className="loading-icon mt-1 animate-spin" />}
+                                    <span>Send code via SMS</span>
+                                </button>
+                            </div>
+                        ) : step === 2 ? (
+                            <div className="w-2 flex flex-col gap-4 rounded-lg p-4 bg-white">
+                                <label htmlFor="otp" className="font-bold text-xl text-dark text-center">
+                                    Hãy nhập mã OTP đã được gửi qua tin nhắn
+                                    <br />
+                                </label>
+                                <OtpInput
+                                    value={otp}
+                                    onChange={setOtp}
+                                    OTPLength={6}
+                                    otpType="number"
+                                    disabled={false}
+                                    autoFocus
+                                    className="otp-input-custom"
+                                />
+                                <button
+                                    onClick={onOTPVerify}
+                                    className={`btn-custom ${isOtpValid ? 'accepted' : ''}`}
+                                    disabled={!isOtpValid}
+                                >
+                                    {loading && <CgSpinner size={20} className="loading-icon mt-1 animate-spin" />}
+                                    <span>Xác Nhận OTP</span>
+                                </button>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </section>
