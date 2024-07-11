@@ -82,14 +82,14 @@ const HomePage = () => {
       <main>
         <div className="container">
           <div className="main-image">
-            <img src="1.png" width="800" height="295" alt="1" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F1.png?alt=media&token=10232a94-2d87-4ead-8ca1-c89f4cc2755f" width="800" height="295" alt="1" />
           </div>
           <div className="side-images">
             <div className="side-image">
-              <img src="2.png" width="500" height="150" alt="1" />
+              <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F2.png?alt=media&token=0056189f-b73d-469b-aa75-fe5e39ff7f25" width="500" height="150" alt="1" />
             </div>
             <div className="side-image">
-              <img src="3.png" width="500" height="150" alt="1" />
+              <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F3.png?alt=media&token=72cd1903-7e22-40dc-ba65-1d458032d8f0" width="500" height="150" alt="1" />
             </div>
           </div>
         </div>

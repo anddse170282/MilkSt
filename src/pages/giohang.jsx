@@ -180,7 +180,7 @@ const Cart = () => {
                     {/* Column 2 */}
                     <div className="col-7 detail">
                       <div className="TatCa">Tất cả sản phẩm </div>
-                      <div className="TuNgay">Từ ngày: {voucher.startDate} đến hết ngày: {voucher.endDate}</div>
+                      <div className="TuNgay">HSD: {voucher.startDate} - {voucher.endDate}</div>
                       <div className="SoLuong">Số lượng: <span className="SoLuong2"> {voucher.quantity}</span></div>
                     </div>
 
