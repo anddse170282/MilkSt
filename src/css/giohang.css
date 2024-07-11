@@ -192,7 +192,6 @@ div.center {
   border: 1px solid #ddd;
   padding: 10px;
   position: absolute;
-  width: 200px;
   z-index: 100;
 }
 
@@ -268,4 +267,9 @@ footer {
 .bi {
   font-size: 42px; /* Tăng kích thước của icon */
   color: #ffffff; /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
+}
+
+.modal-body-scrollable {
+  max-height: 10000px; /* Điều chỉnh chiều cao tối đa theo ý bạn */
+  overflow-y: auto;
 }

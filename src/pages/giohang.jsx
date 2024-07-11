@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../css/giohang.css';
 import { getOrderDetailsByOrderId } from '../api/orderDetailService';
 import { getAllProducts } from '../api/milkService';
 import { getAllVouchers } from '../api/voucherService';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -12,7 +12,7 @@ const Cart = () => {
   const [milks, setMilks] = useState([]);
   const [vouchers, setVouchers] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
-  const [voucherListVisible, setVoucherListVisible] = useState(false);
+  const [showVoucherModal, setShowVoucherModal] = useState(false);
 
   useEffect(() => {
     // Get cart items from sessionStorage
@@ -65,10 +65,6 @@ const Cart = () => {
     setSubtotal(newSubtotal);
   };
 
-  const toggleVoucherList = () => {
-    setVoucherListVisible(!voucherListVisible);
-  };
-
   const handleItemChange = (index, field, value) => {
     const newCartItems = [...cartItems];
     newCartItems[index][field] = value;
@@ -91,7 +87,7 @@ const Cart = () => {
 
   const handleVoucherClick = (voucher) => {
     setSelectedVoucher(voucher);
-    setVoucherListVisible(false);
+    setShowVoucherModal(false);
   };
 
   const discount = selectedVoucher ? getDiscountAmount(selectedVoucher) : 0;
@@ -161,19 +157,8 @@ const Cart = () => {
             </table>
           </div>
           <div className="cart-summary col-md-2">
-            <div className='col'><button onClick={toggleVoucherList}>Voucher ưu đãi</button></div>
             <div className='col'>
-              {voucherListVisible && (
-                <div className="voucher-list">
-                  <ul>
-                    {vouchers.map(voucher => (
-                      <li key={voucher.voucherId} onClick={() => handleVoucherClick(voucher)}>
-                        {voucher.title} {voucher.discount}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <button onClick={() => setShowVoucherModal(true)}>Voucher ưu đãi</button>
             </div>
             <p>Tiền phụ: <span>{subtotal} ₫</span></p>
             {selectedVoucher && (
@@ -184,6 +169,41 @@ const Cart = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={showVoucherModal} onHide={() => setShowVoucherModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Chọn Voucher</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="modal-body-scrollable">
+          <div class="d-block w-100">
+            <ul className="voucher-list">
+              {vouchers.map(voucher => (
+                <li key={voucher.voucherId} onClick={() => handleVoucherClick(voucher)}>
+                  <div className="d-flex justify-content-between" >
+                    <span>{voucher.title}</span>
+                    <Form.Check
+                      type="radio"
+                      name="voucher"
+                      checked={selectedVoucher && selectedVoucher.voucherId === voucher.voucherId}
+                      onChange={() => handleVoucherClick(voucher)}
+                    />
+                  </div>
+                  <div>Từ ngày: {voucher.startDate} đến hết ngày: {voucher.endDate} </div>
+                  <div>Số lượng: {voucher.quantity}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowVoucherModal(false)}>
+            Trở lại
+          </Button>
+          <Button variant="primary" onClick={() => setShowVoucherModal(false)}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
