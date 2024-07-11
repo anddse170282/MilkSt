@@ -62,15 +62,10 @@ momo.post('/momo-payment', async (req, res) => {
 
 // Endpoint to handle MoMo redirect after payment
 momo.get('/payment-result', (req, res) => {
-  const { resultCode } = req.query;
+  const { resultCode, amount } = req.query;
+  const redirectUrl = `http://localhost:5173/payment-result?resultCode=${resultCode}&amount=${amount}`;
 
-  if (resultCode === '0') {
-    // Payment was successful
-    res.redirect('http://localhost:5173/pay?paymentStatus=success');
-  } else {
-    // Payment failed or was cancelled
-    res.redirect('http://localhost:5173/pay?paymentStatus=failure');
-  }
+  res.redirect(redirectUrl);
 });
 
 const PORT = process.env.PORT || 5000;

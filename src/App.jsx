@@ -11,7 +11,10 @@ import SearchPage from './pages/SearchPage';
 import MoMoPaymentPage from './pages/MoMoPayment';  // Import MoMoPaymentPage
 import ProductInfo from './pages/ProductInfo';  // Import ProductInfo
 import CustomerForm from './pages/CustomerForm';
+import PaymentResult from './pages/PaymentResult';
 import './App.css'; 
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -32,8 +35,9 @@ const LayoutWrapper = () => (
       <Route path="/pay" element={<Pay />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/momo-payment/:amount" element={<MoMoPaymentPage />} />
-      <Route path="/searchpage" element={<SearchPage />} />
-      <Route path="/productinfo/:id" element={<ProductInfo />} />
+      <Route path="/search-page" element={<SearchPage />} />
+      <Route path="/product-info/:id" element={<ProductInfo />} />
+      <Route path="/payment-result/" element={<PaymentResult />} />
       {/* Add more routes here */}
     </Routes>
   </Layout>
