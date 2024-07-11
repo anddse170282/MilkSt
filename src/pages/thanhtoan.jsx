@@ -1,37 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/thanhtoan.css';
-import { useParams, Link } from 'react-router-dom'; // Import Link
+import {Link, useLocation } from 'react-router-dom';
 import {getUserByUserId} from '../api/userService';
 import {getOrdersById} from '../api/orderService';
 
 const Invoice = () => {
+  const location = useLocation();
+  const [orderId, setOrderId] = useState(0);
+  const [userId, setUserId] = useState(0);
   const [data, setData] = useState({});
   const [dataOrder, setDataOrder] = useState({});
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const orderFromQuery = queryParams.get('orderId');
+    const userFromQuery = queryParams.get('userId');
+    if (orderFromQuery && userFromQuery) {
+      setOrderId(orderFromQuery);
+      setUserId(userFromQuery);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getUserByUserId(1);
+        const response = await getUserByUserId(userId);
         setData(response);
       } catch (error) {
-          
+        console.error('Error fetching user:', error);
       }
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    const fetchDataOrder = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getOrdersById(1);
+        const response = await getOrdersById(orderId);
         setDataOrder(response);
       } catch (error) {
-        console.error('Error fetching orders:', error);
+        console.error('Error fetching order:', error);
       }
     };
-    fetchDataOrder();
+    fetchData();
   }, []);
 
   const enableEditing = () => {
