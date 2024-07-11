@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as milkService from '../api/milkService';
 import * as brandService from '../api/brandService';
+import * as commentService from '../api/commentService';
 import '../css/productInfo.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProductInfo = () => {
   const [product, setProduct] = useState({});
   const [brandName, setBrandName] = useState('');
   const [quantity, setQuantity] = useState(1); // State to manage product quantity
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [reviews, setReviews] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -44,6 +49,32 @@ const ProductInfo = () => {
     cart.push({ ...product, quantity });
     sessionStorage.setItem('cart', JSON.stringify(cart));
     console.log("Product added to cart:", product);
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+
+  const fetchReviews = () => {
+    try {
+      const response = getComments(id);
+      setReviews(response);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('API_URL_TO_POST_REVIEW', { rating, comment }); // Thay thế bằng URL API để gửi đánh giá
+      setReviews([response.data, ...reviews]);
+      setRating(0);
+      setComment('');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
   };
 
   const increaseQuantity = () => {
@@ -128,10 +159,68 @@ const ProductInfo = () => {
           {/* Similar products section */}
         </div>
 
-        <div className="col-mt-12" style={{ paddingLeft: '15%', paddingTop: '5%' }}>
-          <h2><label htmlFor="comment">Bình luận</label></h2>
-          {/* Comments section */}
+        <div className="container my-5">
+      <div className="text-center mb-4">
+        <h2>Đánh giá</h2>
+        <div className="h4">0.0/5.0</div>
+        <div className="text-muted">Có 20 lượt đánh giá</div>
+      </div>
+      <div className="d-flex justify-content-center mb-4">
+        <button className="btn btn-outline-primary mr-2">Mới nhất</button>
+        <button className="btn btn-outline-secondary">Cũ nhất</button>
+      </div>
+      <div className="text-center mb-4">
+        <button className="btn btn-warning mr-2">5 ⭐</button>
+        <button className="btn btn-warning mr-2">4 ⭐</button>
+        <button className="btn btn-warning mr-2">3 ⭐</button>
+        <button className="btn btn-warning mr-2">2 ⭐</button>
+        <button className="btn btn-warning">1 ⭐</button>
+      </div>
+
+      <div className="row">
+        <div className="col-12 mb-4">
+          <div className="list-group d-flex flex-wrap">
+            {reviews.map((review, index) => (
+              <div className="list-group-item col-md-6" key={index}>
+                <div className="d-flex w-100 justify-content-between">
+                  <h5 className="mb-1">{review.reviewerName}</h5>
+                  <small>{review.date}</small>
+                </div>
+                <div className="mb-1">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <span key={i} className="text-warning">⭐</span>
+                  ))}
+                </div>
+                <p className="mb-1">{review.comment}</p>
+                <div className="d-flex">
+                  {review.images.map((img, idx) => (
+                    <img src={img} alt={`Review ${index} image ${idx}`} key={idx} className="img-thumbnail mr-2" />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
+        <div className="col-12">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="comment">Bình luận</label>
+              <textarea
+                id="comment"
+                className="form-control"
+                placeholder="Chia sẻ, đánh giá về sản phẩm cho HANA MilkStore"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary mt-2">Đăng</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
 
         <div className="col-mt-12" style={{ paddingLeft: '15%' }}>
           <h2>Sản phẩm mới</h2>

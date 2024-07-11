@@ -166,4 +166,84 @@ div.center {
     color: #fff;
   }
 
+
+/* styles.css */
+
+.container {
+    background-color: #ffecec;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .text-center h2 {
+    font-weight: bold;
+  }
+  
+  .h4 {
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .text-muted {
+    font-size: 1rem;
+    color: #888;
+  }
+  
+  .btn-outline-primary, .btn-outline-secondary {
+    margin: 5px;
+  }
+  
+  .btn-warning {
+    margin: 5px;
+    color: #fff;
+  }
+  
+  .list-group-item {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #fff;
+  }
+  
+  .list-group-item h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .list-group-item small {
+    color: #aaa;
+  }
+  
+  .list-group-item .text-warning {
+    font-size: 1.5rem;
+  }
+  
+  .list-group-item p {
+    margin-top: 10px;
+  }
+  
+  .list-group-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  .form-group {
+    margin-top: 30px;
+  }
+  
+  textarea#comment {
+    height: 100px;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
   
