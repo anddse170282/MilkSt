@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/giohang.css';
-import { getOrderDetailsByOrderId } from '../api/orderDetailService';
-import { getAllProducts } from '../api/milkService';
-import { getAllVouchers } from '../api/voucherService';
+import * as orderDetailService from '../api/orderDetailService';
+import * as milkService from '../api/milkService';
+import * as voucherService from '../api/voucherService';
+import * as userService from '../api/userService';
+import * as orderService from '../api/orderService';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 const Cart = () => {
@@ -14,6 +17,17 @@ const Cart = () => {
   const [vouchers, setVouchers] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [showVoucherModal, setShowVoucherModal] = useState(false);
+  const [user, setUser] = useState(null);
+  const [member, setMember] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Get cart items from sessionStorage
+    const storedUser = JSON.parse(sessionStorage.getItem('user'));
+    if (storedUser && storedUser.length > 0) {
+      setUser(storedUser[0]);
+    }
+  }, []);
 
   useEffect(() => {
     // Get cart items from sessionStorage
@@ -23,14 +37,14 @@ const Cart = () => {
 
   useEffect(() => {
     // Fetch milks from API
-    getAllProducts()
+    milkService.getAllProducts()
       .then(response => setMilks(response))
       .catch(error => console.error('Error fetching milks:', error));
   }, []);
 
   useEffect(() => {
     // Fetch vouchers from API
-    getAllVouchers()
+    voucherService.getAllVouchers()
       .then(response => setVouchers(response))
       .catch(error => console.error('Error fetching vouchers:', error));
   }, []);
@@ -41,7 +55,7 @@ const Cart = () => {
 
   const getDiscountAmount = (voucher) => {
     if (!voucher) return 0;
-    return subtotal * (voucher.discount / 100);
+    return subtotal * voucher.discount;
   };
 
   const updateTotals = () => {
@@ -80,6 +94,41 @@ const Cart = () => {
   const handleVoucherClick = (voucher) => {
     setSelectedVoucher(voucher);
     setShowVoucherModal(false);
+  };
+
+  const handleSubmitClick = async (e) => {
+    e.preventDefault();
+    if (!user || !user.userId) {
+      console.error('User not found or userId is undefined');
+      return;
+    }
+  
+    try {
+      const memberData = await userService.getMemberByUserId(user.userId);
+      setMember(memberData[0]);
+      const orderData = {
+        memberId: member.memberId,
+        orderStatus: 'Chưa Thanh Toán',
+      };
+  
+      console.log("Creating order with data:", orderData); // Log order data
+  
+      const order = await orderService.createOrder(orderData);
+      console.log("Order created:", order); // Log created order
+  
+      for (let index = 0; index < cartItems.length; index++) {
+        const item = cartItems[index];
+        const orderDetail = {
+          orderId: order.orderId,
+          milkId: item.milkId,
+          quantity: item.quantity,
+        };
+        await orderDetailService.createOrderDetail(orderDetail);
+      }
+      navigate(`/pay?orderId=${order.orderId}&userId=${user.userId}`);
+    } catch (error) {
+      console.error('Error creating order or order details:', error);
+    }
   };
 
   const discount = selectedVoucher ? getDiscountAmount(selectedVoucher) : 0;
@@ -157,7 +206,7 @@ const Cart = () => {
               <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%</span></p>
             )}
             <p className="total">Thành Tiền: <span>{result} ₫</span></p>
-            <a href="/pay"><button className="button-uudai">Xác nhận giỏ hàng</button></a>
+            <button className="button-uudai" onClick={handleSubmitClick}>Xác nhận giỏ hàng</button>
           </div>
         </div>
       </div>

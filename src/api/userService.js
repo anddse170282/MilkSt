@@ -30,12 +30,33 @@ const addUser = async (userData) => {
         console.error('Error creating user:', error);
         throw error;
       }
-    
+}
+
+const getMemberByUserId = async (userId) => {
+    try{
+        const response = await axios.get(`${API_URL}/members?userId=${userId}`);
+        return response.data;
+    } catch (error)
+    {
+        console.error('Error fetch user:', error);
+    }
+};
+
+const addMember = async (memberData) => {
+    try{
+        const response = await axios.post(`${API_URL}/members`, memberData);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating member:', error);
+        throw error;
+    }
 }
 export {
     getUserByUserId,
     getMemberbyMemberId,
     updateUser,
     getUserByFilter,
-    addUser
+    addUser,
+    getMemberByUserId,
+    addMember
 }

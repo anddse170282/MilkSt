@@ -26,6 +26,9 @@ const Login = () => {
             const response = await getUserByFilter(phone);
             if (response && response.length > 0) {
                 toast.success("👍 Login Success");
+                const user = JSON.parse(sessionStorage.getItem('user')) || [];
+                user.push(...response);
+                sessionStorage.setItem('user', JSON.stringify(user));
                 navigate('/');
             } else {
                 toast.success("👍 Registering new user");
