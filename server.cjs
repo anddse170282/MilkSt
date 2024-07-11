@@ -2,14 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const crypto = require('crypto');
-const cors = require('cors'); // Import cors package
+const cors = require('cors');
 
 const momo = express();
 momo.use(bodyParser.json());
-
-// Cấu hình CORS cho phép yêu cầu từ http://localhost:5173
 momo.use(cors({
-  origin: 'http://localhost:5173', // Chỉ cho phép yêu cầu từ http://localhost:5173
+  origin: 'http://localhost:5173',
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization',
 }));
@@ -20,8 +18,8 @@ momo.post('/momo-payment', async (req, res) => {
   const accessKey = 'F8BBA842ECF85';
   const secretKey = 'K951B6PE1waDMi640xX08PD3vg6EkVlz';
   const partnerCode = 'MOMO';
-  const redirectUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
-  const ipnUrl = 'https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b';
+  const redirectUrl = 'http://localhost:5000/payment-result';
+  const ipnUrl = 'http://localhost:5000/payment-result';
   const requestType = 'captureWallet';
   const orderId = partnerCode + new Date().getTime();
   const requestId = orderId;
@@ -59,6 +57,19 @@ momo.post('/momo-payment', async (req, res) => {
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint to handle MoMo redirect after payment
+momo.get('/payment-result', (req, res) => {
+  const { resultCode } = req.query;
+
+  if (resultCode === '0') {
+    // Payment was successful
+    res.redirect('http://localhost:5173/pay?paymentStatus=success');
+  } else {
+    // Payment failed or was cancelled
+    res.redirect('http://localhost:5173/pay?paymentStatus=failure');
   }
 });
 
