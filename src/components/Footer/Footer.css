@@ -66,3 +66,10 @@ footer {
   .footer-column h4 {
     color: #e4e4e7;
     }
+
+    .container {
+      background-color: #ec4899;
+      /* background-color: #ffecec; */
+      border-radius: 10px;
+      padding: 20px;
+    }
