@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { addUser } from '../api/userService';
+import { addUser, getUserByFilter, addMember } from '../api/userService';
 import { storage } from '../firebase.config';
 import '../css/customerform.css';
 
@@ -74,10 +74,28 @@ function CustomerForm() {
         await addUser(userData);
 
         console.log('User created successfully');
-        alert('User created successfully');
+
+        // Fetch the user by phone
+        const userResponse = await getUserByFilter(phone);
+        const userId = userResponse?.userId; // Assuming the API returns an array of users
+
+        // If userId is found, add the member
+        if (userId) {
+          const memberData = {
+            userId: userId,
+            description: " "
+          };
+          await addMember(memberData);
+          console.log('Member added successfully');
+          alert('User and member created successfully');
+        } else {
+          console.error('User ID not found after creation');
+          alert('User created successfully, but failed to register member');
+        }
+
         navigate('/');
       } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error creating user or member:', error);
       }
     } else {
       console.log('Please fill out all fields');
