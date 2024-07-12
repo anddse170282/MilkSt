@@ -16,7 +16,7 @@ const PaymentResult = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div>
       {paymentStatus === '0' ? (
         <SuccessPayment amount={amount} />
       ) : (

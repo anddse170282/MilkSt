@@ -111,7 +111,7 @@ const Login = () => {
                         </header>
                     </div>
                     <div>
-                        <Toaster toastOptions={{ duration: 4000 }} />
+                        <Toaster toastOptions={{ duration: 2000 }} />
                         <div id="recaptcha-container"></div>
                         {step === 1 ? (
                             <div className="w-1 flex flex-col gap-4 rounded-lg p-4 bg-white">

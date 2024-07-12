@@ -117,6 +117,7 @@ const Cart = () => {
     try {
       const orderData = {
         memberId: member.memberId,
+        voucherId: selectedVoucher.voucherId,
         orderStatus: 'Chưa Thanh Toán',
       };
 
