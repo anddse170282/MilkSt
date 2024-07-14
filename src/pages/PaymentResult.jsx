@@ -6,7 +6,6 @@ import * as voucherService from '../api/voucherService';
 const PaymentResult = () => {
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [amount, setAmount] = useState(null);
-  const [voucher, setVoucher] = useState({});
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -18,31 +17,37 @@ const PaymentResult = () => {
   }, []);
 
   useEffect(() => {
-    const storedOrder = JSON.parse(sessionStorage.getItem('order'));
-    if (storedOrder && storedOrder.length > 0) {
-      const currentOrder = storedOrder[0];
+    const fetchVoucher = async () => {
+      const storedOrder = JSON.parse(sessionStorage.getItem('orders'));
 
-      try {
-        const voucherData = voucherService.getVouchersById(currentOrder.voucherId);
-        setVoucher(voucherData);
-        if (paymentStatus === '0') {
-          voucher.quantity -= 1;
-          const voucherDetail = {
-            title: voucher.title,
-            startDate: voucher.startDate,
-            endDate: voucher.endDate,
-            discount: voucher.discount,
-            quantity: voucher.quantity,
-            status: voucher.status
+      if (storedOrder && storedOrder.length > 0) {
+        const currentOrder = storedOrder[0];
+        try {
+          const voucherData = await voucherService.getVouchersById(currentOrder.voucherId);
+          if (voucherData && voucherData.length > 0) {
+            const voucher = voucherData[0];
+            if (paymentStatus === '0') {
+              voucher.quantity -= 1;
+              const voucherDetail = {
+                title: voucher.title,
+                startDate: voucher.startDate,
+                endDate: voucher.endDate,
+                discount: voucher.discount,
+                quantity: voucher.quantity,
+                status: voucher.status
+              }
+              await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
+              sessionStorage.removeItem('orders');
+            }
           }
-          voucherService.updateVoucher(voucherDetail);
-          sessionStorage.removeItem('order');
+        } catch (error) {
+          console.error('Failed to update voucher quantity:', error);
         }
-      } catch {
-        console.error('Failed to update voucher quantity:', error);
       }
     };
-  })
+
+    fetchVoucher();
+  }, [paymentStatus]);
 
 
   return (

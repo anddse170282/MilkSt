@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../css/thanhtoan.css';
-import {Link, useLocation  } from 'react-router-dom';
-import {getUserByUserId} from '../api/userService';
-import {getOrdersById} from '../api/orderService';
+import {useLocation, useNavigate } from 'react-router-dom';
+import { getUserByUserId } from '../api/userService';
+import { getOrdersById } from '../api/orderService';
 
 const Invoice = () => {
   const location = useLocation();
   const [data, setData] = useState({});
   const [dataOrder, setDataOrder] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   // Function to extract query parameters
   const getQueryParams = () => {
@@ -69,9 +70,14 @@ const Invoice = () => {
   };
   const handleClick = (e) => {
     e.preventDefault();
-    const order = JSON.parse(sessionStorage.getItem('order'));
-    order.push(...dataOrder);
-    sessionStorage.setItem('order', JSON.stringify(order));
+    let orders = JSON.parse(sessionStorage.getItem('orders'));
+
+    if (!Array.isArray(orders)) {
+      orders = [];
+    }
+    orders.push(dataOrder);
+    sessionStorage.setItem('orders', JSON.stringify(orders));
+    navigate(`/momo-payment/${dataOrder.amount}`);  
   }
 
   const formatPrice = (price) => {
@@ -113,11 +119,9 @@ const Invoice = () => {
           </div>
 
           <div className="user-cart-container">
-            <Link to={`/momo-payment/${dataOrder.amount}`}>
               <button type="button" className="pay-button" onClick={handleClick}>Thanh toán</button>
-            </Link>
           </div>
-          </form>
+        </form>
       </div>
     </div>
   );

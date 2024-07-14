@@ -26,7 +26,9 @@ const Header = () => {
           <div className="cam-on"><span>Cảm ơn ba mẹ đã tin dùng HanaStore</span></div>
           <div className="email"><span>Email: <span className="email-color">nhanltse170178@fpt.edu.vn</span></span></div>
           <a href="/login">
-            <img src="taikhoan.jpg" alt="Tài khoản" width="50" height="50" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/myimages%2Favatar.jpg?alt=media&token=971f0312-16ec-4a0a-9646-41e51e00505f" alt="Tài khoản" width="25" height="25">
+
+            </img>
           </a>
         </div>
         <div className="header-content-row2">

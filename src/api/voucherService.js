@@ -13,12 +13,13 @@ const getVouchersById = async (voucherId) => {
     return response.data;
 }
 
-const updateVoucher = async (voucher) => {
-        const response = await axios.get(`${API_URL}/vouchers/${voucher.voucherId}`, voucher);
+const updateVoucher = async (voucher, voucherId) => {
+        const response = await axios.put(`${API_URL}/vouchers/${voucherId}`, voucher);
         return response.data;
 }
 
 export {
     getAllVouchers,
-    updateVoucher
+    updateVoucher,
+    getVouchersById
 };

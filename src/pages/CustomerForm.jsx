@@ -58,26 +58,29 @@ function CustomerForm() {
       try {
         const imageName = `${phone}`;
         const imageRef = ref(storage, `UserImage/${imageName}`);
-        
+
         await uploadBytes(imageRef, profilePicture);
         const imageUrl = await getDownloadURL(imageRef);
-        
+
         const userData = {
           ...formData,
           dateOfBirth: new Date(dateOfBirth).toISOString(),
           profilePicture: imageUrl
         };
-        
+
         // Log userData to check structure before sending
         console.log('Sending user data:', userData);
-        
+
         await addUser(userData);
 
         console.log('User created successfully');
 
         // Fetch the user by phone
         const userResponse = await getUserByFilter(phone);
-        const userId = userResponse?.userId; // Assuming the API returns an array of users
+        const userId = userResponse[0].userId; // Assuming the API returns an array of users
+        const user = JSON.parse(sessionStorage.getItem('user')) || [];
+        user.push(...userResponse);
+        sessionStorage.setItem('user', JSON.stringify(user));
 
         // If userId is found, add the member
         if (userId) {

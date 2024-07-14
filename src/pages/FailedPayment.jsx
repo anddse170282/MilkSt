@@ -3,10 +3,10 @@ import '../css/paymentresult.css'
 
 const FailedPayment = ({ amount }) => {
   const formatPrice = (price) => {
-    if (typeof price !== 'number') {
+    if (typeof price !== 'string') {
       return 'Invalid price';
     }
-    return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
   return (
     <div className="payment-result">
