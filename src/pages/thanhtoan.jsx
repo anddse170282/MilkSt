@@ -67,6 +67,12 @@ const Invoice = () => {
     e.preventDefault();
     console.log('Form submitted');
   };
+  const handleClick = (e) => {
+    e.preventDefault();
+    const order = JSON.parse(sessionStorage.getItem('order'));
+    order.push(...dataOrder);
+    sessionStorage.setItem('order', JSON.stringify(order));
+  }
 
   const formatPrice = (price) => {
     if (typeof price !== 'number') {
@@ -108,7 +114,7 @@ const Invoice = () => {
 
           <div className="user-cart-container">
             <Link to={`/momo-payment/${dataOrder.amount}`}>
-              <button type="button" className="pay-button">Thanh toán</button>
+              <button type="button" className="pay-button" onClick={handleClick}>Thanh toán</button>
             </Link>
           </div>
           </form>
