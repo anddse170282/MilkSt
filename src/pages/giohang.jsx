@@ -118,7 +118,7 @@ const Cart = () => {
     try {
       const orderData = {
         memberId: member.memberId,
-        voucherId: selectedVoucher.voucherId,
+        voucherId: selectedVoucher ? selectedVoucher.voucherId : null,
         orderStatus: 'Chưa Thanh Toán',
       };
 
@@ -157,63 +157,66 @@ const Cart = () => {
       <div className="cart-container">
         <div className='container'>
           <div className='col-md-10 cart-table-container'>
-            <table className="cart-table">
-              <thead>
-                <tr>
-                  <th className="bogocAll">
-                    <input
-                      type="checkbox"
-                      onChange={(e) => {
-                        const selected = e.target.checked;
-                        const newCartItems = cartItems.map(item => ({ ...item, selected }));
-                        setCartItems(newCartItems);
-                        updateTotals();
-                      }}
-                    />ALL
-                  </th>
-                  <th>Tên sản phẩm</th>
-                  <th>Số lượng</th>
-                  <th>Giá tiền</th>
-                  <th className="bogocAll2">Xoá</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item, index) => {
-                  const product = getProductById(item.milkId);
-                  return (
-                    <tr key={index}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          checked={item.selected || false}
-                          onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
-                        />
-                      </td>
-                      <td>
-                        {product && product.milkPictures && product.milkPictures.length > 0 && (
-                          <img src={product.milkPictures[0].picture} alt={product.milkName} width="50" />
-                        )}
-                        {product ? product.milkName : 'Không xác định'}
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={item.quantity}
-                          onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
-                          min="1"
-                        />
-                      </td>
-                      <td>
-                        {product ? formatPrice(product.price) : 'Không xác định'} ₫
-                      </td>
-                      <td>
-                        <button className="delete-btn" onClick={() => handleDeleteItem(index)}>Xoá</button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+            <table className="table table-striped table-hover">
+              <table className="cart-table">
+                <thead>
+                  <tr>
+                    <th className="bogocAll">
+                      <input
+                        type="checkbox"
+                        onChange={(e) => {
+                          const selected = e.target.checked;
+                          const newCartItems = cartItems.map(item => ({ ...item, selected }));
+                          setCartItems(newCartItems);
+                          updateTotals();
+                        }}
+                      />    ALL
+                    </th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá tiền</th>
+                    <th className="bogocAll2">Xoá</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cartItems.map((item, index) => {
+                    const product = getProductById(item.milkId);
+                    return (
+                      <tr key={index}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            checked={item.selected || false}
+                            onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
+                          />
+                        </td>
+                        <td>
+                          {product && product.milkPictures && product.milkPictures.length > 0 && (
+                            <img src={product.milkPictures[0].picture} alt={product.milkName} width="50" />
+                          )}
+                          {product ? product.milkName : 'Không xác định'}
+                        </td>
+                        <td>
+                          <input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
+                            min="1"
+                          />
+                        </td>
+                        <td>
+                          {product ? formatPrice(product.price) : 'Không xác định'} ₫
+                        </td>
+                        <td>
+                          <button className="delete-btn " onClick={() => handleDeleteItem(index)}><i class="biicon bi bi-trash"></i></button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </table>
+
           </div>
           <div className="cart-summary col-md-2">
             <div className='col'>
@@ -221,9 +224,9 @@ const Cart = () => {
             </div>
             <p>Tiền phụ: <span>{formatPrice(subtotal)} ₫</span></p>
             {selectedVoucher && (
-              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%</span></p>
+              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%     -  </span><button className="icon-delete-voucher">X</button></p>
             )}
-            <p className="total">Thành Tiền: <span>{formatPrice(result)} ₫</span></p>
+            <p className="total">Thành Tiền: <span>{formatPrice(result)} ₫ </span></p>
             <button className="button-uudai" onClick={handleSubmitClick}>Xác nhận giỏ hàng</button>
           </div>
         </div>

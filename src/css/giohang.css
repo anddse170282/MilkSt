@@ -149,7 +149,7 @@
 }
 
 .cart-table th {
-  background-color: #f2f2f2;
+  background-color: #dfdada;
 }
 
 .cart-table-container {
@@ -236,7 +236,7 @@ footer {
 
 .container {
   border-radius: 25px;
-  background-color: #e676b2;
+  background-color: #c9c6c8;
   display: flex;
   margin: 0 auto; 
 }
@@ -400,3 +400,61 @@ footer {
   background-color: #f26db0; /* Màu nền khi hover */
   color: white; /* Màu chữ khi hover */
 }
+
+.delete-btn {
+  background-color :#c9c6c8;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.biicon {
+  color: #4d494b;
+  font-size : 22px;
+}
+
+
+.delete-btn:hover {
+  /* Thêm các thuộc tính CSS cho hover tại đây */
+  background-color: #c9c6c8; /* Ví dụ: thay đổi màu nền khi hover */
+  transform: scale(1.1); /* Ví dụ: phóng to khi hover */
+  border: 2px solid rgb(234, 148, 97); /* Thay đổi màu viền khi hover */
+
+
+}
+
+/* CSS cho hàng chẵn */
+.table-striped tr:nth-child(even) {
+  background-color: #dfdada; /* Màu xám nhạt */
+}
+
+/* CSS cho hàng lẻ */
+.table-striped tr:nth-child(odd) {
+  background-color: #ddb091; /* Màu trắng */
+}
+
+/* Thay đổi màu chữ cho hàng chẵn */
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th {
+  color: white; /* Chọn màu chữ bạn muốn ở đây */
+}
+
+
+button.icon-delete-voucher {
+  width: 5%;
+  color: #4b5563;
+  /* Các thuộc tính khác của nút */
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 15px;
+    padding-left: 5px;
+}
+
+button.icon-delete-voucher:hover {
+  background-color: #ee0000;
+  color: rgb(255, 255, 255); /* Màu văn bản khi hover */
+  /* Các thuộc tính khác khi hover */
+}
+
+
