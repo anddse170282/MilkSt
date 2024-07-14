@@ -13,8 +13,14 @@
   background-repeat: no-repeat;
 }
 
+
+
 .product-info .container {
   text-align: center;
+  background-color: #e3c1d1;
+  border-radius: 10px;
+  padding: 20px;
+  height: auto;
 }
 
 .product-info form {
@@ -45,7 +51,8 @@
   width: 100%;
 }
 
-.product-info .form-left, .product-info .form-right {
+.product-info .form-left,
+.product-info .form-right {
   width: 48%;
 }
 
@@ -88,14 +95,22 @@
 }
 
 .product-info .quantity-container {
-  background-color: #ff69b4; /* Màu hồng */
-  color: white; /* Màu chữ trắng */
-  padding: 5px 20px; /* Khoảng cách bên trong */
-  border-radius: 10px; /* Bo tròn góc */
-  border: solid #FF469E; /* Xóa viền */
-  cursor: pointer; /* Con trỏ chuột dạng tay */
-  margin-top: 20px; /* Khoảng cách trên */
-  margin-right: 20px; /* Khoảng cách giữa các nút */
+  background-color: #ff69b4;
+  /* Màu hồng */
+  color: white;
+  /* Màu chữ trắng */
+  padding: 5px 20px;
+  /* Khoảng cách bên trong */
+  border-radius: 10px;
+  /* Bo tròn góc */
+  border: solid #FF469E;
+  /* Xóa viền */
+  cursor: pointer;
+  /* Con trỏ chuột dạng tay */
+  margin-top: 20px;
+  /* Khoảng cách trên */
+  margin-right: 20px;
+  /* Khoảng cách giữa các nút */
   margin-left: 20px;
 }
 
@@ -157,11 +172,6 @@
   color: #fff;
 }
 
-.product-info .container {
-  background-color: #ffecec;
-  border-radius: 10px;
-  padding: 20px;
-}
 
 .product-info .text-center h2 {
   font-weight: bold;
@@ -177,7 +187,8 @@
   color: #888;
 }
 
-.product-info .btn-outline-primary, .product-info .btn-outline-secondary {
+.product-info .btn-outline-primary,
+.product-info .btn-outline-secondary {
   margin: 10px;
 }
 
@@ -236,12 +247,16 @@
 
 /* Align the buttons horizontally */
 .product-info .d-flex.justify-content-center.mb-4 .btn {
-  margin: 0 5px; /* Add spacing between buttons */
-  padding: 5px 10px; /* Adjust padding for smaller buttons */
+  margin: 0 10px;
+  /* Add spacing between buttons */
+  padding: 8px 45px;
+  /* Adjust padding for smaller buttons */
   height: fit-content;
 }
+
 .product-info .modal-dialog {
-  max-width: 600px; /* Adjust the max-width if necessary */
+  max-width: 600px;
+  /* Adjust the max-width if necessary */
   margin: 1.75rem auto;
 }
 
@@ -251,6 +266,84 @@
 }
 
 .product-info .modal-body {
-  max-height: 500px; /* Adjust the max-height if necessary */
+  max-height: 500px;
+  /* Adjust the max-height if necessary */
   max-width: fit-content;
 }
+
+.rating-00 {
+  font-size: 36px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: rgb(232, 62, 144);
+}
+
+.rating-05 {
+  font-size: 25px;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: rgb(88, 84, 84);
+}
+
+.font-danhgia {
+  font-size: 23px;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+}
+
+.number-rating {
+  font-family: 'Arial', sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+
+}
+
+button.button-moinhat,
+button.button-cunhat {
+  color: gray;
+  /* Màu chữ xám */
+  background-color: white;
+  font-weight: 600;
+  height: 40px;
+  margin-left: 40px;
+  padding-right: 50px;
+  padding-left: 50px;
+  text-align: center;
+  /* Căn giữa văn bản */
+  border: 1px solid gray;
+  /* Viền xám */
+  transition: background-color 0.3s, color 0.3s;
+  /* Hiệu ứng chuyển đổi màu */
+}
+
+button.button-moinhat:hover,
+button.button-cunhat:hover {
+  background-color: white;
+  /* Nền hồng khi hover */
+  color: rgb(232, 62, 144);
+  /* Màu chữ trắng khi hover */
+  border: 1px solid rgb(232, 62, 144);
+  /* Viền hồng khi hover */
+}
+
+
+.product-info .btn-warning {
+  margin: 10px;
+  color: #fff;
+}
+
+
+.ratingdang {
+  width: 100px;
+  text-align: right;
+}
+
+button.btn.btn-success:hover {
+  background-color: white;
+  /* Nền hồng khi hover */
+  color: rgb(232, 62, 144);
+  /* Màu chữ trắng khi hover */
+  border: 1px solid rgb(232, 62, 144);
+  /* Viền hồng khi hover */
+}
+
