@@ -87,6 +87,13 @@ const ProductInfo = () => {
     setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
   };
 
+  const formatPrice = (price) => {
+    if (typeof price !== 'number') {
+      return 'Invalid price';
+    }
+    return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   return (
     <div className="product-info">
       <main>
@@ -103,7 +110,7 @@ const ProductInfo = () => {
               <h2>Thông tin sản phẩm</h2>
               <p><strong>{product.milkName}</strong></p>
               <p><i className="fas fa-glass-milk"></i> Dung tích {product.capacity}</p>
-              <p><strong>Giá tiền: {product.price} ₫</strong></p>
+              <p><strong>Giá tiền: {formatPrice(product.price)} ₫</strong></p>
 
               <div className="quantity-wrapper">
                 <h2>Số lượng</h2>

@@ -1,9 +1,18 @@
 // src/components/Header.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import './Header.css'; // Create this file for the specific CSS of the header
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const [string, setString] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmitClick = (event) => {
+    event.preventDefault();
+    navigate(`/search-page?search=${string}`);
+  };
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -22,8 +31,14 @@ const Header = () => {
         </div>
         <div className="header-content-row2">
           <div className="search-bar-container">
-            <input type="text" placeholder="Tìm kiếm..." />
-            <button type="submit">
+            <input
+              type="text"
+              placeholder="Tìm kiếm..."
+              name='string'
+              value={string}
+              onChange={(e) => setString(e.target.value)}
+            />
+            <button type="submit" onClick={handleSubmitClick}>
               <i className="bi-search icon-small"></i>
             </button>
           </div>

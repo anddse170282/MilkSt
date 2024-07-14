@@ -18,7 +18,6 @@ const Invoice = () => {
   useEffect(() => {
     const queryParams = getQueryParams();
     const userId = queryParams.get('userId');
-    const orderId = queryParams.get('orderId');
 
     const fetchData = async () => {
       try {
@@ -66,8 +65,14 @@ const Invoice = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log('Form submitted');
+  };
+
+  const formatPrice = (price) => {
+    if (typeof price !== 'number') {
+      return 'Invalid price';
+    }
+    return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   return (
@@ -98,7 +103,7 @@ const Invoice = () => {
           <hr />
           <div className="total">
             <span className="ThanhTien">Thành Tiền :</span>
-            <span className="price">{dataOrder.amount || 0} ₫</span>
+            <span className="price">{formatPrice(dataOrder.amount) || 0} ₫</span>
           </div>
 
           <div className="user-cart-container">

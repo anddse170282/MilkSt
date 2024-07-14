@@ -110,6 +110,7 @@ const Cart = () => {
   const handleSubmitClick = async (e) => {
     e.preventDefault();
     if (!user || !user.userId) {
+      navigate('/login');
       console.error('User not found or userId is undefined');
       return;
     }
@@ -139,6 +140,13 @@ const Cart = () => {
     } catch (error) {
       console.error('Error creating order or order details:', error);
     }
+  };
+
+  const formatPrice = (price) => {
+    if (typeof price !== 'number') {
+      return 'Invalid price';
+    }
+    return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const discount = selectedVoucher ? getDiscountAmount(selectedVoucher) : 0;
@@ -196,7 +204,7 @@ const Cart = () => {
                         />
                       </td>
                       <td>
-                        {product ? product.price : 'Không xác định'} ₫
+                        {product ? formatPrice(product.price) : 'Không xác định'} ₫
                       </td>
                       <td>
                         <button className="delete-btn" onClick={() => handleDeleteItem(index)}>Xoá</button>
@@ -211,11 +219,11 @@ const Cart = () => {
             <div className='col'>
               <button className="button-uudai" onClick={() => setShowVoucherModal(true)}>Voucher ưu đãi</button>
             </div>
-            <p>Tiền phụ: <span>{subtotal} ₫</span></p>
+            <p>Tiền phụ: <span>{formatPrice(subtotal)} ₫</span></p>
             {selectedVoucher && (
               <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%</span></p>
             )}
-            <p className="total">Thành Tiền: <span>{result} ₫</span></p>
+            <p className="total">Thành Tiền: <span>{formatPrice(result)} ₫</span></p>
             <button className="button-uudai" onClick={handleSubmitClick}>Xác nhận giỏ hàng</button>
           </div>
         </div>
