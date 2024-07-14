@@ -107,6 +107,13 @@ const Cart = () => {
     setShowVoucherModal(false);
   };
 
+
+  const handleDeleteVoucher = (voucherTitle) => {
+    if (selectedVoucher && selectedVoucher.title === voucherTitle) {
+      setSelectedVoucher(null);
+    }
+  };
+
   const handleSubmitClick = async (e) => {
     e.preventDefault();
     if (!user || !user.userId) {
@@ -224,7 +231,7 @@ const Cart = () => {
             </div>
             <p>Tiền phụ: <span>{formatPrice(subtotal)} ₫</span></p>
             {selectedVoucher && (
-              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%     -  </span><button className="icon-delete-voucher">X</button></p>
+              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%     -  </span><button className="icon-delete-voucher" onClick={() => handleDeleteVoucher(selectedVoucher.title)}>X</button></p>
             )}
             <p className="total">Thành Tiền: <span>{formatPrice(result)} ₫ </span></p>
             <button className="button-uudai" onClick={handleSubmitClick}>Xác nhận giỏ hàng</button>
