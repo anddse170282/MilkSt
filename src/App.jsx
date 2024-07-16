@@ -12,6 +12,7 @@ import MoMoPaymentPage from './pages/MoMoPayment';  // Import MoMoPaymentPage
 import ProductInfo from './pages/ProductInfo';  // Import ProductInfo
 import CustomerForm from './pages/CustomerForm';
 import PaymentResult from './pages/PaymentResult';
+import OrderHistory from './pages/OrderHistory';
 import './App.css'; 
 
 
@@ -38,6 +39,7 @@ const LayoutWrapper = () => (
       <Route path="/search-page" element={<SearchPage />} />
       <Route path="/product-info/:id" element={<ProductInfo />} />
       <Route path="/payment-result/" element={<PaymentResult />} />
+      <Route path="/orderhistory/" element={<OrderHistory />} />
       {/* Add more routes here */}
     </Routes>
   </Layout>

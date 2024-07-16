@@ -50,7 +50,7 @@ const Header = () => {
             </a>
           </div>
           <div className="notification-container">
-            <a href="#">
+            <a href="/orderhistory">
               <i className="bi bi-bell icon-small"></i>
             </a>
           </div>
