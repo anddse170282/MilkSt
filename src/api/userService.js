@@ -17,10 +17,14 @@ const getUserByFilter = async (phone) => {
     return response.data;
 }
 
-export const updateUser = async (user, userId) => {
+const updateUser = async (userId, user) => {
     try {
-        const response = await axios.put(`${API_URL}/users/${userId}`, user);
-        return response.data;
+        const response = await axios.put(`${API_URL}/users/${userId}`, user, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          return response.data;
     } catch (error) {
         throw error;
     }

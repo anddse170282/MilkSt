@@ -23,7 +23,7 @@ const Invoice = () => {
       try {
         if (userId) {
           const response = await getUserByUserId(userId);
-          console.log(response);
+          console.log('Fetched User:', response);
           setData(response);
         }
       } catch (error) {
@@ -60,9 +60,20 @@ const Invoice = () => {
 
   const confirmEditing = async () => {
     try {
-      console.log("Data: ", data);
-      const updatedUser = await updateUser(data, data.userId);
-      setData(updatedUser);
+      const formattedDateOfBirth = new Date(data.dateOfBirth).toISOString();
+
+      const updatedData = {
+        userName: data.userName,
+        phone: data.phone,
+        address: data.address,
+        dateOfBirth: formattedDateOfBirth,
+        gender: data.gender,
+        profilePicture: data.profilePicture,
+      };
+
+      updateUser(data.userId, updatedData);
+      const newUser = await getUserByUserId(data.userId);
+      setData(newUser);
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating user:', error);
@@ -85,8 +96,7 @@ const Invoice = () => {
       orders.push(dataOrder);
       sessionStorage.setItem('orders', JSON.stringify(orders));
       navigate(`/momo-payment/${dataOrder.amount}`);
-    }
-    else {
+    } else {
       navigate("/cart");
     }
   };
@@ -102,6 +112,7 @@ const Invoice = () => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
   };
+
   return (
     <div>
       <div className="invoice-container">
