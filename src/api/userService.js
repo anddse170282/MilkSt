@@ -7,7 +7,7 @@ const getUserByUserId = async (userId) => {
     return response.data;
 }
 
-const getMemberbyMemberId = async (memberId) => {  
+const getMemberbyMemberId = async (memberId) => {
     const response = await axios.get(`${API_URL}/members/${memberId}`);
     return response.data;
 }
@@ -17,33 +17,36 @@ const getUserByFilter = async (phone) => {
     return response.data;
 }
 
-const updateUser = async (user) => {
-    const response = await axios.put(`${API_URL}/users/${user.userId}`, user);
-    return response.data;
-}
+export const updateUser = async (user, userId) => {
+    try {
+        const response = await axios.put(`${API_URL}/users/${userId}`, user);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const addUser = async (userData) => {
     try {
         const response = await axios.post(`${API_URL}/users`, userData);
         return response.data;
-      } catch (error) {
+    } catch (error) {
         console.error('Error creating user:', error);
         throw error;
-      }
+    }
 }
 
 const getMemberByUserId = async (userId) => {
-    try{
+    try {
         const response = await axios.get(`${API_URL}/members?userId=${userId}`);
         return response.data;
-    } catch (error)
-    {
+    } catch (error) {
         console.error('Error fetch user:', error);
     }
 };
 
 const addMember = async (memberData) => {
-    try{
+    try {
         const response = await axios.post(`${API_URL}/members`, memberData);
         return response.data;
     } catch (error) {
