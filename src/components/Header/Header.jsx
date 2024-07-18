@@ -1,12 +1,48 @@
-// src/components/Header.jsx
-import React, { useState } from 'react';
-import './Header.css'; // Create this file for the specific CSS of the header
+import React, { useState, useEffect } from 'react';
+import './Header.css'; // Tạo file này cho CSS cụ thể của header
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [string, setString] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Kiểm tra trạng thái đăng nhập khi component được mount
+    const loggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    setIsLoggedIn(loggedIn);
+    if (loggedIn) {
+      const storedUser = JSON.parse(sessionStorage.getItem('user'));
+      setUser(storedUser);
+    }
+  }, []);
+
+  const handleLoginClick = () => {
+    const userInfo = {
+      userName: user.userName,
+      profilePicture: user.profilePicture
+    };
+    sessionStorage.setItem('isLoggedIn', 'true');
+    sessionStorage.setItem('user', JSON.stringify(userInfo));
+    setIsLoggedIn(true);
+    setUser(userInfo);
+    navigate("/login");
+  };
+
+  const handleLogoutClick = () => {
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setIsDropdownOpen(false);
+    setUser(null);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleSubmitClick = (event) => {
     event.preventDefault();
@@ -17,26 +53,56 @@ const Header = () => {
     <header className="header">
       <div className="logo-container">
         <a href="/">
-          <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Logo%20Footer%2Fdep2.png?alt=media&token=08b080e1-c883-4c89-ba4f-76f8f0a57b00" width="150" height="150" alt="Logo" />
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Logo%20Footer%2Fdep2.png?alt=media&token=08b080e1-c883-4c89-ba4f-76f8f0a57b00"
+            width="150"
+            height="150"
+            alt="Logo"
+          />
         </a>
       </div>
       <div className="header-content">
         <div className="contact-info">
-          <div className="phone"><span>Mua hàng và CSKH: <span className="phone-color">0986777514</span></span></div>
-          <div className="cam-on"><span>Cảm ơn ba mẹ đã tin dùng HanaStore</span></div>
-          <div className="email"><span>Email: <span className="email-color">nhanltse170178@fpt.edu.vn</span></span></div>
-          <a href="/login">
-            <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/myimages%2Favatar.jpg?alt=media&token=971f0312-16ec-4a0a-9646-41e51e00505f" alt="Tài khoản" width="25" height="25">
-
-            </img>
-          </a>
+          <div className="phone">
+            <span>
+              Mua hàng và CSKH: <span className="phone-color">0986777514</span>
+            </span>
+          </div>
+          <div className="cam-on">
+            <span>Cảm ơn ba mẹ đã tin dùng HanaStore</span>
+          </div>
+          <div className="email">
+            <span>
+              Email: <span className="email-color">nhanltse170178@fpt.edu.vn</span>
+            </span>
+          </div>
+          <div className="dropdown">
+            {isLoggedIn ? (
+              <>
+                <img src={user?.profilePicture} width="25" height="25" className="avatar" onClick={toggleDropdown} />
+                <span>{user?.userName}</span>
+                {isDropdownOpen && (
+                  <div className="dropdown-content">
+                    <a href="#">Tài Khoản Của Tôi</a>
+                    <a href="#" onClick={handleLogoutClick}>
+                      Đăng Xuất
+                    </a>
+                  </div>
+                )}
+              </>
+            ) : (
+              <button onClick={handleLoginClick}>
+                <a href="/login">Đăng Nhập</a>
+              </button>
+            )}
+          </div>
         </div>
         <div className="header-content-row2">
           <div className="search-bar-container">
             <input
               type="text"
               placeholder="Tìm kiếm..."
-              name='string'
+              name="string"
               value={string}
               onChange={(e) => setString(e.target.value)}
             />
@@ -60,11 +126,21 @@ const Header = () => {
         </div>
         <nav className="navigation-menu">
           <ul>
-            <li><a href="/">Trang chủ</a></li>
-            <li><a href="/">Sữa bột</a></li>
-            <li><a href="/">Sữa tươi</a></li>
-            <li><a href="/">Sữa chua</a></li>
-            <li><a href="/">Sữa hạt dinh dưỡng</a></li>
+            <li>
+              <a href="/">Trang chủ</a>
+            </li>
+            <li>
+              <a href="/">Sữa bột</a>
+            </li>
+            <li>
+              <a href="/">Sữa tươi</a>
+            </li>
+            <li>
+              <a href="/">Sữa chua</a>
+            </li>
+            <li>
+              <a href="/">Sữa hạt dinh dưỡng</a>
+            </li>
           </ul>
         </nav>
       </div>
