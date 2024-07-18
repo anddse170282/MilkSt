@@ -115,18 +115,18 @@ body {
   color: rgb(152, 152, 152);
 }
 
-.notification-container {
+.notification-container2 {
   display: flex;
   align-items: center;
   margin-bottom: 22px;
 }
 
-.notification-container a {
+.notification-container2 a {
   margin-left: 20px;
   margin-right: 20px;
 }
 
-.notification-container i {
+.notification-container2 i {
   font-size: 35px;
   color: rgb(152, 152, 152);
 }
