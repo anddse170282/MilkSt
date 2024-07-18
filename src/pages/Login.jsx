@@ -96,6 +96,10 @@ const Login = () => {
             });
     }
 
+    const onClick = () => {
+        sessionStorage.removeItem('isLoggedIn');
+    }
+
     const phoneValid = ph.length > 0 && /^\+\d{1,3}\d{10}$/.test("+" + ph);
     const canSubmit = phoneValid && termsAgreed;
 
@@ -105,7 +109,7 @@ const Login = () => {
                 <div className="login-row">
                     <div className="logoLogin">
                         <header>
-                            <a href="\">
+                            <a href="\" onClick={onClick}>
                                 <img src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Logo%20Footer%2Fdep2.png?alt=media&token=08b080e1-c883-4c89-ba4f-76f8f0a57b00" width="150" height="150" alt="Logo" />
                             </a>
                         </header>
