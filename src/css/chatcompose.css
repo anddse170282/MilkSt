@@ -1,0 +1,41 @@
+/* chatcompose.css */
+.chatcompose-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: none; /* Ẩn ban đầu */
+}
+
+.chatcompose-container.show {
+  display: block; /* Hiển thị khi cần thiết */
+}
+
+.chatcompose-container iframe {
+  width: 300px !important; /* Điều chỉnh chiều rộng theo ý muốn */
+  height: 400px !important; /* Điều chỉnh chiều cao theo ý muốn */
+}
+
+.khukyN {
+	background: rgb(224, 211, 211);
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.15) 0px 12px 24px 0px;
+	font-family: Arial;
+	overflow: hidden;
+	position: fixed;
+	bottom: 32px;
+	top: initial !important;
+	right: 32px !important;
+	left: initial !important;
+	width: 350px !important;
+	height: 520px !important;
+	transform: scale(1);
+	transform-origin: right bottom 0px;
+	transition: transform 0.3s;
+}
+
+
+.rsc-container {
+  width: 350px;
+  left: initial;
+}
