@@ -21,7 +21,7 @@ const PaymentResult = () => {
     const formats = ['M/D/YYYY h:mm:ss A', 'M/D/YYYY H:mm:ss'];
     const date = moment(dateString, formats, true);
     return date.isValid() ? date.toISOString() : 'Invalid date';
-};
+  };
 
   useEffect(() => {
     const fetchVoucher = async () => {
@@ -33,29 +33,31 @@ const PaymentResult = () => {
         console.log('Current Order:', currentOrder);
 
         try {
-          const voucherData = await voucherService.getVouchersById(currentOrder.voucherId);
-          console.log('Voucher Data:', voucherData);
+          if (currentOrder.voucherId) {
+            const voucherData = await voucherService.getVouchersById(currentOrder.voucherId);
+            console.log('Voucher Data:', voucherData);
 
-          if (voucherData) {
-            const voucher = voucherData;
-            console.log('Start Date: ', voucher.startDate);
-            console.log('End Date: ', voucher.endDate);
-            if (paymentStatus === '0') {
-              voucher.quantity -= 1;
-              const voucherDetail = {
-                title: voucher.title,
-                startDate: formatDate(voucher.startDate),
-                endDate: formatDate(voucher.endDate),
-                discount: voucher.discount,
-                quantity: voucher.quantity,
-                status: voucher.status
-              };
-              await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
-              sessionStorage.removeItem('orders');
-              sessionStorage.removeItem('cart');
-              console.log('Orders and cart removed from session storage');
+            if (voucherData) {
+              const voucher = voucherData;
+              console.log('Start Date: ', voucher.startDate);
+              console.log('End Date: ', voucher.endDate);
+              if (paymentStatus === '0') {
+                voucher.quantity -= 1;
+                const voucherDetail = {
+                  title: voucher.title,
+                  startDate: formatDate(voucher.startDate),
+                  endDate: formatDate(voucher.endDate),
+                  discount: voucher.discount,
+                  quantity: voucher.quantity,
+                  status: voucher.status
+                };
+                await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
+              }
             }
           }
+          sessionStorage.removeItem('orders');
+          sessionStorage.removeItem('cart');
+          console.log('Orders and cart removed from session storage');
         } catch (error) {
           console.error('Failed to update voucher quantity:', error.response ? error.response.data : error.message);
         }
