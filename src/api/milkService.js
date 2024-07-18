@@ -2,12 +2,39 @@
 import axios from 'axios';
 
 const API_URL = 'https://localhost:7188/api';
-
+const BASE_URL = `${API_URL}/milks`;
 const getAllProducts = async () => {
-
     const response = await axios.get(`${API_URL}/milks`);
     return response.data;
 };
+const fetchMilkTypes = async () => {
+    const response = await axios.get(`${API_URL}/milk-types`);
+    return response.data;
+  };
+const buildApiUrl = ({ filter, isDescending, pageIndex, pageSize, brandId, milkType }) => {
+    let apiUrl = `${BASE_URL}?`;
+  
+    if (filter) {
+      apiUrl += `filter=${filter}&`;
+    }
+    if (isDescending) {
+    apiUrl += `IsDescending=${isDescending}`;
+    }
+    if (brandId) {
+      apiUrl += `&brandId=${brandId}`;
+    }
+  
+    if (milkType) {
+      apiUrl += `&milkType=${milkType}`;
+    }
+    apiUrl += `&pageIndex=${pageIndex}&pageSize=${pageSize}`;
+    return apiUrl;
+  };
+const fetchMilks = async (params) => {
+    const apiUrl = buildApiUrl(params);
+    const response = await axios.get(apiUrl);
+    return response.data;
+  };
 const getProductsById = async (milkId) => {
     const response = await axios.get(`${API_URL}/milks/${milkId}`);
     return response.data;
@@ -82,5 +109,7 @@ export {
     getProductsAscendingByBrandAndMilkType,
     getProductsDescendingByBrandAndMilkType,
     getProductsBySearch,
-    getProductsById
+    getProductsById,
+    fetchMilks,
+    fetchMilkTypes
 };

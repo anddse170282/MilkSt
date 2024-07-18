@@ -46,7 +46,8 @@ const Header = () => {
 
   const handleSubmitClick = (event) => {
     event.preventDefault();
-    navigate(`/search-page?search=${string}`);
+    const encodedString = encodeURIComponent(string);
+    navigate(`/search-page?search=${encodedString}`);
   };
 
   return (

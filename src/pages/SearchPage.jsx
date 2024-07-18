@@ -1,34 +1,75 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { fetchMilks, fetchMilkTypes } from '../api/milkService'; 
+import { getAllBrands } from '../api/brandService'; 
+import { useLocation } from 'react-router-dom';
 import '../css/searchpage.css';
 
 const SearchPage = () => {
   const [products, setProducts] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(1);
-  const [sortOption, setSortOption] = useState('bán chạy');
+  const [sortOption, setSortOption] = useState('tất cả');
+  const [milkTypes, setMilkTypes] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [filters, setFilters] = useState({
-    origin: [],
-    type: [],
-    category: [],
+    milkType: [],
+    brand: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [hasMore, setHasMore] = useState(true);
 
-  // Fetch products from API
+  const location = useLocation();
+
+  // Fetch filter data when component mounts
+  useEffect(() => {
+    const fetchFiltersData = async () => {
+      try {
+        const [milkTypesData, brandsData] = await Promise.all([
+          fetchMilkTypes(),
+          getAllBrands(),
+        ]);
+        setMilkTypes(milkTypesData);
+        setBrands(brandsData);
+      } catch (err) {
+        console.error('Error fetching filter data:', err);
+      }
+    };
+
+    fetchFiltersData();
+  }, []);
+
+  // Extract keyword from URL query parameters
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const search = params.get('search');
+    setKeyword(search || '');
+  }, [location.search]);
+
+  // Fetch products when keyword, page, sortOption, or filters change
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get('https://localhost:7188/api/milks', {
-        params: {
-          keyword: keyword,
-          page: page,
-          sort: sortOption,
-          filters: filters,
-        },
-      });
-      setProducts(response.data);
+      const params = {
+        isDescending: sortOption === 'giá cao - thấp',
+        pageIndex: page,
+        pageSize: 15,
+        brandId: filters.brand.length ? filters.brand.join(',') : undefined,
+        milkType: filters.milkType.length ? filters.milkType.join(',') : undefined,
+      };
+
+      if (keyword) {
+        params.filter = keyword;
+      }
+
+      if (sortOption === 'tất cả') {
+        delete params.isDescending;
+      }
+
+      const data = await fetchMilks(params);
+      setProducts(data);
+      setHasMore(data.length === 15); // Assuming that if the number of products fetched is less than the pageSize, there's no more data
     } catch (error) {
       if (error.response) {
         setError('Lỗi phản hồi từ máy chủ: ' + error.response.data);
@@ -42,20 +83,10 @@ const SearchPage = () => {
     }
   }, [keyword, page, sortOption, filters]);
 
-  // Debounce function to prevent excessive API calls
-  const debounce = (func, delay) => {
-    let debounceTimer;
-    return function (...args) {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => func.apply(this, args), delay);
-    };
-  };
-
-  const debouncedFetchProducts = useCallback(debounce(fetchProducts, 300), [fetchProducts]);
-
+  // Trigger fetchProducts when keyword, page, sortOption, or filters change
   useEffect(() => {
-    debouncedFetchProducts();
-  }, [keyword, page, sortOption, filters, debouncedFetchProducts]);
+    fetchProducts();
+  }, [keyword, page, sortOption, filters, fetchProducts]);
 
   const handleFilterChange = (category, value) => {
     setFilters((prevFilters) => {
@@ -73,7 +104,7 @@ const SearchPage = () => {
       </header>
       <div className="search-controls-pagination">
         <div className="search-controls">
-          {['phù hợp', 'bán chạy', 'hàng mới', 'giá thấp - cao', 'giá cao - thấp'].map(option => (
+          {['tất cả', 'giá thấp - cao', 'giá cao - thấp'].map(option => (
             <button
               key={option}
               className={`sort-button ${sortOption === option ? 'active' : ''}`}
@@ -88,34 +119,36 @@ const SearchPage = () => {
             Trang trước
           </button>
           <span>Trang {page}</span>
-          <button onClick={() => setPage(page + 1)}>Trang sau</button>
+          <button onClick={() => setPage(page + 1)} disabled={!hasMore}>
+            Trang sau
+          </button>
         </div>
       </div>
       <div className="main-content">
         <div className="filters">
           <div className="filter-category">
             <h3>Loại sữa</h3>
-            {['Sữa bột', 'Sữa tươi', 'Sữa chua', 'Sữa hạt dinh dưỡng'].map(option => (
-              <label key={option}>
+            {milkTypes.map(milkType => (
+              <label key={milkType.milkTypeId}>
                 <input
                   type="checkbox"
-                  value={option}
-                  onChange={() => handleFilterChange('origin', option)}
+                  value={milkType.milkTypeId}
+                  onChange={() => handleFilterChange('milkType', milkType.milkTypeId)}
                 />
-                {option}
+                {milkType.typeName}
               </label>
             ))}
           </div>
           <div className="filter-category">
             <h3>Thương hiệu</h3>
-            {['Sữa Vinamilk ', 'Sữa Nutifood', 'Sữa Dutch Lady', 'Sữa Vinamilk ', 'Sữa Nestle', 'Sữa Nutricare', 'Sữa Abbott ', 'Sữa Abbott ', 'Sữa TH true milk ', 'Sữa Fami ', 'Sữa VPMilk '].map(option => (
-              <label key={option}>
+            {brands.map(brand => (
+              <label key={brand.brandId}>
                 <input
                   type="checkbox"
-                  value={option}
-                  onChange={() => handleFilterChange('type', option)}
+                  value={brand.brandId}
+                  onChange={() => handleFilterChange('brand', brand.brandId)}
                 />
-                {option}
+                {brand.brandName}
               </label>
             ))}
           </div>
