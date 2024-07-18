@@ -21,14 +21,8 @@ const Header = () => {
   }, []);
 
   const handleLoginClick = () => {
-    const userInfo = {
-      userName: user.userName,
-      profilePicture: user.profilePicture
-    };
     sessionStorage.setItem('isLoggedIn', 'true');
-    sessionStorage.setItem('user', JSON.stringify(userInfo));
     setIsLoggedIn(true);
-    setUser(userInfo);
     navigate("/login");
   };
 
@@ -38,6 +32,7 @@ const Header = () => {
     setIsLoggedIn(false);
     setIsDropdownOpen(false);
     setUser(null);
+    navigate("/");
   };
 
   const toggleDropdown = () => {
@@ -84,7 +79,7 @@ const Header = () => {
                 <span>{user?.userName}</span>
                 {isDropdownOpen && (
                   <div className="dropdown-content">
-                    <a href="#">Tài Khoản Của Tôi</a>
+                    <a href="/userInformation">Tài Khoản Của Tôi</a>
                     <a href="#" onClick={handleLogoutClick}>
                       Đăng Xuất
                     </a>
@@ -92,9 +87,7 @@ const Header = () => {
                 )}
               </>
             ) : (
-              <button onClick={handleLoginClick}>
-                <a href="/login">Đăng Nhập</a>
-              </button>
+              <button onClick={handleLoginClick}>Đăng Nhập</button>
             )}
           </div>
         </div>
