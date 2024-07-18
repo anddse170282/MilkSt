@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import '../css/productInfo.css'; // Đảm bảo đường dẫn này chính xác
+import '../css/customerinformation.css';
 
 function UserInformationForm() {
     const [formData, setFormData] = useState({
@@ -31,15 +31,15 @@ function UserInformationForm() {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
     };
 
     return (
-        <div className="container">
+        <div className="containeruserInformation">
             <form onSubmit={handleSubmit}>
-                <h2>Điền thông tin khách hàng</h2>
+                <h2>Thông tin khách hàng</h2>
                 <div className="form-content">
                     <div className="form-left">
                         <div className="form-group">
@@ -55,10 +55,14 @@ function UserInformationForm() {
                             <input type="text" id="dob" name="dob" placeholder="01/01/1999" required onChange={handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="gender">Giới tính</label>
+                            <label htmlFor="gender">Giới tính</label><br />
                             <div className="gender-options">
-                                <label><input type="radio" id="male" name="gender" value="male" required onChange={handleChange} /> Nam</label>
-                                <label><input type="radio" id="female" name="gender" value="female" required onChange={handleChange} /> Nữ</label>
+                                <label>
+                                    <input type="radio" id="male" name="gender" value="male" checked={formData.gender === 'male'} onChange={handleChange} required /> Nam
+                                </label>
+                                <label>
+                                    <input type="radio" id="female" name="gender" value="female" checked={formData.gender === 'female'} onChange={handleChange} required /> Nữ
+                                </label>
                             </div>
                         </div>
                         <div className="form-group">

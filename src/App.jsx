@@ -2,7 +2,7 @@
 import React from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import InputUserInformation from './pages/InputUserInformation';
+import UserInformation from './pages/UserInformation';
 import Login from './pages/Login';
 import Layout from './components/Layout';
 import Cart from './pages/giohang';
@@ -13,7 +13,7 @@ import ProductInfo from './pages/ProductInfo';  // Import ProductInfo
 import CustomerForm from './pages/CustomerForm';
 import PaymentResult from './pages/PaymentResult';
 import OrderHistory from './pages/OrderHistory';
-import './App.css'; 
+import './App.css';
 
 
 function App() {
@@ -32,7 +32,7 @@ const LayoutWrapper = () => (
   <Layout>
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/input" element={<InputUserInformation />} />
+      <Route path="/userInformation" element={<UserInformation />} />
       <Route path="/pay" element={<Pay />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/momo-payment/:amount" element={<MoMoPaymentPage />} />
