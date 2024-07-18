@@ -56,11 +56,14 @@ input[type="file"]{
 .gender-options {
     display: flex;
     justify-content: space-around;
+    align-items: center; /* Thêm dòng này để căn giữa theo chiều dọc */
     color: #000000; /* Đặt màu văn bản thành đen để đảm bảo nút radio hiển thị */
 }
 
 .gender-options label {
     font-weight: normal;
+    display: flex; /* Thêm dòng này để hiển thị inline các thành phần con */
+    align-items: center; /* Căn giữa theo chiều dọc các thành phần con */
     color: #000000; /* Đặt màu văn bản thành đen để đảm bảo nút radio hiển thị */
 }
 
@@ -124,3 +127,7 @@ button[type="submit"]:hover {
     justify-content: center;;
 }
 
+.label-gender {
+    background-color: #ffffff;
+    color: #000000;
+}

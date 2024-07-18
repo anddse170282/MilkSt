@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchMilks, fetchMilkTypes } from '../api/milkService'; 
-import { getAllBrands } from '../api/brandService'; 
+import { fetchMilks, fetchMilkTypes } from '../api/milkService';
+import { getAllBrands } from '../api/brandService';
 import { useLocation } from 'react-router-dom';
 import '../css/searchpage.css';
 
@@ -45,7 +45,7 @@ const SearchPage = () => {
     const search = params.get('search');
     const milkTypeId = params.get('milkTypeId');
     setKeyword(search || '');
-    
+
     if (milkTypeId) {
       setFilters((prevFilters) => ({
         ...prevFilters,
