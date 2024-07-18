@@ -15,13 +15,17 @@
 
 
 
+
+
+
 .product-info .container {
   text-align: center;
   background-color: #e3c1d1;
-  border-radius: 10px;
+  border-radius: 8px 8px 0 0;
   padding: 20px;
   height: auto;
 }
+
 
 .product-info form {
   text-align: center;
@@ -32,10 +36,12 @@
   width: 600px;
 }
 
+
 .product-info h2 {
   font-size: 24px;
   margin-bottom: 20px;
 }
+
 
 .product-info .form-section {
   display: flex;
@@ -45,27 +51,32 @@
   height: 100%;
 }
 
+
 .product-info .form-content {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
+
 .product-info .form-left,
 .product-info .form-right {
   width: 48%;
 }
+
 
 .product-info .form-group {
   margin-bottom: 15px;
   text-align: left;
 }
 
+
 .product-info .form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
+
 
 .product-info input[type="text"],
 .product-info input[type="tel"],
@@ -78,14 +89,17 @@
   box-sizing: border-box;
 }
 
+
 .product-info .gender-options {
   display: flex;
   justify-content: space-around;
 }
 
+
 .product-info .gender-options label {
   font-weight: normal;
 }
+
 
 .product-info .quantity-wrapper {
   display: flex;
@@ -93,6 +107,7 @@
   justify-content: left;
   gap: 0px;
 }
+
 
 .product-info .quantity-container {
   background-color: #ff69b4;
@@ -114,6 +129,7 @@
   margin-left: 20px;
 }
 
+
 .product-info .buy-now-btn {
   padding: 10px 20px;
   color: #fff;
@@ -127,9 +143,11 @@
   margin-left: 10px;
 }
 
+
 .product-info .buy-now-btn:hover {
   background-color: #f0a9a9;
 }
+
 
 .product-info .form-group p {
   font-size: 12px;
@@ -137,12 +155,14 @@
   margin-top: 5px;
 }
 
+
 .product-info div.center {
   display: flex;
   justify-content: center;
   margin-top: 20px;
   padding: 20px;
 }
+
 
 .product-info .header-section {
   background-image: url('blackgroup.jpg');
@@ -153,11 +173,13 @@
   padding: 0%;
 }
 
+
 .product-info .image-upload {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 
 .product-info .image-placeholder {
   width: 100px;
@@ -173,29 +195,36 @@
 }
 
 
+
+
 .product-info .text-center h2 {
   font-weight: bold;
 }
+
 
 .product-info .h4 {
   font-size: 2rem;
   color: #333;
 }
 
+
 .product-info .text-muted {
   font-size: 1rem;
   color: #888;
 }
+
 
 .product-info .btn-outline-primary,
 .product-info .btn-outline-secondary {
   margin: 10px;
 }
 
+
 .product-info .btn-warning {
   margin: 5px;
   color: #fff;
 }
+
 
 .product-info .list-group-item {
   margin-bottom: 15px;
@@ -205,45 +234,55 @@
   background-color: #fff;
 }
 
+
 .product-info .list-group-item h5 {
+  text-align: left;
+  padding-bottom: 10px;
   font-size: 1.25rem;
   font-weight: bold;
 }
+
 
 .product-info .list-group-item small {
   color: #aaa;
 }
 
+
 .product-info .list-group-item .text-warning {
   font-size: 1.5rem;
 }
+
 
 .product-info .list-group-item p {
   margin-top: 10px;
 }
 
+
 .product-info .list-group-item img {
-  width: 100px;
-  height: 100px;
   object-fit: cover;
 }
+
 
 .product-info .form-group {
   margin-top: 0;
 }
 
+
 .product-info textarea#comment {
   height: 100px;
 }
+
 
 .product-info .btn-primary {
   background-color: #007bff;
   border: none;
 }
 
+
 .product-info .btn-primary:hover {
   background-color: #0056b3;
 }
+
 
 /* Align the buttons horizontally */
 .product-info .d-flex.justify-content-center.mb-4 .btn {
@@ -254,22 +293,26 @@
   height: fit-content;
 }
 
+
 .product-info .modal-dialog {
   max-width: 600px;
   /* Adjust the max-width if necessary */
   margin: 1.75rem auto;
 }
 
+
 .product-info .modal-content {
   padding: 20px;
   width: fit-content;
 }
+
 
 .product-info .modal-body {
   max-height: 500px;
   /* Adjust the max-height if necessary */
   max-width: fit-content;
 }
+
 
 .rating-00 {
   font-size: 36px;
@@ -278,6 +321,7 @@
   color: rgb(232, 62, 144);
 }
 
+
 .rating-05 {
   font-size: 25px;
   font-family: 'Arial', sans-serif;
@@ -285,18 +329,22 @@
   color: rgb(88, 84, 84);
 }
 
+
 .font-danhgia {
   font-size: 23px;
   font-family: 'Helvetica Neue', sans-serif;
   font-weight: bold;
 }
 
+
 .number-rating {
   font-family: 'Arial', sans-serif;
   font-size: 17px;
   font-weight: bold;
 
+
 }
+
 
 button.button-moinhat,
 button.button-cunhat {
@@ -316,6 +364,7 @@ button.button-cunhat {
   /* Hiệu ứng chuyển đổi màu */
 }
 
+
 button.button-moinhat:hover,
 button.button-cunhat:hover {
   background-color: white;
@@ -327,16 +376,21 @@ button.button-cunhat:hover {
 }
 
 
+
+
 .product-info .btn-warning {
   margin: 10px;
   color: #fff;
 }
 
 
+
+
 .ratingdang {
   width: 100px;
   text-align: right;
 }
+
 
 button.btn.btn-success:hover {
   background-color: white;
@@ -347,3 +401,105 @@ button.btn.btn-success:hover {
   /* Viền hồng khi hover */
 }
 
+
+.product-info .container-binhluan {
+  text-align: center;
+  background-color: #e3c1d1;
+  border-radius: 0 0 8px 8px;
+  padding: 20px;
+  height: auto;
+  gap: 16px;
+  max-width: 1320px;
+  display: flex;
+  margin: 0 auto;
+}
+
+
+
+
+.product-info .image-rating {
+  width: 100px;
+  height: 100px;
+  background-color: #d8702b;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #fff;
+}
+
+
+.fontname-rating {
+  font-weight: bold;
+  font-size: 17px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top : 10px;
+}
+
+
+input[type="radio"] {
+  display: none;
+}
+
+
+.star {
+  cursor: pointer;
+  font-size: 2rem;
+  margin: 5px;
+  
+}
+
+.stars {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.avatar {
+  width: 80px; /* Kích thước cố định cho avatar */
+  height: 80px; /* Kích thước cố định cho avatar */
+  border-radius: 50%; /* Để làm tròn hình ảnh */
+  object-fit: cover; /* Để đảm bảo hình ảnh được cắt đúng kích thước */
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  margin-right: 10px;
+}
+
+.comment-image {
+  width: 600px; /* Kích thước cố định cho hình ảnh bình luận */
+  height: 950px; /* Kích thước cố định cho hình ảnh bình luận */
+  object-fit: cover; /* Để đảm bảo hình ảnh được cắt đúng kích thước */
+}
+
+
+.star-on {
+	font-size: 1.3rem;
+  color: gold;
+}
+
+
+
+.custom-star {
+  font-size: 1.3rem;
+  color: #888; /* Màu xám cho ngôi sao ở trạng thái "start-off" */
+}
+
+.smalldate {
+  padding-left: 30px;
+}
+
+.fontbinhluan {
+  font-size: 17px;
+  font-family: Arial, Helvetica, sans-serif;
+  direction: ltr; /* Đảm bảo chữ hiển thị từ trái qua phải */
+  text-align: left;
+  margin-left: 92px;
+}
