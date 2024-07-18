@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import * as milkService from '../api/milkService';
 import * as brandService from '../api/brandService';
 import * as commentService from '../api/commentService';
+import * as userService from '../api/userService';
 import '../css/productInfo.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,11 +12,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 const ProductInfo = () => {
   const [product, setProduct] = useState({});
   const [brandName, setBrandName] = useState('');
-  const [quantity, setQuantity] = useState(1); // State to manage product quantity
+  const [quantity, setQuantity] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [showCommentForm, setShowCommentForm] = useState(false); // State to control comment form visibility
   const [reviews, setReviews] = useState([]);
+  const [user, setUser] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -39,6 +40,12 @@ const ProductInfo = () => {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem('user'));
+    console.log("User: ", user);
+    setUser(user);
+  }, []);
+
   const handleBuyNow = () => {
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
@@ -53,40 +60,52 @@ const ProductInfo = () => {
     console.log("Product added to cart:", product);
   };
 
-  useEffect(() => {
-    fetchReviews();
-  }, []);
-
   const fetchReviews = async () => {
     try {
       const response = await commentService.getComments(id);
-      setReviews(response);
+      const userPromises = response.map(async (comment) => {
+        const member = await userService.getMemberbyMemberId(comment.memberId);
+        const user = await userService.getUserByUserId(member.userId);
+        return {
+          ...comment,
+          userImage: user.profilePicture,
+          userName: user.userName
+        };
+      });
+
+      const reviewsWithUserImages = await Promise.all(userPromises);
+      console.log("Review: ", reviewsWithUserImages); 
+      setReviews(reviewsWithUserImages);
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post('API_URL_TO_POST_REVIEW', { rating, comment }); // Thay thế bằng URL API để gửi đánh giá
-  //     setReviews([response.data, ...reviews]);
-  //     setRating(0);
-  //     setComment('');
-  //     setShowCommentForm(false); // Hide the comment form after submission
-  //   } catch (error) {
-  //     console.error('Error submitting review:', error);
-  //   }
-  // };
+  useEffect(() => {
+    fetchReviews();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await commentService.postComment({ memberId: 1, milkId: id, content: comment, rate: rating });
-      setReviews([response.data, ...reviews]);
+      console.log("Sau setUser", user);
+      const member = await userService.getMemberByUserId(user[0].userId);
+      console.log("Member: ", member);
+  
+      const commentDetail = {
+        memberId: member[0].memberId,
+        content: comment,
+        rate: rating,
+        milkId: id
+      };
+  
+      console.log("Comment Detail:", commentDetail);
+  
+      const response = await commentService.addComments(commentDetail);
+      setReviews([response, ...reviews]);
       setRating(0);
       setComment('');
-      setShowCommentForm(false); // Hide the comment form after submission
+      fetchReviews();
     } catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -222,7 +241,7 @@ const ProductInfo = () => {
                   ></textarea>
                 </div>
                 <div className="ratingdang">
-                  <button type="submit" className="btn btn-success">Đăng</button>
+                  <button type="submit" className="btn btn-success" onClick={handleSubmit}>Đăng</button>
                 </div>
 
                 <div className="col-12 mb-4">
@@ -233,9 +252,9 @@ const ProductInfo = () => {
                         <div className="list-group-item col-md-10" key={index}>
                           <div className="d-flex w-100 justify-content-between align-items-center">
                             <div className="d-flex align-items-center">
-                              <img src={review.avatarUrl} alt={`Avatar của người dùng ${review.memberId}`} className="avatarnguoidung" />
+                              <img src={review.userImage} alt={`Avatar của người dùng ${review.memberId}`} className="avatarnguoidung" />
                               <div className="ml-2">
-                                <h5 className="mb-1">Người dùng {review.memberId}</h5>
+                                <h5 className="mb-1">{review.userName}</h5>
                                 <div className="d-flex align-items-center">
                                   <div className="stars">
                                     {[...Array(5)].map((_, i) => (

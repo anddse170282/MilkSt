@@ -270,6 +270,7 @@
 
 .product-info textarea#comment {
   height: 100px;
+  width: 84%;
 }
 
 
@@ -296,21 +297,17 @@
 
 .product-info .modal-dialog {
   max-width: 600px;
-  /* Adjust the max-width if necessary */
   margin: 1.75rem auto;
 }
 
 
 .product-info .modal-content {
   padding: 20px;
-  width: fit-content;
 }
 
 
 .product-info .modal-body {
   max-height: 500px;
-  /* Adjust the max-height if necessary */
-  max-width: fit-content;
 }
 
 
