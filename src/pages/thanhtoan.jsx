@@ -85,21 +85,21 @@ const Invoice = () => {
     console.log('Form submitted');
   };
 
-  const handleClick = (e, change) => {
+  const handleClick = (e) => {
     e.preventDefault();
-    if (change === "pay") {
       let orders = JSON.parse(sessionStorage.getItem('orders'));
-
       if (!Array.isArray(orders)) {
         orders = [];
       }
       orders.push(dataOrder);
       sessionStorage.setItem('orders', JSON.stringify(orders));
       navigate(`/momo-payment/${dataOrder.amount}`);
-    } else {
-      navigate("/cart");
-    }
   };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate("/cart");
+  }
 
   const formatPrice = (price) => {
     if (typeof price !== 'number') {
@@ -171,7 +171,7 @@ const Invoice = () => {
             <button type="button" className="pay-button" onClick={handleClick}>
               Thanh toán
             </button>
-            <button type="button" className="pay-button" onClick={handleClick}>
+            <button type="button" className="pay-button" onClick={handleCancel}>
               Hủy
             </button>
           </div>
