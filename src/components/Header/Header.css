@@ -169,19 +169,27 @@ body {
 }
 
 .avatar {
-  width: 25px;
-  height: 25px;
+  width: 50px;
+  height: 50px;
   cursor: pointer;
   border-radius: 50%;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-top-width: 2px;
+  border-top-style: solid;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  left: -150px;
+  left: -120px;
   background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   border-radius: 5px;
   overflow: hidden;
