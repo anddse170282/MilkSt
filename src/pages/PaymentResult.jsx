@@ -24,12 +24,15 @@ const PaymentResult = () => {
   useEffect(() => {
     const fetchVoucher = async () => {
       const storedOrder = JSON.parse(sessionStorage.getItem('orders'));
+      console.log('Stored Order:', storedOrder);
 
       if (storedOrder && storedOrder.length > 0) {
         const currentOrder = storedOrder[0];
+        console.log('Current Order:', currentOrder);
 
         try {
           const voucherData = await voucherService.getVouchersById(currentOrder.voucherId);
+          console.log('Voucher Data:', voucherData);
 
           if (voucherData) {
             const voucher = voucherData;
@@ -45,6 +48,8 @@ const PaymentResult = () => {
               };
               await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
               sessionStorage.removeItem('orders');
+              sessionStorage.removeItem('cart');
+              console.log('Orders and cart removed from session storage');
             }
           }
         } catch (error) {
@@ -53,10 +58,8 @@ const PaymentResult = () => {
       }
     };
 
-    if (paymentStatus !== null) {
-      fetchVoucher();
-    }
-  }, [paymentStatus]);
+    fetchVoucher();
+  }, [paymentStatus]); // Thêm paymentStatus vào dependency array để useEffect chạy lại khi paymentStatus thay đổi
 
   return (
     <div>
