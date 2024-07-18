@@ -233,7 +233,7 @@ const ProductInfo = () => {
                         <div className="list-group-item col-md-10" key={index}>
                           <div className="d-flex w-100 justify-content-between align-items-center">
                             <div className="d-flex align-items-center">
-                              <img src={review.avatarUrl} alt={`Avatar của người dùng ${review.memberId}`} className="avatar" />
+                              <img src={review.avatarUrl} alt={`Avatar của người dùng ${review.memberId}`} className="avatarnguoidung" />
                               <div className="ml-2">
                                 <h5 className="mb-1">Người dùng {review.memberId}</h5>
                                 <div className="d-flex align-items-center">

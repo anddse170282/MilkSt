@@ -457,7 +457,7 @@ input[type="radio"] {
   justify-content: flex-start;
 }
 
-.avatar {
+.avatarnguoidung {
   width: 80px; /* Kích thước cố định cho avatar */
   height: 80px; /* Kích thước cố định cho avatar */
   border-radius: 50%; /* Để làm tròn hình ảnh */
