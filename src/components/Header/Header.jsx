@@ -44,7 +44,9 @@ const Header = () => {
     const encodedString = encodeURIComponent(string);
     navigate(`/search-page?search=${encodedString}`);
   };
-
+  const handleMilkTypeClick = (milkTypeId) => {
+    navigate(`/search-page?milkTypeId=${milkTypeId}`);
+  };
   return (
     <header className="header">
       <div className="logo-container">
@@ -124,13 +126,13 @@ const Header = () => {
               <a href="/">Trang chủ</a>
             </li>
             <li>
-              <a href="/">Sữa bột</a>
+              <a href="#" onClick={() => handleMilkTypeClick(1)}>Sữa bột</a>
             </li>
             <li>
-              <a href="/">Sữa tươi</a>
+              <a href="#" onClick={() => handleMilkTypeClick(2)}>Sữa tươi</a>
             </li>
             <li>
-              <a href="/">Sữa chua</a>
+              <a href="#" onClick={() => handleMilkTypeClick(3)}>Sữa chua</a>
             </li>
             <li>
               <a href="/">Sữa hạt dinh dưỡng</a>

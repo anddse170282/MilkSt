@@ -39,11 +39,24 @@ const SearchPage = () => {
     fetchFiltersData();
   }, []);
 
-  // Extract keyword from URL query parameters
+  // Extract keyword and milkTypeId from URL query parameters and update filters
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get('search');
+    const milkTypeId = params.get('milkTypeId');
     setKeyword(search || '');
+    
+    if (milkTypeId) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        milkType: [milkTypeId],
+      }));
+    } else {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        milkType: [],
+      }));
+    }
   }, [location.search]);
 
   // Fetch products when keyword, page, sortOption, or filters change
@@ -61,6 +74,13 @@ const SearchPage = () => {
 
       if (keyword) {
         params.filter = keyword;
+      }
+
+      if (!keyword && !filters.milkType.length) {
+        // Nếu không có keyword và milkType thì không fetch
+        setProducts([]);
+        setLoading(false);
+        return;
       }
 
       if (sortOption === 'tất cả') {
@@ -85,7 +105,9 @@ const SearchPage = () => {
 
   // Trigger fetchProducts when keyword, page, sortOption, or filters change
   useEffect(() => {
-    fetchProducts();
+    if (keyword || filters.milkType.length) {
+      fetchProducts();
+    }
   }, [keyword, page, sortOption, filters, fetchProducts]);
 
   const handleFilterChange = (category, value) => {
@@ -133,6 +155,7 @@ const SearchPage = () => {
                 <input
                   type="checkbox"
                   value={milkType.milkTypeId}
+                  checked={filters.milkType.includes(milkType.milkTypeId)}
                   onChange={() => handleFilterChange('milkType', milkType.milkTypeId)}
                 />
                 {milkType.typeName}
