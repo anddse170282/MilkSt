@@ -18,8 +18,10 @@ const PaymentResult = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    return moment(dateString).format('YYYY-MM-DD');
-  };
+    return moment(dateString, 'DD/MM/YYYY HH:mm:ss').isValid() ? moment(dateString, 'DD/MM/YYYY HH:mm:ss').toISOString() : 'Invalid date';
+};
+
+
 
   useEffect(() => {
     const fetchVoucher = async () => {
@@ -36,6 +38,8 @@ const PaymentResult = () => {
 
           if (voucherData) {
             const voucher = voucherData;
+            console.log('Start Date: ', voucher.startDate);
+            console.log('End Date: ', voucher.endDate);
             if (paymentStatus === '0') {
               voucher.quantity -= 1;
               const voucherDetail = {
