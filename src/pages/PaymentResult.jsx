@@ -18,10 +18,10 @@ const PaymentResult = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    return moment(dateString, 'DD/MM/YYYY HH:mm:ss').isValid() ? moment(dateString, 'DD/MM/YYYY HH:mm:ss').toISOString() : 'Invalid date';
+    const formats = ['M/D/YYYY h:mm:ss A', 'M/D/YYYY H:mm:ss'];
+    const date = moment(dateString, formats, true);
+    return date.isValid() ? date.toISOString() : 'Invalid date';
 };
-
-
 
   useEffect(() => {
     const fetchVoucher = async () => {
