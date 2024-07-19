@@ -1,77 +1,99 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from '../firebase.config';
+import * as userService from '../api/userService';
 import '../css/customerinformation.css';
 
 function UserInformationForm() {
+    const [imagePreview, setImagePreview] = useState(null);
+    const [user, setUser] = useState([]);
     const [formData, setFormData] = useState({
-        name: '',
+        userName: '',
         phone: '',
-        dob: '',
+        dateOfBirth: '',
         gender: '',
         address: '',
-        image: null
+        profilePicture: null
     });
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         const userArray = JSON.parse(sessionStorage.getItem('user'));
-        const user = userArray && userArray[0];  // Truy cập phần tử đầu tiên của mảng
-
+        const user = userArray && userArray[0];
+        setUser(user);
+        setImagePreview(user.profilePicture);
         console.log("User data from sessionStorage:", user);
 
         if (user) {
             console.log("Updating formData with user data...");
             setFormData({
-                name: user.userName || '',
+                userName: user.userName || '',
                 phone: user.phone || '',
-                dob: user.dateOfBirth || '',
+                dateOfBirth: user.dateOfBirth || '',
                 gender: user.gender || '',
                 address: user.address || '',
-                image: user.profilePicture || null
+                profilePicture: user.profilePicture || null
             });
         }
     }, []);
-
-    useEffect(() => {
-        console.log("Form data after update:", formData);
-    }, [formData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleFileChange = (e) => {
+    const handleImageChange = (e) => {
         const file = e.target.files[0];
-        setFormData(prev => ({ ...prev, image: file }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formDataToSubmit = { ...formData };
-
-        if (formData.image) {
+        if (file) {
             const reader = new FileReader();
             reader.onloadend = () => {
-                formDataToSubmit.image = reader.result;
-                submitData(formDataToSubmit);
+                setImagePreview(reader.result);
             };
-            reader.readAsDataURL(formData.image);
+            reader.readAsDataURL(file);
+            setFormData((prevFormData) => ({ ...prevFormData, profilePicture: file }));
         } else {
-            submitData(formDataToSubmit);
+            setImagePreview(null);
+            setFormData((prevFormData) => ({ ...prevFormData, profilePicture: null }));
         }
     };
 
-    const submitData = (data) => {
-        fetch('https://localhost:7188/api/users', {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json'
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { userName, phone, dateOfBirth, gender, address, profilePicture } = formData;
+        console.log('Form data before submit:', formData);
+
+        if (userName && phone && dateOfBirth && gender && address && profilePicture) {
+            try {
+                const imageName = `${phone}`;
+                const imageRef = ref(storage, `UserImage/${imageName}`);
+
+                await uploadBytes(imageRef, profilePicture);
+                const imageUrl = await getDownloadURL(imageRef);
+
+                const userData = {
+                    ...formData,
+                    dateOfBirth: new Date(dateOfBirth).toISOString(),
+                    profilePicture: imageUrl
+                };
+
+                // Log userData to check structure before sending
+                console.log('Sending user data:', userData);
+                const updateUser = await userService.updateUser(user.userId, userData);
+
+                
+                console.log("Update success: ", updateUser);
+
+                sessionStorage.setItem('user', JSON.stringify([{...formData, dateOfBirth: dateOfBirth, profilePicture: imageUrl}]));
+
+                setIsEditing(false);
             }
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error:', error));
+            catch (error) {
+                console.error('Error update user:', error);
+            }
+        }
+        else {
+            console.log('Please fill out all fields');
+        }
     };
 
     const handleEditClick = () => {
@@ -85,14 +107,19 @@ function UserInformationForm() {
         const user = userArray && userArray[0];
         if (user) {
             setFormData({
-                name: user.userName || '',
+                userName: user.userName || '',
                 phone: user.phone || '',
-                dob: user.dateOfBirth || '',
+                dateOfBirth: user.dateOfBirth || '',
                 gender: user.gender || '',
                 address: user.address || '',
-                image: user.profilePicture || null
+                profilePicture: user.profilePicture || null
             });
         }
+    };
+
+    const isFormValid = () => {
+        const { userName, phone, dateOfBirth, gender, address, profilePicture } = formData;
+        return userName && phone && dateOfBirth && gender && address && profilePicture;
     };
 
     return (
@@ -105,10 +132,10 @@ function UserInformationForm() {
                             <label htmlFor="name">Ba/Mẹ</label>
                             <input
                                 type="text"
-                                id="name"
-                                name="name"
+                                id="userName"
+                                name="userName"
                                 placeholder="Nguyễn A"
-                                value={formData.name}
+                                value={formData.userName}
                                 required
                                 onChange={handleChange}
                                 disabled={!isEditing}
@@ -131,10 +158,10 @@ function UserInformationForm() {
                             <label htmlFor="dob">Ngày sinh</label>
                             <input
                                 type="text"
-                                id="dob"
-                                name="dob"
+                                id="dateOfBirth"
+                                name="dateOfBirth"
                                 placeholder="01/01/1999"
-                                value={formData.dob}
+                                value={formData.dateOfBirth}
                                 required
                                 onChange={handleChange}
                                 disabled={!isEditing}
@@ -148,8 +175,8 @@ function UserInformationForm() {
                                         type="checkbox"
                                         id="male"
                                         name="gender"
-                                        value="male"
-                                        checked={formData.gender === 'male'}
+                                        value="Nam"
+                                        checked={formData.gender === 'Nam'}
                                         onChange={handleChange}
                                         disabled={!isEditing}
                                     /> Nam
@@ -159,8 +186,8 @@ function UserInformationForm() {
                                         type="checkbox"
                                         id="female"
                                         name="gender"
-                                        value="female"
-                                        checked={formData.gender === 'female'}
+                                        value="Nữ"
+                                        checked={formData.gender === 'Nữ'}
                                         onChange={handleChange}
                                         disabled={!isEditing}
                                     /> Nữ
@@ -186,13 +213,18 @@ function UserInformationForm() {
                         <div className="form-group">
                             <label htmlFor="image">Chọn ảnh</label>
                             <div className="image-upload">
-                                <div className="image-placeholder">IMG</div>
+                                <div className="image-placeholder">{imagePreview ? (
+                                    <img src={imagePreview} alt="Selected" className="image-preview" />
+                                ) : (
+                                    "IMG"
+                                )}
+                                </div>
                                 <input
                                     type="file"
                                     id="image"
                                     name="image"
                                     accept=".jpeg, .jpg, .png"
-                                    onChange={handleFileChange}
+                                    onChange={handleImageChange}
                                     disabled={!isEditing}
                                 />
                             </div>
@@ -202,7 +234,7 @@ function UserInformationForm() {
                 </div>
                 {isEditing ? (
                     <>
-                        <button type="submit">Sửa</button>
+                        <button type="button" onClick={handleSubmit} disabled={!isFormValid()}>Xác Nhận</button>
                         <button type="button" onClick={handleCancelClick}>Hủy</button>
                     </>
                 ) : (
