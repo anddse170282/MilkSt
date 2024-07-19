@@ -9,9 +9,9 @@ import * as orderService from '../api/orderService';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [groupedCartItems, setGroupedCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [milks, setMilks] = useState([]);
   const [vouchers, setVouchers] = useState([]);
@@ -41,28 +41,51 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    // Retrieve cart items from session storage
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
     setCartItems(storedCart);
   }, []);
 
   useEffect(() => {
-    // Fetch milks from API
     milkService.getAllProducts()
       .then(response => setMilks(response))
       .catch(error => console.error('Error fetching milks:', error));
   }, []);
 
+  const isVoucherUsable = (voucher) => {
+    const currentDate = new Date();
+    const endDate = new Date(voucher.endDate);
+    return currentDate <= endDate && voucher.quantity > 0;
+  };
+
   useEffect(() => {
-    // Fetch vouchers from API
     voucherService.getAllVouchers()
-      .then(response => setVouchers(response))
+      .then(response => {
+        const validVouchers = response.filter(voucher => isVoucherUsable(voucher));
+        setVouchers(validVouchers);
+      })
       .catch(error => console.error('Error fetching vouchers:', error));
   }, []);
 
   useEffect(() => {
+    updateGroupedItems();
+  }, [cartItems]);
+
+  useEffect(() => {
     updateTotals();
-  }, [cartItems, selectedVoucher]);
+  }, [groupedCartItems, selectedVoucher]);
+
+  const updateGroupedItems = () => {
+    const grouped = cartItems.reduce((acc, item) => {
+      const key = item.milkId;
+      if (!acc[key]) {
+        acc[key] = { ...item, quantity: 0 };
+      }
+      acc[key].quantity += item.quantity;
+      return acc;
+    }, {});
+
+    setGroupedCartItems(Object.values(grouped));
+  };
 
   const getDiscountAmount = (voucher) => {
     if (!voucher) return 0;
@@ -71,7 +94,7 @@ const Cart = () => {
 
   const updateTotals = () => {
     let newSubtotal = 0;
-    cartItems.forEach(item => {
+    groupedCartItems.forEach(item => {
       if (item.selected) {
         const product = getProductById(item.milkId);
         if (product) {
@@ -84,17 +107,24 @@ const Cart = () => {
 
   const handleItemChange = (index, field, value) => {
     const newCartItems = [...cartItems];
-    newCartItems[index][field] = value;
+    const groupedIndex = cartItems.findIndex(item => item.milkId === groupedCartItems[index].milkId);
+    newCartItems[groupedIndex][field] = value;
     setCartItems(newCartItems);
     sessionStorage.setItem('cart', JSON.stringify(newCartItems));
+    updateGroupedItems();
     updateTotals();
   };
 
   const handleDeleteItem = (index) => {
-    const newCartItems = [...cartItems];
-    newCartItems.splice(index, 1);
+    // Xác định sản phẩm cần xoá từ groupedCartItems
+    const productToDelete = groupedCartItems[index];
+    // Tạo danh sách mới loại bỏ sản phẩm cần xoá
+    const newCartItems = cartItems.filter(item => item.milkId !== productToDelete.milkId);
     setCartItems(newCartItems);
+    // Cập nhật lại session storage
     sessionStorage.setItem('cart', JSON.stringify(newCartItems));
+    // Cập nhật lại danh sách sản phẩm đã nhóm và tổng tiền
+    updateGroupedItems();
     updateTotals();
   };
 
@@ -103,10 +133,11 @@ const Cart = () => {
   };
 
   const handleVoucherClick = (voucher) => {
-    setSelectedVoucher(voucher);
-    setShowVoucherModal(false);
+    if (isVoucherUsable(voucher)) {
+      setSelectedVoucher(voucher);
+      setShowVoucherModal(false);
+    }
   };
-
 
   const handleDeleteVoucher = (voucherTitle) => {
     if (selectedVoucher && selectedVoucher.title === voucherTitle) {
@@ -152,7 +183,7 @@ const Cart = () => {
   const formatPrice = (amount) => {
     const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     return formatted.replace(/\./g, ' ');
-};
+  };
 
   const discount = selectedVoucher ? getDiscountAmount(selectedVoucher) : 0;
   const result = subtotal - discount;
@@ -173,9 +204,11 @@ const Cart = () => {
                           const selected = e.target.checked;
                           const newCartItems = cartItems.map(item => ({ ...item, selected }));
                           setCartItems(newCartItems);
+                          sessionStorage.setItem('cart', JSON.stringify(newCartItems));
+                          updateGroupedItems();
                           updateTotals();
                         }}
-                      />    ALL
+                      />
                     </th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
@@ -184,7 +217,7 @@ const Cart = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item, index) => {
+                  {groupedCartItems.map((item, index) => {
                     const product = getProductById(item.milkId);
                     return (
                       <tr key={index}>
@@ -210,10 +243,10 @@ const Cart = () => {
                           />
                         </td>
                         <td>
-                          {product ? formatPrice(product.price) : 'Không xác định'} ₫
+                          {product ? formatPrice(product.price) : 'Không xác định'}
                         </td>
                         <td>
-                          <button className="delete-btn " onClick={() => handleDeleteItem(index)}><i class="biicon bi bi-trash"></i></button>
+                          <button className="delete-btn" onClick={() => handleDeleteItem(index)}><i className="bi bi-trash"></i></button>
                         </td>
                       </tr>
                     );
@@ -221,17 +254,16 @@ const Cart = () => {
                 </tbody>
               </table>
             </table>
-
           </div>
           <div className="cart-summary col-md-2">
             <div className='col'>
               <button className="button-uudai" onClick={() => setShowVoucherModal(true)}>Voucher ưu đãi</button>
             </div>
-            <p>Tiền phụ: <span>{formatPrice(subtotal)} ₫</span></p>
+            <p>Tiền phụ: <span>{formatPrice(subtotal)}</span></p>
             {selectedVoucher && (
-              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}%     -  </span><button className="icon-delete-voucher" onClick={() => handleDeleteVoucher(selectedVoucher.title)}>X</button></p>
+              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}% - </span><button className="icon-delete-voucher" onClick={() => handleDeleteVoucher(selectedVoucher.title)}>X</button></p>
             )}
-            <p className="total">Thành Tiền: <span>{formatPrice(result)} ₫ </span></p>
+            <p className="total">Thành Tiền: <span>{formatPrice(result)}</span></p>
             <button className="button-uudai" onClick={handleSubmitClick}>Xác nhận giỏ hàng</button>
           </div>
         </div>
@@ -242,34 +274,29 @@ const Cart = () => {
           <Modal.Title>Chọn Voucher</Modal.Title>
         </Modal.Header>
         <Modal.Body className="modal-body-scrollable">
-          <div class="d-block w-100">
+          <div className="d-block w-100">
             <ul className="voucher-list">
               {vouchers.map(voucher => (
-                <li key={voucher.voucherId} onClick={() => handleVoucherClick(voucher)}>
-                  <div className="d-flex justify-content-between">
-                    {/* Column 1 */}
+                <li key={voucher.voucherId} onClick={() => isVoucherUsable(voucher) && handleVoucherClick(voucher)}>
+                  <div className={`d-flex justify-content-between ${isVoucherUsable(voucher) ? '' : 'expired'}`}>
                     <div className="col-3 TenGiamGia">
                       <span className="FontTenGiamGia">{voucher.title}</span>
                     </div>
-
-                    {/* Column 2 */}
                     <div className="col-7 detail">
-                      <div className="TatCa">Tất cả sản phẩm </div>
+                      <div className="TatCa">Tất cả sản phẩm</div>
                       <div className="TuNgay">HSD: {voucher.startDate} - {voucher.endDate}</div>
                       <div className="SoLuong">Số lượng: <span className="SoLuong2"> {voucher.quantity}</span></div>
                     </div>
-
-                    {/* Column 3 */}
                     <div className="col-2 tickcheck">
                       <Form.Check
                         type="radio"
                         name="voucher"
                         checked={selectedVoucher && selectedVoucher.voucherId === voucher.voucherId}
                         onChange={() => handleVoucherClick(voucher)}
+                        disabled={!isVoucherUsable(voucher)}
                       />
                     </div>
                   </div>
-
                 </li>
               ))}
             </ul>
@@ -283,7 +310,6 @@ const Cart = () => {
             <div className="button-OK">OK</div>
           </Button>
         </Modal.Footer>
-
       </Modal>
     </>
   );
