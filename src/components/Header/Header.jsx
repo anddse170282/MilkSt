@@ -16,7 +16,7 @@ const Header = () => {
     setIsLoggedIn(loggedIn);
     if (loggedIn) {
       const storedUser = JSON.parse(sessionStorage.getItem('user'));
-      setUser(storedUser);
+      setUser(storedUser[0]);
     }
   }, []);
 
@@ -77,8 +77,7 @@ const Header = () => {
           <div className="dropdown">
             {isLoggedIn ? (
               <>
-                <img src={user?.profilePicture} width="25" height="25" className="avatar" onClick={toggleDropdown} />
-                <span>{user?.userName}</span>
+                <img src={user.profilePicture} width="25" height="25" className="avatar" onClick={toggleDropdown} />
                 {isDropdownOpen && (
                   <div className="dropdown-content">
                     <a href="/userInformation">Tài Khoản Của Tôi</a>
@@ -89,7 +88,7 @@ const Header = () => {
                 )}
               </>
             ) : (
-              <button onClick={handleLoginClick}>Đăng Nhập</button>
+              <button className='login-button' onClick={handleLoginClick}>Đăng Nhập</button>
             )}
           </div>
         </div>
