@@ -19,11 +19,21 @@
 
 
 .product-info .container {
+
   text-align: center;
-  background-color: #e3c1d1;
   border-radius: 8px 8px 0 0;
   padding: 20px;
   height: auto;
+  border-right-width: 5px;
+  border-right-style: solid;
+  border-bottom-width: 5px;
+  border-bottom-style: solid;
+  border-left-width: 5px;
+  border-left-style: solid;
+  border-top-width: 5px;
+  border-top-style: solid;
+  border-color: #e3c1d1;
+  background-color: #ffffff;
 }
 
 
@@ -232,6 +242,17 @@
   border-radius: 5px;
   padding: 15px;
   background-color: #fff;
+
+  border-right-width: 5px;
+  border-right-style: solid;
+  border-bottom-width: 5px;
+  border-bottom-style: solid;
+  border-left-width: 5px;
+  border-left-style: solid;
+  border-top-width: 5px;
+  border-top-style: solid;
+  border-color: #e3c1d1;
+  
 }
 
 
@@ -269,8 +290,17 @@
 
 
 .product-info textarea#comment {
+  border-right-width: 5px;
+  border-right-style: solid;
+  border-bottom-width: 5px;
+  border-bottom-style: solid;
+  border-left-width: 5px;
+  border-left-style: solid;
+  border-top-width: 5px;
+  border-top-style: solid;
+  border-color: #e3c1d1;
   height: 100px;
-  width: 84%;
+  width: 83.5%;
 }
 
 
@@ -297,6 +327,7 @@
 
 .product-info .modal-dialog {
   max-width: 600px;
+  /* Adjust the max-width if necessary */
   margin: 1.75rem auto;
 }
 
@@ -308,6 +339,7 @@
 
 .product-info .modal-body {
   max-height: 500px;
+  /* Adjust the max-height if necessary */
 }
 
 
@@ -386,6 +418,7 @@ button.button-cunhat:hover {
 .ratingdang {
   width: 100px;
   text-align: right;
+  
 }
 
 
@@ -432,7 +465,7 @@ button.btn.btn-success:hover {
   font-weight: bold;
   font-size: 17px;
   font-family: Arial, Helvetica, sans-serif;
-  margin-top : 10px;
+  margin-top: 10px;
 }
 
 
@@ -445,7 +478,7 @@ input[type="radio"] {
   cursor: pointer;
   font-size: 2rem;
   margin: 5px;
-  
+
 }
 
 .stars {
@@ -455,10 +488,14 @@ input[type="radio"] {
 }
 
 .avatarnguoidung {
-  width: 80px; /* Kích thước cố định cho avatar */
-  height: 80px; /* Kích thước cố định cho avatar */
-  border-radius: 50%; /* Để làm tròn hình ảnh */
-  object-fit: cover; /* Để đảm bảo hình ảnh được cắt đúng kích thước */
+  width: 80px;
+  /* Kích thước cố định cho avatar */
+  height: 80px;
+  /* Kích thước cố định cho avatar */
+  border-radius: 50%;
+  /* Để làm tròn hình ảnh */
+  object-fit: cover;
+  /* Để đảm bảo hình ảnh được cắt đúng kích thước */
   border-right-style: solid;
   border-right-width: 1px;
   border-top-width: 1px;
@@ -471,14 +508,17 @@ input[type="radio"] {
 }
 
 .comment-image {
-  width: 600px; /* Kích thước cố định cho hình ảnh bình luận */
-  height: 950px; /* Kích thước cố định cho hình ảnh bình luận */
-  object-fit: cover; /* Để đảm bảo hình ảnh được cắt đúng kích thước */
+  width: 600px;
+  /* Kích thước cố định cho hình ảnh bình luận */
+  height: 950px;
+  /* Kích thước cố định cho hình ảnh bình luận */
+  object-fit: cover;
+  /* Để đảm bảo hình ảnh được cắt đúng kích thước */
 }
 
 
 .star-on {
-	font-size: 1.3rem;
+  font-size: 1.3rem;
   color: gold;
 }
 
@@ -486,7 +526,8 @@ input[type="radio"] {
 
 .custom-star {
   font-size: 1.3rem;
-  color: #888; /* Màu xám cho ngôi sao ở trạng thái "start-off" */
+  color: #888;
+  /* Màu xám cho ngôi sao ở trạng thái "start-off" */
 }
 
 .smalldate {
@@ -496,7 +537,15 @@ input[type="radio"] {
 .fontbinhluan {
   font-size: 17px;
   font-family: Arial, Helvetica, sans-serif;
-  direction: ltr; /* Đảm bảo chữ hiển thị từ trái qua phải */
+  direction: ltr;
+  /* Đảm bảo chữ hiển thị từ trái qua phải */
   text-align: left;
   margin-left: 92px;
+}
+
+
+.chitietsanpham {
+  font-size: 24px;
+  margin-bottom: 30px;
+  margin-left: 9%;
 }

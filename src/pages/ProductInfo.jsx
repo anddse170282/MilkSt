@@ -156,17 +156,13 @@ const ProductInfo = () => {
             </div>
           </div>
         </div>
-
         <div className="col-mt-7">
+
           <div className="row" style={{ paddingLeft: '10%' }}>
+          <th><h4 className="chitietsanpham">Chi tiết sản phẩm</h4></th>
+
             <div className="col-md-8 offset-md-1">
               <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th><h2>Chi tiết sản phẩm</h2></th>
-                    <th></th>
-                  </tr>
-                </thead>
                 <tbody>
                   <tr>
                     <td><h5>Tên sản phẩm:</h5></td>
