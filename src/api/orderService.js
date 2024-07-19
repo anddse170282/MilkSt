@@ -24,8 +24,8 @@ const createOrder = async (order) => {
       throw error;
     }
   };
-const updateOrder = async (order) => {
-    const response = await axios.put(`${API_URL}/orders/${order.orderId}`, order);
+const updateOrder = async (order, orderId) => {
+    const response = await axios.put(`${API_URL}/orders/${orderId}`, order);
     return response.data;
 }
 const deleteOrder = async (orderId) => {

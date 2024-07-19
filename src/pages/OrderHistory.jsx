@@ -7,48 +7,52 @@ import '../css/orderhistory.css';
 
 const OrderHistory = () => {
     const [orders, setOrders] = useState([]);
+    const [filteredOrders, setFilteredOrders] = useState([]);
     const [error, setError] = useState(null);
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [milkDetails, setMilkDetails] = useState({});
     const [checkUser, setCheckUser] = useState(true);
+    const [status, setStatus] = useState('');
 
     useEffect(() => {
         const fetchOrder = async () => {
-            const storedUser = JSON.parse(sessionStorage.getItem('user'));
-            if (storedUser && storedUser.length > 0) {
-                const currentUser = storedUser[0];
-                try {
-                    const memberData = await userService.getMemberByUserId(currentUser.userId);
-                    const response = await orderService.getOrderByMemberId(memberData[0].memberId);
-                    setOrders(Array.isArray(response) ? response : []);
-                } catch (error) {
-                    console.error('Error fetching member data:', error);
-                }
-            } else {
-                setCheckUser(false);
+            // const storedUser = JSON.parse(sessionStorage.getItem('user'));
+            // if (storedUser && storedUser.length > 0) {
+            // const currentUser = storedUser[0];
+            try {
+                // const memberData = await userService.getMemberByUserId(currentUser.userId);
+                // const response = await orderService.getOrderByMemberId(memberData[0].memberId);
+                const response = await orderService.getOrderByMemberId(10);
+                setOrders(Array.isArray(response) ? response : []);
+                setFilteredOrders(Array.isArray(response) ? response : []);
+            } catch (error) {
+                console.error('Error fetching member data:', error);
             }
+            // } else {
+            // setCheckUser(false);
+            // }
         };
         fetchOrder();
     }, []);
 
-    useEffect(() => {
-        if (!checkUser) {
-            window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
-        }
-    }, [checkUser]);
+    // useEffect(() => {
+    //     if (!checkUser) {
+    //         window.location.href = '/login';
+    //     }
+    // }, [checkUser]);
 
-    const handleRowClick = async (orderId) => {
+    const handleRowClick = async (orderId, status) => {
         if (selectedOrderId === orderId) {
             setSelectedOrder(null);
             setSelectedOrderId(null);
         } else {
             try {
                 const response = await orderDetailService.getOrderDetailsByOrderId(orderId);
-                console.log("Order Detail: ", response);
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
-
+                setStatus(status);
+                
                 const milkDetailsMap = {};
                 await Promise.all(response.map(async (item) => {
                     if (item.milkId && !milkDetailsMap[item.milkId]) {
@@ -64,11 +68,32 @@ const OrderHistory = () => {
         }
     };
 
-    const formatPrice = (price) => {
-        if (typeof price !== 'number') {
-            return 'Invalid price';
+    const formatPrice = (amount) => {
+        const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        return formatted;
+    };
+
+    const handleFilterChange = (status) => {
+        if (status) {
+            setFilteredOrders(orders.filter(order => order.orderStatus === status));
+        } else {
+            setFilteredOrders(orders);
         }
-        return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
+    const handleCancelOrder = async () => {
+        if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
+            const orderData = {
+                voucherId: orders[0].voucherId,
+                orderStatus: "Đã hủy"
+            };
+            console.log("Data: ", orderData);
+            console.log("Id", selectedOrder[0].orderId)
+            const after = await orderService.updateOrder(orderData, selectedOrder[0].orderId);
+            console.log(after);
+            alert('Đơn hàng đã được hủy.');
+            fetchOrder();
+        }
     };
 
     return (
@@ -77,23 +102,33 @@ const OrderHistory = () => {
             {error && <p className="error">Lỗi: {error}</p>}
             {checkUser && (
                 <>
-                    <table>
+                    <div className="filter-buttons">
+                        <button onClick={() => handleFilterChange('')}>Tất cả</button>
+                        <button onClick={() => handleFilterChange('Chờ xác nhận')}>Chờ xác nhận</button>
+                        <button onClick={() => handleFilterChange('Đã hủy')}>Đã hủy</button>
+                        <button onClick={() => handleFilterChange('Thành công')}>Thành công</button>
+                    </div>
+                    <table className="rounded-table">
                         <thead>
                             <tr>
-                                <th>Mã đơn hàng</th>
-                                <th>Mã voucher</th>
-                                <th>Ngày tạo đơn</th>
-                                <th>Giá tiền</th>
-                                <th>Trạng thái</th>
+                                <th className="order-id">Mã đơn hàng</th>
+                                <th className="voucher-id">Mã voucher</th>
+                                <th className="date-create">Ngày tạo đơn</th>
+                                <th className="amount">Giá tiền</th>
+                                <th className="status">Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map((order) => (
-                                <tr key={order.orderId} onClick={() => handleRowClick(order.orderId)}>
+                            {filteredOrders.map((order) => (
+                                <tr
+                                    key={order.orderId}
+                                    onClick={() => handleRowClick(order.orderId, order.orderStatus)}
+                                    className={selectedOrderId === order.orderId ? 'selected-row' : ''}
+                                >
                                     <td>{order.orderId}</td>
                                     <td>{order.voucherId ? order.voucherId : "Không sử dụng"}</td>
                                     <td>{order.dateCreate}</td>
-                                    <td>{formatPrice(order.amount)} đ</td>
+                                    <td>{formatPrice(order.amount)}</td>
                                     <td>{order.orderStatus}</td>
                                 </tr>
                             ))}
@@ -117,17 +152,25 @@ const OrderHistory = () => {
                                         <tr key={item.orderDetailId}>
                                             <td>{milkDetails[item.milkId]?.milkName || "N/A"}</td>
                                             <td>{item.quantity}</td>
-                                            <td>{formatPrice(item.total)} đ</td>
+                                            <td>{formatPrice(item.total)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                            {status === "Chờ xác nhận" && (
+                                <button className="cancel-order-button" onClick={handleCancelOrder}>
+                                    Hủy đơn hàng
+                                </button>
+                            )}
                         </div>
                     )}
                 </>
             )}
         </div>
     );
+
+
+
 };
 
 export default OrderHistory;
