@@ -18,10 +18,22 @@ const PaymentResult = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    const formats = ['M/D/YYYY h:mm:ss A', 'M/D/YYYY H:mm:ss'];
+    const formats = [
+        'M/D/YYYY h:mm:ss A',
+        'M/D/YYYY H:mm:ss',
+        'MM/DD/YYYY h:mm:ss A',
+        'MM/DD/YYYY H:mm:ss',
+        'M/D/YY h:mm:ss A',
+        'M/D/YY H:mm:ss',
+        'MM/DD/YY h:mm:ss A',
+        'MM/DD/YY H:mm:ss',
+        'YYYY-MM-DDTHH:mm:ssZ', // ISO format
+        'YYYY-MM-DDTHH:mm:ss.SSSZ' // ISO format with milliseconds
+    ];
     const date = moment(dateString, formats, true);
     return date.isValid() ? date.toISOString() : 'Invalid date';
-  };
+};
+
 
   useEffect(() => {
     const fetchVoucher = async () => {

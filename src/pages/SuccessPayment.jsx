@@ -2,11 +2,9 @@ import React from 'react';
 import '../css/paymentresult.css'
 
 const SuccessPayment = ({ amount }) => {
-  const formatPrice = (price) => {
-    if (typeof price !== 'string') {
-      return 'Invalid price';
-    }
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const formatPrice = (amount) => {
+    const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    return formatted.replace(/\./g, ' ');
   };
   return (
     <div className="payment-result">

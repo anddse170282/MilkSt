@@ -149,12 +149,10 @@ const Cart = () => {
     }
   };
 
-  const formatPrice = (price) => {
-    if (typeof price !== 'number') {
-      return 'Invalid price';
-    }
-    return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  };
+  const formatPrice = (amount) => {
+    const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    return formatted.replace(/\./g, ' ');
+};
 
   const discount = selectedVoucher ? getDiscountAmount(selectedVoucher) : 0;
   const result = subtotal - discount;

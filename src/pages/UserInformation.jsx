@@ -57,6 +57,24 @@ function UserInformationForm() {
         }
     };
 
+    const formatDate = (dateString) => {
+        const formats = [
+            'M/D/YYYY h:mm:ss A',
+            'M/D/YYYY H:mm:ss',
+            'MM/DD/YYYY h:mm:ss A',
+            'MM/DD/YYYY H:mm:ss',
+            'M/D/YY h:mm:ss A',
+            'M/D/YY H:mm:ss',
+            'MM/DD/YY h:mm:ss A',
+            'MM/DD/YY H:mm:ss',
+            'YYYY-MM-DDTHH:mm:ssZ',
+            'YYYY-MM-DDTHH:mm:ss.SSSZ'
+        ];
+        const date = moment(dateString, formats, true);
+        return date.isValid() ? date.toISOString() : 'Invalid date';
+    };
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { userName, phone, dateOfBirth, gender, address, profilePicture } = formData;
@@ -72,7 +90,7 @@ function UserInformationForm() {
 
                 const userData = {
                     ...formData,
-                    dateOfBirth: new Date(dateOfBirth).toISOString(),
+                    dateOfBirth: formatDate(dateOfBirth),
                     profilePicture: imageUrl
                 };
 
@@ -83,7 +101,7 @@ function UserInformationForm() {
                 
                 console.log("Update success: ", updateUser);
 
-                sessionStorage.setItem('user', JSON.stringify([{...formData, dateOfBirth: dateOfBirth, profilePicture: imageUrl}]));
+                sessionStorage.setItem('user', JSON.stringify([{...formData, dateOfBirth: dateOfBirth, profilePicture: imageUrl,userId: user.userId}]));
 
                 setIsEditing(false);
             }
