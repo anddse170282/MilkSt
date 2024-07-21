@@ -1,4 +1,3 @@
-// src/pages/HomePage.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as milkService from '../api/milkService'; // Adjust the path as needed
@@ -11,6 +10,14 @@ const HomePage = () => {
   const [currentProductNew, setCurrentProductNew] = useState(0);
   const [currentProductPromo, setCurrentProductPromo] = useState(0);
   const [currentProductOther, setCurrentProductOther] = useState(0);
+  
+  // Thay đổi ảnh quảng cáo
+  const [currentAdIndex, setCurrentAdIndex] = useState(0);
+  const adImages = [
+    "https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F1.png?alt=media&token=10232a94-2d87-4ead-8ca1-c89f4cc2755f",
+    "https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F4.png?alt=media&token=066a8c4d-982a-4d43-9b12-e00449de8105",
+    "https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F5.png?alt=media&token=8a642fa9-1ef6-433b-9b73-bd32d00fbf78"
+  ];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -24,6 +31,14 @@ const HomePage = () => {
     };
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentAdIndex((prevIndex) => (prevIndex + 1) % adImages.length);
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [adImages.length]);
 
   const moveToPreviousProductNew = () => {
     if (data) {
@@ -85,10 +100,10 @@ const HomePage = () => {
         <div className="container3">
           <div className="main-image">
             <img
-              src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F1.png?alt=media&token=10232a94-2d87-4ead-8ca1-c89f4cc2755f"
+              src={adImages[currentAdIndex]}
               width="800"
-              height="295"
-              alt="1"
+              height="450"
+              alt="Advertisement"
             />
           </div>
           <div className="side-images">
@@ -96,7 +111,7 @@ const HomePage = () => {
               <img
                 src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F2.png?alt=media&token=0056189f-b73d-469b-aa75-fe5e39ff7f25"
                 width="500"
-                height="150"
+                height="225"
                 alt="1"
               />
             </div>
@@ -104,7 +119,7 @@ const HomePage = () => {
               <img
                 src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2F3.png?alt=media&token=72cd1903-7e22-40dc-ba65-1d458032d8f0"
                 width="500"
-                height="150"
+                height="225"
                 alt="1"
               />
             </div>
@@ -112,28 +127,6 @@ const HomePage = () => {
         </div>
 
         <div className="hercontainer">
-          <h2>Sản phẩm mới</h2>
-          <div className="product-section">
-            <button
-              className="prev-button"
-              onClick={moveToPreviousProductNew}
-              disabled={currentProductNew === 0}
-            >
-              &lt;
-            </button>
-            <button
-              className="next-button"
-              onClick={moveToNextProductNew}
-              disabled={currentProductNew >= data.length - 3}
-            >
-              &gt;
-            </button>
-            <div className="product-grid-container">
-              <div className="product-grid new-product-grid">
-                {renderProducts(currentProductNew)}
-              </div>
-            </div>
-          </div>
 
           <h2>Sản phẩm ưu đãi</h2>
           <div className="product-section">
@@ -183,9 +176,7 @@ const HomePage = () => {
         </div>
       </main>
       <Chatcompose2 /> {/* Thêm Chatcompose tại đây */}
-
     </>
-    
   );
 };
 

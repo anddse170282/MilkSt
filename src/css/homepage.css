@@ -140,6 +140,7 @@
 }
 
 .main-image {
+  border-radius: 7px;
   flex: 70%;
   background: #f3f3f3;
   display: flex;
@@ -212,9 +213,9 @@ h1 {
   /* Đổi hình dạng thành hình tròn */
   cursor: pointer;
   z-index: 1;
-  font-size: 24px;
+  font-size: 20px;
   color: #FF469E;
-  width: 40px;
+  width: 30px;
   /* Đổi kích thước theo ý muốn */
   height: 40px;
   /* Đổi kích thước theo ý muốn */
@@ -224,11 +225,11 @@ h1 {
 }
 
 .prev-button {
-  left: -40px;
+  left: -67px;
 }
 
 .next-button {
-  right: -40px;
+  right: -67px;
 }
 
 .prev-button:hover,
@@ -412,3 +413,4 @@ footer {
     opacity: 1;
   }
 }
+
