@@ -9,6 +9,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+
 const ProductInfo = () => {
   const [product, setProduct] = useState({});
   const [brandName, setBrandName] = useState('');
@@ -17,6 +18,7 @@ const ProductInfo = () => {
   const [comment, setComment] = useState('');
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -46,14 +48,34 @@ const ProductInfo = () => {
     setUser(user);
   }, []);
 
-  const handleBuyNow = () => {
+  const checkStock = async (productId, quantity) => {
+    // Thay thế bằng API thực tế để kiểm tra số lượng hàng trong kho
+    // Ví dụ:
+    // const stockData = await stockService.checkStock(productId, quantity);
+    // return stockData.isAvailable;
+    return quantity <= product.stock; // Giả sử product.stock là số lượng hàng trong kho
+  };
+
+  const handleBuyNow = async () => {
+    const isAvailable = await checkStock(product.id, quantity);
+    if (!isAvailable) {
+      setErrorMessage('Không đủ hàng trong kho');
+      return;
+    }
+
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
     sessionStorage.setItem('cart', JSON.stringify(cart));
     navigate('/cart');
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    const isAvailable = await checkStock(product.id, quantity);
+    if (!isAvailable) {
+      setErrorMessage('Không đủ hàng trong kho');
+      return;
+    }
+
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
     sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -111,17 +133,23 @@ const ProductInfo = () => {
     }
   };
 
+  const handleQuantityChange = (event) => {
+    const value = parseInt(event.target.value, 10);
+    if (value >= 1 && value <= 50) {
+      setQuantity(value);
+    }
+  };
+
   const increaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity < 50 ? prevQuantity + 1 : 50));
+    if (quantity < 50) {
+      setQuantity(quantity + 1);
+    }
   };
 
   const decreaseQuantity = () => {
-    setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-  };
-
-  const handleQuantityChange = (e) => {
-    const value = Math.max(1, Math.min(50, Number(e.target.value)));
-    setQuantity(value);
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
 
   const formatPrice = (price) => {
