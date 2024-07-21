@@ -74,7 +74,7 @@ const ProductInfo = () => {
       });
 
       const reviewsWithUserImages = await Promise.all(userPromises);
-      console.log("Review: ", reviewsWithUserImages); 
+      console.log("Review: ", reviewsWithUserImages);
       setReviews(reviewsWithUserImages);
     } catch (error) {
       console.error('Error fetching reviews:', error);
@@ -91,16 +91,16 @@ const ProductInfo = () => {
       console.log("Sau setUser", user);
       const member = await userService.getMemberByUserId(user[0].userId);
       console.log("Member: ", member);
-  
+
       const commentDetail = {
         memberId: member[0].memberId,
         content: comment,
         rate: rating,
         milkId: id
       };
-  
+
       console.log("Comment Detail:", commentDetail);
-  
+
       const response = await commentService.addComments(commentDetail);
       setReviews([response, ...reviews]);
       setRating(0);
@@ -112,11 +112,16 @@ const ProductInfo = () => {
   };
 
   const increaseQuantity = () => {
-    setQuantity(prevQuantity => prevQuantity + 1);
+    setQuantity(prevQuantity => (prevQuantity < 50 ? prevQuantity + 1 : 50));
   };
 
   const decreaseQuantity = () => {
     setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
+
+  const handleQuantityChange = (e) => {
+    const value = Math.max(1, Math.min(50, Number(e.target.value)));
+    setQuantity(value);
   };
 
   const formatPrice = (price) => {
@@ -144,12 +149,27 @@ const ProductInfo = () => {
               <p><i className="fas fa-glass-milk"></i> Dung tích {product.capacity}</p>
               <p><strong>Giá tiền: {formatPrice(product.price)} ₫</strong></p>
 
+
               <div className="quantity-wrapper">
                 <h2>Số lượng</h2>
                 <button className="quantity-container" onClick={decreaseQuantity}>-</button>
-                <span>{quantity}</span>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  min="1"
+                  max="50"
+                  style={{
+                    width: '50px',
+                    textAlign: 'center',
+                    appearance: 'none',
+                    MozAppearance: 'textfield',
+                    WebkitAppearance: 'none' // Dành cho trình duyệt Webkit như Chrome, Safari
+                  }}
+                />
                 <button className="quantity-container" onClick={increaseQuantity}>+</button>
               </div>
+              {quantity === 50 && <p style={{ color: 'red', width: '100%', maxWidth: '500px', height: 'auto' }}>Bạn chỉ có thể mua tối đa 50 sản phẩm</p>}
 
               <button className="buy-now-btn" onClick={handleBuyNow}> Mua ngay</button>
               <button className="buy-now-btn" onClick={handleAddToCart}> Thêm vào giỏ hàng</button>
@@ -159,7 +179,7 @@ const ProductInfo = () => {
         <div className="col-mt-7">
 
           <div className="row" style={{ paddingLeft: '10%' }}>
-          <th><h4 className="chitietsanpham">Chi tiết sản phẩm</h4></th>
+            <th><h4 className="chitietsanpham">Chi tiết sản phẩm</h4></th>
 
             <div className="col-md-8 offset-md-1">
               <table className="table table-bordered">
