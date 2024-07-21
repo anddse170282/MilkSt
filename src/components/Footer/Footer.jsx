@@ -49,21 +49,21 @@ const Footer = () => {
           </div>
           <div className="footer-column col-md-4">
             <div className="flex-item">
-              <i className="bi bi-house-heart" style={{ paddingRight: '19px' }}></i>
+              <i className="bifooter bi-house-heart" style={{ paddingRight: '19px' }}></i>
               <div>
                 <h2>Bán lẻ, sỉ và đa kênh bán</h2>
                 <p>Có bảng giá cho khách lẻ và khách sỉ riêng biệt đảm bảo quyền lợi cao nhất của khách hàng</p>
               </div>
             </div>
             <div className="flex-item">
-              <i className="bi bi-hourglass" style={{ paddingRight: '19px' }}></i>
+              <i className="bifooter bi-hourglass" style={{ paddingRight: '19px' }}></i>
               <div>
                 <h2>Ship nhanh trong ngày TP.HCM</h2>
                 <p>Ship nhanh ngay đến khách hàng ở nội thành TP.HCM</p>
               </div>
             </div>
             <div className="flex-item">
-              <i className="bi bi-rocket-takeoff-fill" style={{ paddingRight: '19px' }}></i>
+              <i className="bifooter bi-rocket-takeoff-fill" style={{ paddingRight: '19px' }}></i>
               <div>
                 <h2>Bán lẻ, sỉ và đa kênh bán</h2>
                 <p>Có bảng giá cho khách lẻ và khách sỉ riêng biệt, đảm bảo quyền lợi cao nhất của khách hàng</p>

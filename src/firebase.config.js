@@ -9,19 +9,19 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const otpFirebaseConfig = {
-  apiKey: "AIzaSyBUnIlqhvyF30DQeb7hnPfjRmkBGIPmHY0",
+  apiKey: "AIzaSyAxVttlFb1G-0NspatBx5kL88w_YW8u2po",
 
-  authDomain: "otp-phone-5-5-5-5.firebaseapp.com",
+  authDomain: "otpphone4-4-4-4.firebaseapp.com",
 
-  projectId: "otp-phone-5-5-5-5",
+  projectId: "otpphone4-4-4-4",
 
-  storageBucket: "otp-phone-5-5-5-5.appspot.com",
+  storageBucket: "otpphone4-4-4-4.appspot.com",
 
-  messagingSenderId: "714464139934",
+  messagingSenderId: "858551409036",
 
-  appId: "1:714464139934:web:a9f3b852b94917ea93b98f",
+  appId: "1:858551409036:web:35c3f674dfb3e396f69ea9",
 
-  measurementId: "G-H66E9FCJE8"
+  measurementId: "G-NK88EH0E1B"
 };
 const storageFirebaseConfig = {
   apiKey: "AIzaSyBS4iRn_C6KDkl-r7UhUGawGi9BCQm2VHM",
