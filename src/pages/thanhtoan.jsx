@@ -87,13 +87,13 @@ const Invoice = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-      let orders = JSON.parse(sessionStorage.getItem('orders'));
-      if (!Array.isArray(orders)) {
-        orders = [];
-      }
-      orders.push(dataOrder);
-      sessionStorage.setItem('orders', JSON.stringify(orders));
-      navigate(`/momo-payment/${dataOrder.amount}`);
+    let orders = JSON.parse(sessionStorage.getItem('orders'));
+    if (!Array.isArray(orders)) {
+      orders = [];
+    }
+    orders.push(dataOrder);
+    sessionStorage.setItem('orders', JSON.stringify(orders));
+    navigate(`/momo-payment/${dataOrder.amount}`);
   };
 
   const handleCancel = (e) => {
@@ -104,7 +104,7 @@ const Invoice = () => {
   const formatPrice = (amount) => {
     const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     return formatted.replace(/\./g, ' ');
-};
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -163,7 +163,7 @@ const Invoice = () => {
           <hr />
           <div className="total">
             <span className="ThanhTien">Thành Tiền :</span>
-            <span className="price">{formatPrice(dataOrder.amount) || 0} ₫</span>
+            <span className="price">{formatPrice(dataOrder.amount) || 0}</span>
           </div>
           <div className="user-cart-container">
             <button type="button" className="pay-button" onClick={handleClick}>

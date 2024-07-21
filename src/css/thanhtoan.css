@@ -156,7 +156,7 @@ h2 {
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
-    cursor: pointer;
+    margin: auto;
     margin-bottom: 20px;
 }
 
@@ -192,6 +192,7 @@ hr {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    margin: auto;
 }
 
 .pay-button:hover {
