@@ -2,6 +2,8 @@
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from '../firebase.config';
 import * as userService from '../api/userService';
+import moment from 'moment';
+
 import '../css/customerinformation.css';
 
 function UserInformationForm() {
@@ -70,7 +72,7 @@ function UserInformationForm() {
             'YYYY-MM-DDTHH:mm:ssZ',
             'YYYY-MM-DDTHH:mm:ss.SSSZ'
         ];
-        const date = moment(dateString, formats, true);
+        const date = moment(dateString, formats);
         return date.isValid() ? date.toISOString() : 'Invalid date';
     };
     

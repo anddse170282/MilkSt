@@ -11,7 +11,12 @@ const getOrdersById = async (orderId) => {
     return response.data;
 }
 const getOrderByMemberId = async (memberId) => {
-    const response = await axios.get(`${API_URL}/orders?memberId=${memberId}`)
+    const response = await axios.get(`${API_URL}/orders?memberId=${memberId}`);
+    return response.data;
+}
+
+const getOrderByMemberIdAndStatus = async (memberId, status) => {
+    const response = await axios.get(`${API_URL}/orders?memberId=${memberId}&orderStatus=${status}`);
     return response.data;
 }
 
@@ -38,5 +43,6 @@ export {
     getOrderByMemberId,
     createOrder,
     updateOrder,
-    deleteOrder
+    deleteOrder,
+    getOrderByMemberIdAndStatus
 };

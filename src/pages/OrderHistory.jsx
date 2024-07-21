@@ -52,7 +52,7 @@ const OrderHistory = () => {
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
                 setStatus(status);
-                
+
                 const milkDetailsMap = {};
                 await Promise.all(response.map(async (item) => {
                     if (item.milkId && !milkDetailsMap[item.milkId]) {
@@ -92,7 +92,15 @@ const OrderHistory = () => {
             const after = await orderService.updateOrder(orderData, selectedOrder[0].orderId);
             console.log(after);
             alert('Đơn hàng đã được hủy.');
-            fetchOrder();
+            try {
+                const response = await orderService.getOrderByMemberId(10);
+                setOrders(Array.isArray(response) ? response : []);
+                setFilteredOrders(Array.isArray(response) ? response : []);
+            }
+            catch (error) {
+                setError(error.message);
+                console.error('Error fetching order details:', error);
+            }
         }
     };
 
@@ -103,7 +111,6 @@ const OrderHistory = () => {
             {checkUser && (
                 <>
                     <div className="filter-buttons">
-                        <button onClick={() => handleFilterChange('')}>Tất cả</button>
                         <button onClick={() => handleFilterChange('Chờ xác nhận')}>Chờ xác nhận</button>
                         <button onClick={() => handleFilterChange('Đã hủy')}>Đã hủy</button>
                         <button onClick={() => handleFilterChange('Thành công')}>Thành công</button>
