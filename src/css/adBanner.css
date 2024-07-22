@@ -1,0 +1,21 @@
+.ad-banner {
+    position: fixed; /* Thay đổi từ absolute sang fixed */
+    right: 5%; /* Trung tâm theo chiều ngang của màn hình */
+    bottom: 510px; /* Khoảng cách từ đáy của màn hình */
+    transform: translateX(50%); /* Điều chỉnh vị trí sang phải để căn giữa */
+    z-index: 1000; /* Đảm bảo quảng cáo nằm trên các phần tử khác */
+    
+  }
+  
+  .close-button {
+    position: absolute;
+    top: -9px;
+    right: 0;
+    cursor: pointer;
+  }
+  
+  .ad-image {
+    max-height: 260px;
+    max-width: 100px;
+  }
+  
