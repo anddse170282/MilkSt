@@ -89,13 +89,17 @@
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center; /* Căn giữa các mục */
-  background-color: #fff; /* Màu nền của menu */
-  border-radius: 20px; /* Bo góc của menu */
+  justify-content: center;
+  /* Căn giữa các mục */
+  background-color: #fff;
+  /* Màu nền của menu */
+  border-radius: 20px;
+  /* Bo góc của menu */
 }
 
 .navigation-menu li {
-  margin: 0 5px; /* Khoảng trắng giữa các mục */
+  margin: 0 5px;
+  /* Khoảng trắng giữa các mục */
 }
 
 .navigation-menu li a {
@@ -104,42 +108,61 @@
   text-align: center;
   padding: 10px 88px;
   text-decoration: none;
-  background-color: #FF469E; /* Màu nền của nút */
-  border-top-left-radius: 20px; /* Bo góc trên bên trái */
-  border-bottom-left-radius: 20px; /* Bo góc dưới bên trái */
-  border-top-right-radius: 20px; /* Bo góc trên bên phải */
+  background-color: #FF469E;
+  /* Màu nền của nút */
+  border-top-left-radius: 20px;
+  /* Bo góc trên bên trái */
+  border-bottom-left-radius: 20px;
+  /* Bo góc dưới bên trái */
+  border-top-right-radius: 20px;
+  /* Bo góc trên bên phải */
 }
 
 .navigation-menu li a:hover {
-  background-color: #f0a9a9; /* Màu nền khi hover */
+  background-color: #f0a9a9;
+  /* Màu nền khi hover */
 }
 
 /* Cart Container Styles */
 .cart-container {
   display: flex;
   justify-content: space-between;
-  flex-direction: column; /* Sắp xếp các phần tử thành cột */
+  flex-direction: column;
+  /* Sắp xếp các phần tử thành cột */
   align-items: center;
-  margin-top: 50px; /* Thêm khoảng cách phía trên để bảng di chuyển xuống */
+  margin-top: 50px;
+  /* Thêm khoảng cách phía trên để bảng di chuyển xuống */
   margin-bottom: 20px;
 }
 
 /* Cart Table Styles */
 .cart-table {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-right-width: 1px;
+  border-right-style: solid;
+  padding-left: 1px;
+  border-color: #000000;
   width: auto;
-  border-collapse: collapse;
-  margin-top: 30px; /* Thêm khoảng cách phía trên để bảng di chuyển xuống */
-  border-radius: 25px;
+  border-collapse: separate; /* Đổi từ collapse sang separate */
+  margin-top: 30px;
+  border-radius: 5px;
+  overflow: hidden; /* Đảm bảo các góc được bo tròn */
 }
 
+
 .bogocAll {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .bogocAll2 {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .cart-table th,
@@ -154,9 +177,12 @@
 
 .cart-table-container {
   flex: 1;
-  max-height: 60vh; /* Adjust the height as necessary */
-  overflow-y: auto; /* Adds a vertical scrollbar if needed */
-  margin-bottom: 20px; /* Adds some space below the table */
+  max-height: 60vh;
+  /* Adjust the height as necessary */
+  overflow-y: auto;
+  /* Adds a vertical scrollbar if needed */
+  margin-bottom: 20px;
+  /* Adds some space below the table */
 }
 
 /* Cart Summary Styles */
@@ -228,18 +254,30 @@ footer {
 }
 
 .footer-top {
-  background-color: #ec4899; /* Pink color */
+  background-color: #ec4899;
+  /* Pink color */
   color: white;
   padding-top: 20px;
   padding-bottom: 90px;
 }
 
 .container {
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-right-width: 2px;
+  border-right-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
   border-radius: 25px;
-  background-color: #c9c6c8;
+  background-color: #fff;
   display: flex;
-  margin: 0 auto; 
+  margin: 0 auto;
+  border-color: #ec4899;
+  box-shadow: 7px 7px 3px rgb(205, 121, 164) !important;
 }
+
 
 .footer-column h2 {
   font-weight: bold;
@@ -262,29 +300,38 @@ footer {
 }
 
 .footer-bottom {
-  background-color: #e4e4e7; /* Màu nền xám nhạt */
-  color: #4b5563; /* Màu chữ xám đậm */
+  background-color: #e4e4e7;
+  /* Màu nền xám nhạt */
+  color: #4b5563;
+  /* Màu chữ xám đậm */
   display: flex;
-  align-items: center; /* Căn chỉnh các mục ở giữa theo chiều dọc */
-  justify-content: center; /* Căn giữa các mục theo chiều ngang */
+  align-items: center;
+  /* Căn chỉnh các mục ở giữa theo chiều dọc */
+  justify-content: center;
+  /* Căn giữa các mục theo chiều ngang */
   text-align: center;
 }
 
 .footer-bottom img {
-  margin-right: 10px; /* Thêm khoảng cách giữa hình ảnh và văn bản */
+  margin-right: 10px;
+  /* Thêm khoảng cách giữa hình ảnh và văn bản */
 }
 
 .footer-column {
-  grid-column: span 4; /* Mỗi footer-column sẽ chiếm 4 cột */
+  grid-column: span 4;
+  /* Mỗi footer-column sẽ chiếm 4 cột */
 }
 
 .bi {
-  font-size: 20px; /* Tăng kích thước của icon */
-  color: #ffffff; /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
+  font-size: 20px;
+  /* Tăng kích thước của icon */
+  color: #ffffff;
+  /* Màu sắc của icon, có thể thay đổi nếu bạn muốn */
 }
 
 .modal-body-scrollable {
-  max-height: 10000px; /* Điều chỉnh chiều cao tối đa theo ý bạn */
+  max-height: 10000px;
+  /* Điều chỉnh chiều cao tối đa theo ý bạn */
   overflow-y: auto;
   padding-bottom: 400px;
 }
@@ -355,39 +402,54 @@ footer {
 }
 
 .button-cancel {
-  color: rgb(88, 84, 84); /* Màu chữ */
-  background-color: rgb(255, 255, 255); /* Màu nền */
-  padding: 10px 20px; /* Kích thước nút */
-  border-radius: 5px; /* Bo góc */
-  border: 2px solid rgb(88, 84, 84); /* Đổi màu viền thành màu đen */
+  color: rgb(88, 84, 84);
+  /* Màu chữ */
+  background-color: rgb(255, 255, 255);
+  /* Màu nền */
+  padding: 10px 20px;
+  /* Kích thước nút */
+  border-radius: 5px;
+  /* Bo góc */
+  border: 2px solid rgb(88, 84, 84);
+  /* Đổi màu viền thành màu đen */
 }
 
 
 .button-OK {
-  color: white; /* Màu chữ */
-  background-color: rgb(206, 134, 39); /* Màu nền */
-  padding: 10px 30px; /* Kích thước nút */
-  border-radius: 5px; /* Bo góc */
+  color: white;
+  /* Màu chữ */
+  background-color: rgb(206, 134, 39);
+  /* Màu nền */
+  padding: 10px 30px;
+  /* Kích thước nút */
+  border-radius: 5px;
+  /* Bo góc */
 }
 
 .delete {
-  border: none; /* Xóa border */
-  background-color: transparent; /* Để button trong suốt */
-  cursor: pointer; /* Con trỏ chuột khi rê chuột qua */
+  border: none;
+  /* Xóa border */
+  background-color: transparent;
+  /* Để button trong suốt */
+  cursor: pointer;
+  /* Con trỏ chuột khi rê chuột qua */
 }
 
 
 .btn:hover {
-  background-color :#f0a9d5;
+  background-color: #f0a9d5;
 }
 
 .button-cancel:hover {
-  border-color: #f0a9d5; /* Màu viền khi hover là màu đen */
+  border-color: #f0a9d5;
+  /* Màu viền khi hover là màu đen */
 }
 
 .button-uudai {
-  background-color: #FFD700; /* Màu nền mặc định của button */
-  color: black; /* Màu chữ mặc định của button */
+  background-color: #FFD700;
+  /* Màu nền mặc định của button */
+  color: black;
+  /* Màu chữ mặc định của button */
 
   /* Các thuộc tính padding, border-radius, ... */
   padding: 10px 20px;
@@ -397,47 +459,55 @@ footer {
 }
 
 .button-uudai:hover {
-  background-color: #f26db0; /* Màu nền khi hover */
-  color: white; /* Màu chữ khi hover */
+  background-color: #f26db0;
+  /* Màu nền khi hover */
+  color: white;
+  /* Màu chữ khi hover */
 }
 
 .delete-btn {
-  background-color :#c9c6c8;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+  background-color: #c9c6c8;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .biicon {
   color: #4d494b;
-  font-size : 22px;
+  font-size: 22px;
 }
 
 
 .delete-btn:hover {
   /* Thêm các thuộc tính CSS cho hover tại đây */
-  background-color: #c9c6c8; /* Ví dụ: thay đổi màu nền khi hover */
-  transform: scale(1.1); /* Ví dụ: phóng to khi hover */
-  border: 2px solid rgb(234, 148, 97); /* Thay đổi màu viền khi hover */
+  background-color: #c9c6c8;
+  /* Ví dụ: thay đổi màu nền khi hover */
+  transform: scale(1.1);
+  /* Ví dụ: phóng to khi hover */
+  border: 2px solid rgb(234, 148, 97);
+  /* Thay đổi màu viền khi hover */
 
 
 }
 
 /* CSS cho hàng chẵn */
 .table-striped tr:nth-child(even) {
-  background-color: #dfdada; /* Màu xám nhạt */
+  background-color: #dfdada;
+  /* Màu xám nhạt */
 }
 
 /* CSS cho hàng lẻ */
 .table-striped tr:nth-child(odd) {
-  background-color: #ddb091; /* Màu trắng */
+  background-color: #ffffff;
+  /* Màu trắng */
 }
 
 /* Thay đổi màu chữ cho hàng chẵn */
-.table-striped > tbody > tr:nth-child(even) > td,
-.table-striped > tbody > tr:nth-child(even) > th {
-  color: white; /* Chọn màu chữ bạn muốn ở đây */
+.table-striped>tbody>tr:nth-child(even)>td,
+.table-striped>tbody>tr:nth-child(even)>th {
+  color: white;
+  /* Chọn màu chữ bạn muốn ở đây */
 }
 
 
@@ -445,16 +515,15 @@ button.icon-delete-voucher {
   width: 5%;
   color: #4b5563;
   /* Các thuộc tính khác của nút */
-    padding-top: 0px;
-    padding-bottom: 0px;
-    padding-right: 15px;
-    padding-left: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-right: 15px;
+  padding-left: 5px;
 }
 
 button.icon-delete-voucher:hover {
   background-color: #ee0000;
-  color: rgb(255, 255, 255); /* Màu văn bản khi hover */
+  color: rgb(255, 255, 255);
+  /* Màu văn bản khi hover */
   /* Các thuộc tính khác khi hover */
 }
-
-

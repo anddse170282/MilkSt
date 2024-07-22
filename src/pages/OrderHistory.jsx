@@ -13,36 +13,43 @@ const OrderHistory = () => {
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [milkDetails, setMilkDetails] = useState({});
     const [checkUser, setCheckUser] = useState(true);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState([]);
 
     useEffect(() => {
         const fetchOrder = async () => {
-            // const storedUser = JSON.parse(sessionStorage.getItem('user'));
-            // if (storedUser && storedUser.length > 0) {
-            // const currentUser = storedUser[0];
+            const storedUser = JSON.parse(sessionStorage.getItem('user'));
+            if (storedUser && storedUser.length > 0) {
+            const currentUser = storedUser[0];
             try {
-                // const memberData = await userService.getMemberByUserId(currentUser.userId);
-                // const response = await orderService.getOrderByMemberId(memberData[0].memberId);
-                const response = await orderService.getOrderByMemberId(10);
+                const memberData = await userService.getMemberByUserId(currentUser.userId);
+                const response = await orderService.getOrderByMemberId(memberData[0].memberId);
                 setOrders(Array.isArray(response) ? response : []);
                 setFilteredOrders(Array.isArray(response) ? response : []);
             } catch (error) {
                 console.error('Error fetching member data:', error);
             }
-            // } else {
-            // setCheckUser(false);
-            // }
+            } else {
+            setCheckUser(false);
+            }
         };
         fetchOrder();
     }, []);
 
-    // useEffect(() => {
-    //     if (!checkUser) {
-    //         window.location.href = '/login';
-    //     }
-    // }, [checkUser]);
+    useEffect(() => {
+        const fetchStatus = async () =>{
+            const response = await orderService.getStatus();
+            setStatus(response);
+        };
+        fetchStatus();
+    }, []);
 
-    const handleRowClick = async (orderId, status) => {
+    useEffect(() => {
+        if (!checkUser) {
+            window.location.href = '/login';
+        }
+    }, [checkUser]);
+
+    const handleRowClick = async (orderId, statusId) => {
         if (selectedOrderId === orderId) {
             setSelectedOrder(null);
             setSelectedOrderId(null);
@@ -51,7 +58,6 @@ const OrderHistory = () => {
                 const response = await orderDetailService.getOrderDetailsByOrderId(orderId);
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
-                setStatus(status);
 
                 const milkDetailsMap = {};
                 await Promise.all(response.map(async (item) => {
@@ -75,7 +81,7 @@ const OrderHistory = () => {
 
     const handleFilterChange = (status) => {
         if (status) {
-            setFilteredOrders(orders.filter(order => order.orderStatus === status));
+            setFilteredOrders(orders.filter(order => order.statusId === status));
         } else {
             setFilteredOrders(orders);
         }
@@ -85,7 +91,7 @@ const OrderHistory = () => {
         if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này không?')) {
             const orderData = {
                 voucherId: orders[0].voucherId,
-                orderStatus: "Đã hủy"
+                statusId: 2
             };
             console.log("Data: ", orderData);
             console.log("Id", selectedOrder[0].orderId)
@@ -111,9 +117,9 @@ const OrderHistory = () => {
             {checkUser && (
                 <>
                     <div className="filter-buttons">
-                        <button onClick={() => handleFilterChange('Chờ xác nhận')}>Chờ xác nhận</button>
-                        <button onClick={() => handleFilterChange('Đã hủy')}>Đã hủy</button>
-                        <button onClick={() => handleFilterChange('Thành công')}>Thành công</button>
+                        <button onClick={() => handleFilterChange(1)}>Chờ xác nhận</button>
+                        <button onClick={() => handleFilterChange(2)}>Đã hủy</button>
+                        <button onClick={() => handleFilterChange(3)}>Thành công</button>
                     </div>
                     <table className="rounded-table">
                         <thead>
@@ -129,14 +135,16 @@ const OrderHistory = () => {
                             {filteredOrders.map((order) => (
                                 <tr
                                     key={order.orderId}
-                                    onClick={() => handleRowClick(order.orderId, order.orderStatus)}
+                                    onClick={() => handleRowClick(order.orderId, order.statusId)}
                                     className={selectedOrderId === order.orderId ? 'selected-row' : ''}
                                 >
                                     <td>{order.orderId}</td>
                                     <td>{order.voucherId ? order.voucherId : "Không sử dụng"}</td>
                                     <td>{order.dateCreate}</td>
                                     <td>{formatPrice(order.amount)}</td>
-                                    <td>{order.orderStatus}</td>
+                                    {status.map((status) && order.statusId === status.statusId && (
+                                        <td key={order.statusId}>{status.status}</td>
+                                    ))}
                                 </tr>
                             ))}
                         </tbody>
