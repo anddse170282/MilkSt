@@ -139,7 +139,7 @@ function CustomerForm() {
                   </div>
                   <div className="form-group">
                     <label htmlFor="dateOfBirth">Ngày sinh</label><br />
-                    <input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="01/01/1999" value={formData.dateOfBirth} onChange={handleChange} required /><br />
+                    <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="01/01/1999" value={formData.dateOfBirth} onChange={handleChange} required /><br />
                   </div>
                   <div className="form-group">
                     <label htmlFor="gender">Giới tính</label><br />

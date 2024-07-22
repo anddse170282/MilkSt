@@ -215,9 +215,9 @@ h1 {
   z-index: 1;
   font-size: 20px;
   color: #FF469E;
-  width: 30px;
+  width: 20px;
   /* Đổi kích thước theo ý muốn */
-  height: 40px;
+  height: 50px;
   /* Đổi kích thước theo ý muốn */
   display: flex;
   justify-content: center;
@@ -246,23 +246,31 @@ h1 {
 }
 
 .product-grid {
-  display: flex;
-  transition: transform 0.5s ease;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  border: 100px ;
 }
 
 .product-item {
   min-width: calc(100% / 4);
   /* Mỗi sản phẩm chiếm một phần tư container */
   box-sizing: border-box;
-  text-align: center;
   border: 1px solid #ddd;
   padding: 10px;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Căn giữa các phần tử bên trong item */
+  text-align: center;
 }
 
 .product-image {
   max-width: 50%;
   height: auto;
+  width: 100%;
+
 }
 
 .product-name {
@@ -413,4 +421,3 @@ footer {
     opacity: 1;
   }
 }
-

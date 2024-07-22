@@ -5,8 +5,6 @@
   align-items: center;
   min-height: 100vh; /* viewport height */
   margin: 0; /* remove body margin */
-  background-color: #f9f9f9;
-  background-image: url('https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/Footer%2Fbackroundp.jpg?alt=media&token=83502896-e942-4f23-8e9d-8a37eab7d0ca'); /* Set the background image */
   background-size: cover; /* Cover the entire viewport */
   background-position: center; /* Center the background image */
   background-repeat: no-repeat; /* Do not repeat the image */

@@ -175,9 +175,9 @@ function UserInformationForm() {
                             />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="dob">Ngày sinh</label>
+                    <label htmlFor="dateOfBirth">Ngày sinh</label><br />
                             <input
-                                type="text"
+                                type="date"
                                 id="dateOfBirth"
                                 name="dateOfBirth"
                                 placeholder="01/01/1999"
