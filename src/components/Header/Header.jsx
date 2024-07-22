@@ -108,8 +108,10 @@ const Header = () => {
           <div className="user-cart-container">
             <a href="/cart">
               <i className="bi bi-cart icon-small"></i>
+              <span className="cart-count">99</span> {/* Thay số 3 bằng biến số lượng sản phẩm trong giỏ hàng */}
             </a>
           </div>
+
           <div className="notification-container2">
             <a href="/orderhistory">
               <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">

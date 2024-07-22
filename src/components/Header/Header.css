@@ -213,3 +213,23 @@ body {
 .login-button {
   color: white;
 }
+
+.user-cart-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-count {
+  position: absolute;
+  top: 4px; /* Điều chỉnh vị trí tùy theo thiết kế */
+  right: 12px; /* Điều chỉnh vị trí tùy theo thiết kế */
+  background-color: #ff9900;
+  color: #fff3e2;
+  border-radius: 50%;
+  width: 20px; /* Kích thước vòng tròn */
+  height: 20px; /* Kích thước vòng tròn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px; /* Kích thước chữ */
+}
