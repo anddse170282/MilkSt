@@ -37,6 +37,16 @@ const deleteOrder = async (orderId) => {
     const response = await axios.delete(`${API_URL}/orders/${orderId}`);
     return response.data;
 }
+
+const getStatus = async () => {
+    const response = await axios.get(`${API_URL}/status`);
+    return response.data;
+}
+
+const getStatusById = async (statusId) => {
+    const response = await axios.get(`${API_URL}/status/${statusId}`);
+    return response.data;
+}
 export {   
     getAllOrders,
     getOrdersById,
@@ -44,5 +54,7 @@ export {
     createOrder,
     updateOrder,
     deleteOrder,
-    getOrderByMemberIdAndStatus
+    getOrderByMemberIdAndStatus,
+    getStatus,
+    getStatusById
 };
