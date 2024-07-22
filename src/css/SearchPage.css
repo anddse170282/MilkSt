@@ -58,7 +58,7 @@ body {
   }
   
   .filters {
-    width: 1200px;
+    width: 17%;
     margin-right: 20px;
     
   }
@@ -73,7 +73,7 @@ body {
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 200px;
+    max-width: 210px;
   }
   
   .filter-category h3 {
@@ -84,34 +84,44 @@ body {
     display: block;
     margin-bottom: 5px;
   }
+
+  .filter-category input {
+    margin-right: 5px; /* Khoảng cách giữa checkbox và chữ */
+  }
+  
   
   .products-section {
     flex-grow: 1;
   }
   
   .product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-between;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 cột đều nhau */
+    gap: 20px; /* Khoảng cách giữa các sản phẩm */
   }
   
   .product-item {
-    flex: 1 1 calc(25% - 20px);
-    box-shadow: 0 4px 8px rgba(173, 167, 167, 0.463);
-    border-radius: 10px;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Căn giữa các phần tử bên trong item */
     text-align: center;
-    box-sizing: border-box;
   }
   
   .product-image {
-    max-width: 100%;
-    height: auto;
-    border: 2px solid #f0a9a9;
-    border-radius: 10px;
+    width: 100%;
+    height: 100%; /* Giữ tỷ lệ khung hình của hình ảnh */
+    max-width: 250px; /* Cố định kích thước tối đa của hình ảnh */
   }
+
+  .imageproduct-item {
+    width: 320x;
+    height: 255px;
+  }
+  
+  .product-name, .product-price {
+    margin-top: 10px; /* Khoảng cách giữa hình ảnh và văn bản */
+  }
+  
   
   a {
     font-weight: 500;

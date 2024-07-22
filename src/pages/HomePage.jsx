@@ -4,6 +4,7 @@ import * as milkService from '../api/milkService'; // Adjust the path as needed
 import '../css/homepage.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Chatcompose2 from './Chatcompose2'; // Đảm bảo import chính xác tên file và đường dẫn
+import AdBanner from './AdBanner'; // Import component quảng cáo
 
 const HomePage = () => {
   const [data, setData] = useState([]);
@@ -176,6 +177,7 @@ const HomePage = () => {
         </div>
       </main>
       <Chatcompose2 /> {/* Thêm Chatcompose tại đây */}
+      <AdBanner /> {/* Thêm component quảng cáo */}
     </>
   );
 };

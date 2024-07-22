@@ -21,6 +21,7 @@ const SearchPage = () => {
 
   const location = useLocation();
 
+
   // Fetch filter data when component mounts
   useEffect(() => {
     const fetchFiltersData = async () => {
@@ -38,6 +39,8 @@ const SearchPage = () => {
 
     fetchFiltersData();
   }, []);
+
+
 
   // Extract keyword and milkTypeId from URL query parameters and update filters
   useEffect(() => {
@@ -110,14 +113,29 @@ const SearchPage = () => {
     }
   }, [keyword, page, sortOption, filters, fetchProducts]);
 
+
+
   const handleFilterChange = (category, value) => {
-    setFilters((prevFilters) => {
-      const updatedCategory = prevFilters[category].includes(value)
-        ? prevFilters[category].filter((item) => item !== value)
-        : [...prevFilters[category], value];
+    setFilters(prevFilters => {
+      // Chọn một giá trị duy nhất cho danh mục
+      const updatedCategory = prevFilters[category] === value
+        ? '' // Nếu đã chọn, bỏ chọn
+        : value; // Chọn giá trị mới
+  
       return { ...prevFilters, [category]: updatedCategory };
     });
   };
+
+  // const handleFilterChange = (category, value) => {
+  //   setFilters((prevFilters) => {
+  //     const updatedCategory = prevFilters[category].includes(value)
+  //       ? prevFilters[category].filter((item) => item !== value)
+  //       : [...prevFilters[category], value];
+  //     return { ...prevFilters, [category]: updatedCategory };
+  //   });
+  // };
+  
+
 
   return (
     <div className="search-page">
@@ -147,7 +165,7 @@ const SearchPage = () => {
         </div>
       </div>
       <div className="main-content">
-        <div className="filters">
+        <div className="col-md-3 filters">
           <div className="filter-category">
             <h3>Loại sữa</h3>
             {milkTypes.map(milkType => (
@@ -155,13 +173,14 @@ const SearchPage = () => {
                 <input
                   type="checkbox"
                   value={milkType.milkTypeId}
-                  checked={filters.milkType.includes(milkType.milkTypeId)}
+                  checked={filters.milkType === milkType.milkTypeId} // Chỉ có một checkbox được chọn
                   onChange={() => handleFilterChange('milkType', milkType.milkTypeId)}
                 />
                 {milkType.typeName}
               </label>
             ))}
           </div>
+
           <div className="filter-category">
             <h3>Thương hiệu</h3>
             {brands.map(brand => (
@@ -169,6 +188,7 @@ const SearchPage = () => {
                 <input
                   type="checkbox"
                   value={brand.brandId}
+                  checked={filters.brand === brand.brandId} // Chỉ có một checkbox được chọn
                   onChange={() => handleFilterChange('brand', brand.brandId)}
                 />
                 {brand.brandName}
@@ -176,7 +196,8 @@ const SearchPage = () => {
             ))}
           </div>
         </div>
-        <div className="products-section">
+
+        <div className="col-md-9 products-section">
           {loading ? (
             <p>Đang tải...</p>
           ) : error ? (
@@ -186,22 +207,25 @@ const SearchPage = () => {
               {products.map(product => (
                 <div className="product-item" key={product.milkId}>
                   {product.milkPictures && product.milkPictures.length > 0 && (
-                    <a href="/" key={product.milkPictures[0].milkPictureId}>
+                    <a className="imageproduct-item" href="/" key={product.milkPictures[0].milkPictureId}>
                       <img
                         src={product.milkPictures[0].picture}
                         alt={product.milkName}
                         className="product-image"
                       />
-                      {product.price}.vnđ
                     </a>
                   )}
                   <p className="product-name">{product.milkName}</p>
+                  <p className="product-price">{product.price}.vnđ</p>
                 </div>
               ))}
             </div>
+
+
           )}
         </div>
       </div>
+
     </div>
   );
 };
