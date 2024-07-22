@@ -48,20 +48,20 @@ const ProductInfo = () => {
     setUser(user);
   }, []);
 
-  const checkStock = async (productId, quantity) => {
-    // Thay thế bằng API thực tế để kiểm tra số lượng hàng trong kho
-    // Ví dụ:
-    // const stockData = await stockService.checkStock(productId, quantity);
-    // return stockData.isAvailable;
-    return quantity <= product.stock; // Giả sử product.stock là số lượng hàng trong kho
-  };
+  // const checkStock = async (productId, quantity) => {
+  //   // Thay thế bằng API thực tế để kiểm tra số lượng hàng trong kho
+  //   // Ví dụ:
+  //   // const stockData = await stockService.checkStock(productId, quantity);
+  //   // return stockData.isAvailable;
+  //   return quantity <= product.stock; // Giả sử product.stock là số lượng hàng trong kho
+  // };
 
   const handleBuyNow = async () => {
-    const isAvailable = await checkStock(product.id, quantity);
-    if (!isAvailable) {
-      setErrorMessage('Không đủ hàng trong kho');
-      return;
-    }
+    // const isAvailable = await checkStock(product.id, quantity);
+    // if (!isAvailable) {
+    //   setErrorMessage('Không đủ hàng trong kho');
+    //   return;
+    // }
 
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
@@ -70,11 +70,11 @@ const ProductInfo = () => {
   };
 
   const handleAddToCart = async () => {
-    const isAvailable = await checkStock(product.id, quantity);
-    if (!isAvailable) {
-      setErrorMessage('Không đủ hàng trong kho');
-      return;
-    }
+    // const isAvailable = await checkStock(product.id, quantity);
+    // if (!isAvailable) {
+    //   setErrorMessage('Không đủ hàng trong kho');
+    //   return;
+    // }
 
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
@@ -163,7 +163,7 @@ const ProductInfo = () => {
     <div className="product-info">
       <main>
         <div className="col-md-12">
-          <div className="row" style={{ paddingBottom: '7%' }}>
+          <div className="row" style={{ paddingBottom: '2%' }}>
             <div className="col-md-2"></div>
             <div className="col-md-4">
               {product.milkPictures && product.milkPictures.length > 0 && (

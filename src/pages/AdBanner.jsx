@@ -26,7 +26,7 @@ const AdBanner = () => {
       >
         <img
           className="ad-image"
-          src="https://cdn1.concung.com/img/adds/2024/03/1710145892-ICON(1).png"
+          src="https://firebasestorage.googleapis.com/v0/b/imageuploadv3.appspot.com/o/QuangCaoImage%2FadQuangCao.png?alt=media&token=5ac8e818-64b4-4d28-afde-48c9e78cad42"
           alt="Weekly ICON 22.07 19393"
         />
       </a>
