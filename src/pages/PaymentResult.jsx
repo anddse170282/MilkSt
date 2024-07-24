@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import SuccessPayment from './SuccessPayment';
 import FailedPayment from './FailedPayment';
 import * as voucherService from '../api/voucherService';
+import * as orderService from '../api/orderService';
 import moment from 'moment';
 
 const PaymentResult = () => {
@@ -61,9 +62,23 @@ const PaymentResult = () => {
                   endDate: formatDate(voucher.endDate),
                   discount: voucher.discount,
                   quantity: voucher.quantity,
-                  status: voucher.status
+                  voucherStatusId: voucher.voucherStatusId
                 };
                 await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
+
+                const orderDetail = {
+                  voucherId: currentOrder.voucherId,
+                  statusId: 1
+                };
+                await orderService.updateOrder(orderDetail, currentOrder.orderId);
+              }
+              else
+              {
+                const orderDetail = {
+                  voucherId: currentOrder.voucherId,
+                  statusId: 2
+                };
+                await orderService.updateOrder(orderDetail, currentOrder.orderId);
               }
             }
           }
