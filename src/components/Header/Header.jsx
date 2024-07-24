@@ -7,7 +7,7 @@ const Header = () => {
   const [string, setString] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState([]);
   const [cartQuantity, setCartQuantity] = useState(0);
   const navigate = useNavigate();
 

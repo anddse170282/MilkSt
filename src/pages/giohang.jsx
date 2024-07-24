@@ -157,7 +157,7 @@ const Cart = () => {
       const orderData = {
         memberId: member.memberId,
         voucherId: selectedVoucher ? selectedVoucher.voucherId : null,
-        orderStatus: 'Chưa Thanh Toán',
+        statusId: 4,
       };
 
       console.log("Creating order with data:", orderData); // Log order data
