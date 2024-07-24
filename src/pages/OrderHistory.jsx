@@ -14,9 +14,10 @@ const OrderHistory = () => {
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [milkDetails, setMilkDetails] = useState({});
     const [checkUser, setCheckUser] = useState(true);
-    const [status, setStatus] = useState([]);
+    const [showStatus, setShowStatus] = useState([]);
     const [voucher, setVoucher] = useState(null);
     const [initialAmount, setInitialAmount] = useState(0);
+    const [status, setStatus] = useState(null);
 
     useEffect(() => {
         const fetchOrder = async () => {
@@ -41,7 +42,7 @@ const OrderHistory = () => {
     useEffect(() => {
         const fetchStatus = async () => {
             const response = await orderService.getStatus();
-            setStatus(response);
+            setShowStatus(response);
         };
         fetchStatus();
     }, []);
@@ -60,9 +61,11 @@ const OrderHistory = () => {
             try {
                 const response = await orderDetailService.getOrderDetailsByOrderId(orderId);
                 const resVoucher = await voucherService.getVouchersById(voucherId);
+                const status = await orderService.getOrdersById(orderId)
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
                 setVoucher(resVoucher);
+                setStatus(status);
 
                 const totalAmount = response.reduce((sum, item) => {
                     return sum + (item.quantity * item.price);
@@ -103,25 +106,30 @@ const OrderHistory = () => {
                 voucherId: orders[0].voucherId,
                 statusId: 2
             };
-            console.log("Data: ", orderData);
-            console.log("Id", selectedOrder[0].orderId)
-            const after = await orderService.updateOrder(orderData, selectedOrder[0].orderId);
-            console.log(after);
+            await orderService.updateOrder(orderData, selectedOrder[0].orderId);
             alert('Đơn hàng đã được hủy.');
+
+            // Fetch updated orders and set state
             try {
-                const response = await orderService.getOrderByMemberId(10);
-                setOrders(Array.isArray(response) ? response : []);
-                setFilteredOrders(Array.isArray(response) ? response : []);
-            }
-            catch (error) {
+                const storedUser = JSON.parse(sessionStorage.getItem('user'));
+                if (storedUser && storedUser.length > 0) {
+                    const currentUser = storedUser[0];
+                    const memberData = await userService.getMemberByUserId(currentUser.userId);
+                    const response = await orderService.getOrderByMemberId(memberData[0].memberId);
+                    setOrders(Array.isArray(response) ? response : []);
+                    setFilteredOrders(Array.isArray(response) ? response : []);
+                } else {
+                    setCheckUser(false);
+                }
+            } catch (error) {
                 setError(error.message);
-                console.error('Error fetching order details:', error);
+                console.error('Error fetching updated orders:', error);
             }
         }
     };
 
     const orderStatus = (statusId) => {
-        const orderStatus = status.find((s) => s.statusId === statusId);
+        const orderStatus = showStatus.find((s) => s.statusId === statusId);
         return orderStatus ? orderStatus.status : 'Unknown Status';
     };
 
@@ -166,9 +174,9 @@ const OrderHistory = () => {
                         <div className="order-details">
                             <h3>Chi tiết hóa đơn</h3>
                             <p>Mã đơn hàng: {selectedOrder[0].orderId}</p>
-                            <p>Tiền ban đầu: </p>
-                            <p>Voucher: {voucher.title}</p>
-                            <p>Tiền phải trả: </p>
+                            <p>Tiền ban đầu: {formatPrice(initialAmount)}</p>
+                            <p>Voucher: {voucher?.title || 'Không sử dụng'}</p>
+                            <p>Tiền phải trả: {formatPrice(initialAmount - (voucher?.discount || 0))}</p>
                             <h4>Chi tiết sản phẩm:</h4>
                             <table>
                                 <thead>
@@ -186,7 +194,7 @@ const OrderHistory = () => {
                                     ))}
                                 </tbody>
                             </table>
-                            {status[0].statusId === 1  && (
+                            {status.statusId === 1 && (
                                 <button className="cancel-order-button" onClick={handleCancelOrder}>
                                     Hủy đơn hàng
                                 </button>
@@ -197,9 +205,6 @@ const OrderHistory = () => {
             )}
         </div>
     );
-
-
-
 };
 
 export default OrderHistory;
