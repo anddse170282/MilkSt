@@ -3,6 +3,7 @@ import * as userService from '../api/userService';
 import * as orderService from '../api/orderService';
 import * as orderDetailService from '../api/orderDetailService';
 import * as milkService from '../api/milkService';
+import * as voucherService from '../api/voucherService';
 import '../css/orderhistory.css';
 
 const OrderHistory = () => {
@@ -14,29 +15,31 @@ const OrderHistory = () => {
     const [milkDetails, setMilkDetails] = useState({});
     const [checkUser, setCheckUser] = useState(true);
     const [status, setStatus] = useState([]);
+    const [voucher, setVoucher] = useState(null);
+    const [initialAmount, setInitialAmount] = useState(0);
 
     useEffect(() => {
         const fetchOrder = async () => {
             const storedUser = JSON.parse(sessionStorage.getItem('user'));
             if (storedUser && storedUser.length > 0) {
-            const currentUser = storedUser[0];
-            try {
-                const memberData = await userService.getMemberByUserId(currentUser.userId);
-                const response = await orderService.getOrderByMemberId(memberData[0].memberId);
-                setOrders(Array.isArray(response) ? response : []);
-                setFilteredOrders(Array.isArray(response) ? response : []);
-            } catch (error) {
-                console.error('Error fetching member data:', error);
-            }
+                const currentUser = storedUser[0];
+                try {
+                    const memberData = await userService.getMemberByUserId(currentUser.userId);
+                    const response = await orderService.getOrderByMemberId(memberData[0].memberId);
+                    setOrders(Array.isArray(response) ? response : []);
+                    setFilteredOrders(Array.isArray(response) ? response : []);
+                } catch (error) {
+                    console.error('Error fetching member data:', error);
+                }
             } else {
-            setCheckUser(false);
+                setCheckUser(false);
             }
         };
         fetchOrder();
     }, []);
 
     useEffect(() => {
-        const fetchStatus = async () =>{
+        const fetchStatus = async () => {
             const response = await orderService.getStatus();
             setStatus(response);
         };
@@ -49,16 +52,23 @@ const OrderHistory = () => {
         }
     }, [checkUser]);
 
-    const handleRowClick = async (orderId, statusId) => {
+    const handleRowClick = async (orderId, voucherId) => {
         if (selectedOrderId === orderId) {
             setSelectedOrder(null);
             setSelectedOrderId(null);
         } else {
             try {
                 const response = await orderDetailService.getOrderDetailsByOrderId(orderId);
+                const resVoucher = await voucherService.getVouchersById(voucherId);
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
+                setVoucher(resVoucher);
 
+                const totalAmount = response.reduce((sum, item) => {
+                    return sum + (item.quantity * item.price);
+                }, 0);
+                setInitialAmount(totalAmount);
+                
                 const milkDetailsMap = {};
                 await Promise.all(response.map(async (item) => {
                     if (item.milkId && !milkDetailsMap[item.milkId]) {
@@ -110,6 +120,11 @@ const OrderHistory = () => {
         }
     };
 
+    const orderStatus = (statusId) => {
+        const orderStatus = status.find((s) => s.statusId === statusId);
+        return orderStatus ? orderStatus.status : 'Unknown Status';
+    };
+
     return (
         <div className='order-history'>
             <h2>Lịch sử mua hàng</h2>
@@ -135,16 +150,14 @@ const OrderHistory = () => {
                             {filteredOrders.map((order) => (
                                 <tr
                                     key={order.orderId}
-                                    onClick={() => handleRowClick(order.orderId, order.statusId)}
+                                    onClick={() => handleRowClick(order.orderId, order.voucherId)}
                                     className={selectedOrderId === order.orderId ? 'selected-row' : ''}
                                 >
                                     <td>{order.orderId}</td>
                                     <td>{order.voucherId ? order.voucherId : "Không sử dụng"}</td>
                                     <td>{order.dateCreate}</td>
                                     <td>{formatPrice(order.amount)}</td>
-                                    {status.map((status) && order.statusId === status.statusId && (
-                                        <td key={order.statusId}>{status.status}</td>
-                                    ))}
+                                    <td>{orderStatus(order.statusId)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -153,26 +166,27 @@ const OrderHistory = () => {
                         <div className="order-details">
                             <h3>Chi tiết hóa đơn</h3>
                             <p>Mã đơn hàng: {selectedOrder[0].orderId}</p>
+                            <p>Tiền ban đầu: </p>
+                            <p>Voucher: {voucher.title}</p>
+                            <p>Tiền phải trả: </p>
                             <h4>Chi tiết sản phẩm:</h4>
                             <table>
                                 <thead>
                                     <tr>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
-                                        <th>Giá</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {selectedOrder.map((item) => (
                                         <tr key={item.orderDetailId}>
-                                            <td>{milkDetails[item.milkId]?.milkName || "N/A"}</td>
+                                            <td><a href={`/product-info/${item.milkId}`}>{milkDetails[item.milkId]?.milkName || "N/A"}</a></td>
                                             <td>{item.quantity}</td>
-                                            <td>{formatPrice(item.total)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
-                            {status === "Chờ xác nhận" && (
+                            {status[0].statusId === 1  && (
                                 <button className="cancel-order-button" onClick={handleCancelOrder}>
                                     Hủy đơn hàng
                                 </button>
