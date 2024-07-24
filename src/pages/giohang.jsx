@@ -185,6 +185,10 @@ const Cart = () => {
     return formatted.replace(/\./g, ' ');
   };
 
+  const formatDiscount = (discount) => {
+    return `${discount * 100}% -`;
+  };
+
   const discount = selectedVoucher ? getDiscountAmount(selectedVoucher) : 0;
   const result = subtotal - discount;
 
@@ -261,7 +265,7 @@ const Cart = () => {
             </div>
             <p>Tiền phụ: <span>{formatPrice(subtotal)}</span></p>
             {selectedVoucher && (
-              <p>Voucher ưu đãi: <span>{selectedVoucher.discount * 100}% - </span><button className="icon-delete-voucher" onClick={() => handleDeleteVoucher(selectedVoucher.title)}>X</button></p>
+              <p>Voucher ưu đãi: <span>{formatDiscount(selectedVoucher.discount)} </span><button className="icon-delete-voucher" onClick={() => handleDeleteVoucher(selectedVoucher.title)}>X</button></p>
             )}
             <p className="total">Thành Tiền: <span>{formatPrice(result)}</span></p>
             <button className="button-uudai" onClick={handleSubmitClick}>Xác nhận giỏ hàng</button>

@@ -326,22 +326,10 @@ const ProductInfo = () => {
                       )}
                   </div>
                 </div>
-
-
-
               </div>
             </div>
           </div>
         </div>
-
-
-        <div className="col-mt-12" style={{ paddingLeft: '15%' }}>
-          <h2>Sản phẩm mới</h2>
-          {/* New products section */}
-        </div>
-
-
-
       </main>
     </div>
   );

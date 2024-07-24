@@ -8,6 +8,7 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [cartQuantity, setCartQuantity] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,10 @@ const Header = () => {
       const storedUser = JSON.parse(sessionStorage.getItem('user'));
       setUser(storedUser[0]);
     }
+
+    // Lấy số lượng sản phẩm trong giỏ hàng từ session storage
+    const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    setCartQuantity(storedCart.reduce((total, item) => total + item.quantity, 0));
   }, []);
 
   const handleLoginClick = () => {
@@ -29,6 +34,7 @@ const Header = () => {
   const handleLogoutClick = () => {
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('cart');
     setIsLoggedIn(false);
     setIsDropdownOpen(false);
     setUser(null);
@@ -44,9 +50,11 @@ const Header = () => {
     const encodedString = encodeURIComponent(string);
     navigate(`/search-page?search=${encodedString}`);
   };
+
   const handleMilkTypeClick = (milkTypeId) => {
     navigate(`/search-page?milkTypeId=${milkTypeId}`);
   };
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -108,7 +116,7 @@ const Header = () => {
           <div className="user-cart-container">
             <a href="/cart">
               <i className="bi bi-cart icon-small"></i>
-              <span className="cart-count">99</span> {/* Thay số 3 bằng biến số lượng sản phẩm trong giỏ hàng */}
+              <span className="cart-count">{cartQuantity}</span>
             </a>
           </div>
 
