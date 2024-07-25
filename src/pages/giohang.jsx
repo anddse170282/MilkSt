@@ -232,14 +232,11 @@ const Cart = () => {
                       <tr key={index}>
                         <td>
                           <input
-                            type="number"
-                            value={item.quantity}
-                            onChange={(e) => handleItemChange(index, 'quantity', Math.min(parseInt(e.target.value), 50))}
-                            min="1"
-                            max="50"
+                            type="checkbox"
+                            checked={item.selected || false}
+                            onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
                           />
                         </td>
-
                         <td>
                           {product && product.milkPictures && product.milkPictures.length > 0 && (
                             <img src={product.milkPictures[0].picture} alt={product.milkName} width="50" />
@@ -250,10 +247,12 @@ const Cart = () => {
                           <input
                             type="number"
                             value={item.quantity}
-                            onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
+                            onChange={(e) => handleItemChange(index, 'quantity', Math.min(parseInt(e.target.value), 50))}
                             min="1"
+                            max="50"
                           />
                         </td>
+
                         <td>
                           {product ? formatPrice(product.price) : 'Không xác định'}
                         </td>
