@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import * as milkService from '../api/milkService';
 import * as brandService from '../api/brandService';
 import * as commentService from '../api/commentService';
@@ -11,6 +11,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
 const ProductInfo = () => {
+  const [data, setData] = useState([]);
   const [product, setProduct] = useState({});
   const [brandName, setBrandName] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -18,7 +19,7 @@ const ProductInfo = () => {
   const [comment, setComment] = useState('');
   const [reviews, setReviews] = useState([]);
   const [user, setUser] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [currentProductPromo, setCurrentProductPromo] = useState(0);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -33,12 +34,14 @@ const ProductInfo = () => {
           const brandData = await brandService.getBrandById(productData.brandId);
           console.log('Fetched brand:', brandData);
           setBrandName(brandData.brandName);
+
+          const response = await milkService.getProductsByBrand(0, 0, productData.brandId);
+          setData(response);
         }
       } catch (error) {
         console.error("There was an error fetching the product or brand data!", error);
       }
     };
-
     fetchProduct();
   }, [id]);
 
@@ -48,21 +51,7 @@ const ProductInfo = () => {
     setUser(user);
   }, []);
 
-  // const checkStock = async (productId, quantity) => {
-  //   // Thay thế bằng API thực tế để kiểm tra số lượng hàng trong kho
-  //   // Ví dụ:
-  //   // const stockData = await stockService.checkStock(productId, quantity);
-  //   // return stockData.isAvailable;
-  //   return quantity <= product.stock; // Giả sử product.stock là số lượng hàng trong kho
-  // };
-
   const handleBuyNow = async () => {
-    // const isAvailable = await checkStock(product.id, quantity);
-    // if (!isAvailable) {
-    //   setErrorMessage('Không đủ hàng trong kho');
-    //   return;
-    // }
-
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
     sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -70,12 +59,6 @@ const ProductInfo = () => {
   };
 
   const handleAddToCart = async () => {
-    // const isAvailable = await checkStock(product.id, quantity);
-    // if (!isAvailable) {
-    //   setErrorMessage('Không đủ hàng trong kho');
-    //   return;
-    // }
-
     const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
     cart.push({ ...product, quantity });
     sessionStorage.setItem('cart', JSON.stringify(cart));
@@ -109,6 +92,9 @@ const ProductInfo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (user === null) {
+      navigate("/login");
+    }
     try {
       console.log("Sau setUser", user);
       const member = await userService.getMemberByUserId(user[0].userId);
@@ -159,6 +145,37 @@ const ProductInfo = () => {
     return price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+  const renderProducts = (startIndex) => {
+    if (!data || data.length === 0) {
+      return null;
+    }
+    console.log("Data: ", data);
+    const productsToShow = data.slice(startIndex, startIndex + 3);
+    return productsToShow.map((product) => (
+      <div className='product-item' key={product.milkId}>
+        {product.milkPictures && product.milkPictures.length > 0 && (
+          <Link to={`/product-info/${product.milkId}`} key={product.milkPictures[0].milkPictureId}>
+            <img src={product.milkPictures[0].picture} alt={product.milkName} className="product-image" />
+          </Link>
+        )}
+        <p className="product-name">{product.milkName}</p>
+      </div>
+    ));
+  };
+
+  const moveToPreviousProductPromo = () => {
+    if (data) {
+      setCurrentProductPromo((prevProduct) => (prevProduct === 0 ? data.length - 1 : prevProduct - 1));
+    }
+  };
+
+  const moveToNextProductPromo = () => {
+    if (data) {
+      setCurrentProductPromo((prevProduct) => (prevProduct === data.length - 1 ? 0 : prevProduct + 1));
+    }
+  };
+
+
   return (
     <div className="product-info">
       <main>
@@ -192,7 +209,7 @@ const ProductInfo = () => {
                     textAlign: 'center',
                     appearance: 'none',
                     MozAppearance: 'textfield',
-                    WebkitAppearance: 'none' // Dành cho trình duyệt Webkit như Chrome, Safari
+                    WebkitAppearance: 'none'
                   }}
                 />
                 <button className="quantity-container" onClick={increaseQuantity}>+</button>
@@ -238,10 +255,31 @@ const ProductInfo = () => {
           </div>
         </div>
 
-        <div className="col-md-11" style={{ paddingLeft: '15%' }}>
+        <div className="hercontainer">
           <h2>Sản phẩm tương tự</h2>
-          {/* Similar products section */}
+          <div className="product-section">
+            <button
+              className="prev-button"
+              onClick={moveToPreviousProductPromo}
+              disabled={currentProductPromo === 0}
+            >
+              &lt;
+            </button>
+            <button
+              className="next-button"
+              onClick={moveToNextProductPromo}
+              disabled={currentProductPromo >= data.length - 3}
+            >
+              &gt;
+            </button>
+            <div className="product-grid-container">
+              <div className="product-grid new-product-grid">
+                {renderProducts(currentProductPromo)}
+              </div>
+            </div>
+          </div>
         </div>
+
         <div className="container my-5">
           <div className="text-center mb-4">
             <div className="font-danhgia">Đánh giá</div>

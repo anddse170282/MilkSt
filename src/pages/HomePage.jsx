@@ -8,7 +8,6 @@ import AdBanner from './AdBanner'; // Import component quảng cáo
 
 const HomePage = () => {
   const [data, setData] = useState([]);
-  const [currentProductNew, setCurrentProductNew] = useState(0);
   const [currentProductPromo, setCurrentProductPromo] = useState(0);
   const [currentProductOther, setCurrentProductOther] = useState(0);
   
@@ -40,18 +39,6 @@ const HomePage = () => {
 
     return () => clearInterval(intervalId);
   }, [adImages.length]);
-
-  const moveToPreviousProductNew = () => {
-    if (data) {
-      setCurrentProductNew((prevProduct) => (prevProduct === 0 ? data.length - 1 : prevProduct - 1));
-    }
-  };
-
-  const moveToNextProductNew = () => {
-    if (data) {
-      setCurrentProductNew((prevProduct) => (prevProduct === data.length - 1 ? 0 : prevProduct + 1));
-    }
-  };
 
   const moveToPreviousProductPromo = () => {
     if (data) {
@@ -176,8 +163,8 @@ const HomePage = () => {
           </div>
         </div>
       </main>
-      <Chatcompose2 /> {/* Thêm Chatcompose tại đây */}
-      <AdBanner /> {/* Thêm component quảng cáo */}
+      <Chatcompose2 />
+      <AdBanner />
     </>
   );
 };

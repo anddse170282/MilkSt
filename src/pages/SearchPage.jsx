@@ -21,8 +21,6 @@ const SearchPage = () => {
 
   const location = useLocation();
 
-
-  // Fetch filter data when component mounts
   useEffect(() => {
     const fetchFiltersData = async () => {
       try {
@@ -40,9 +38,6 @@ const SearchPage = () => {
     fetchFiltersData();
   }, []);
 
-
-
-  // Extract keyword and milkTypeId from URL query parameters and update filters
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const search = params.get('search');
@@ -62,7 +57,6 @@ const SearchPage = () => {
     }
   }, [location.search]);
 
-  // Fetch products when keyword, page, sortOption, or filters change
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError('');
@@ -117,11 +111,9 @@ const SearchPage = () => {
 
   const handleFilterChange = (category, value) => {
     setFilters(prevFilters => {
-      // Chọn một giá trị duy nhất cho danh mục
       const updatedCategory = prevFilters[category] === value
-        ? '' // Nếu đã chọn, bỏ chọn
-        : value; // Chọn giá trị mới
-  
+        ? ''
+        : value;
       return { ...prevFilters, [category]: updatedCategory };
     });
   };
