@@ -67,7 +67,7 @@ const PaymentResult = () => {
                 await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
 
                 const orderDetail = {
-                  voucherId: currentOrder.voucherId,
+                  voucherId: currentOrder.voucherId ? currentOrder.voucherId : null,
                   statusId: 1
                 };
                 await orderService.updateOrder(orderDetail, currentOrder.orderId);
@@ -75,7 +75,7 @@ const PaymentResult = () => {
               else
               {
                 const orderDetail = {
-                  voucherId: currentOrder.voucherId,
+                  voucherId: currentOrder.voucherId ? currentOrder.voucherId : null,
                   statusId: 2
                 };
                 await orderService.updateOrder(orderDetail, currentOrder.orderId);
