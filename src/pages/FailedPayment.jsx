@@ -13,7 +13,7 @@ const FailedPayment = ({ amount }) => {
         <p>Lỗi: Giao dịch bị từ chối bởi người dùng.</p>
         <hr />
         <p className="mb-0">MoMo Payment</p>
-        <h4>{formatPrice(amount)}đ</h4>
+        <h4>{formatPrice(amount)}</h4>
       </div>
     </div>
   );

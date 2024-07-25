@@ -13,7 +13,7 @@ const SuccessPayment = ({ amount }) => {
         <p>Giao dịch đã được thực hiện thành công.</p>
         <hr />
         <p className="mb-0">MoMo Payment</p>
-        <h4>{formatPrice(amount)}đ</h4>
+        <h4>{formatPrice(amount)}</h4>
       </div>
     </div>
   );

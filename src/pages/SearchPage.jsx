@@ -135,7 +135,10 @@ const SearchPage = () => {
   //   });
   // };
   
-
+  const formatPrice = (amount) => {
+    const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    return formatted.replace(/\./g, ' ');
+  };
 
   return (
     <div className="search-page">
@@ -207,7 +210,7 @@ const SearchPage = () => {
               {products.map(product => (
                 <div className="product-item" key={product.milkId}>
                   {product.milkPictures && product.milkPictures.length > 0 && (
-                    <a className="imageproduct-item" href="/" key={product.milkPictures[0].milkPictureId}>
+                    <a className="imageproduct-item" href={`/product-info/${product.milkId}`} key={product.milkPictures[0].milkPictureId}>
                       <img
                         src={product.milkPictures[0].picture}
                         alt={product.milkName}
@@ -216,7 +219,7 @@ const SearchPage = () => {
                     </a>
                   )}
                   <p className="product-name">{product.milkName}</p>
-                  <p className="product-price">{product.price}.vnđ</p>
+                  <p className="product-price">{formatPrice(product.price)}</p>
                 </div>
               ))}
             </div>

@@ -144,7 +144,7 @@ const Header = () => {
               <a href="#" onClick={() => handleMilkTypeClick(3)}>Sữa chua</a>
             </li>
             <li>
-              <a href="/">Sữa hạt dinh dưỡng</a>
+              <a href="#" onClick={() => handleMilkTypeClick(4)}>Sữa hạt dinh dưỡng</a>
             </li>
           </ul>
         </nav>
