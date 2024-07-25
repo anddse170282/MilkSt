@@ -61,18 +61,20 @@ const OrderHistory = () => {
         } else {
             try {
                 const response = await orderDetailService.getOrderDetailsByOrderId(orderId);
-                const resVoucher = await voucherService.getVouchersById(voucherId);
+                if (!voucherId === null) {
+                    const resVoucher = await voucherService.getVouchersById(voucherId);
+                    setVoucher(resVoucher);
+                }
                 const status = await orderService.getOrdersById(orderId);
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
-                setVoucher(resVoucher);
                 setStatus(status);
 
                 const totalAmount = response.reduce((sum, item) => {
                     return sum + item.total;
                 }, 0);
                 setInitialAmount(totalAmount);
-                const discountAmount = totalAmount * (resVoucher?.discount || 0);
+                const discountAmount = totalAmount * (voucher?.discount || 0);
                 const payableAmount = totalAmount - discountAmount;
                 setPayableAmount(payableAmount);
 
@@ -194,9 +196,9 @@ const OrderHistory = () => {
                                     {selectedOrder.map((item) => (
                                         <tr key={item.orderDetailId}>
                                             <td>
-                                                <img 
-                                                    src={milkDetails[item.milkId]?.milkPictures[0]?.picture || 'path/to/default-image.png'} 
-                                                    alt={milkDetails[item.milkId]?.milkName || 'N/A'} 
+                                                <img
+                                                    src={milkDetails[item.milkId]?.milkPictures[0]?.picture || 'path/to/default-image.png'}
+                                                    alt={milkDetails[item.milkId]?.milkName || 'N/A'}
                                                     style={{ width: '100px', height: '100px' }}
                                                 />
                                             </td>
