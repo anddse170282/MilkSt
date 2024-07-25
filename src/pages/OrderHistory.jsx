@@ -17,6 +17,7 @@ const OrderHistory = () => {
     const [showStatus, setShowStatus] = useState([]);
     const [voucher, setVoucher] = useState(null);
     const [initialAmount, setInitialAmount] = useState(0);
+    const [payableAmount, setPayableAmount] = useState(0);
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
@@ -61,17 +62,20 @@ const OrderHistory = () => {
             try {
                 const response = await orderDetailService.getOrderDetailsByOrderId(orderId);
                 const resVoucher = await voucherService.getVouchersById(voucherId);
-                const status = await orderService.getOrdersById(orderId)
+                const status = await orderService.getOrdersById(orderId);
                 setSelectedOrder(response);
                 setSelectedOrderId(orderId);
                 setVoucher(resVoucher);
                 setStatus(status);
 
                 const totalAmount = response.reduce((sum, item) => {
-                    return sum + (item.quantity * item.price);
+                    return sum + item.total;
                 }, 0);
                 setInitialAmount(totalAmount);
-                
+                const discountAmount = totalAmount * (resVoucher?.discount || 0);
+                const payableAmount = totalAmount - discountAmount;
+                setPayableAmount(payableAmount);
+
                 const milkDetailsMap = {};
                 await Promise.all(response.map(async (item) => {
                     if (item.milkId && !milkDetailsMap[item.milkId]) {
@@ -176,11 +180,12 @@ const OrderHistory = () => {
                             <p>Mã đơn hàng: {selectedOrder[0].orderId}</p>
                             <p>Tiền ban đầu: {formatPrice(initialAmount)}</p>
                             <p>Voucher: {voucher?.title || 'Không sử dụng'}</p>
-                            <p>Tiền phải trả: {formatPrice(initialAmount - (voucher?.discount || 0))}</p>
+                            <p>Tiền phải trả: {formatPrice(payableAmount)}</p>
                             <h4>Chi tiết sản phẩm:</h4>
                             <table>
                                 <thead>
                                     <tr>
+                                        <th>Hình ảnh</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
                                     </tr>
@@ -188,6 +193,13 @@ const OrderHistory = () => {
                                 <tbody>
                                     {selectedOrder.map((item) => (
                                         <tr key={item.orderDetailId}>
+                                            <td>
+                                                <img 
+                                                    src={milkDetails[item.milkId]?.milkPictures[0]?.picture || 'path/to/default-image.png'} 
+                                                    alt={milkDetails[item.milkId]?.milkName || 'N/A'} 
+                                                    style={{ width: '100px', height: '100px' }}
+                                                />
+                                            </td>
                                             <td><a href={`/product-info/${item.milkId}`}>{milkDetails[item.milkId]?.milkName || "N/A"}</a></td>
                                             <td>{item.quantity}</td>
                                         </tr>
