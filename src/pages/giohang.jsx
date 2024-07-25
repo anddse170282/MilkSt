@@ -106,14 +106,19 @@ const Cart = () => {
   };
 
   const handleItemChange = (index, field, value) => {
+    const maxQuantity = 50;
+    const newValue = field === 'quantity' ? Math.min(value, maxQuantity) : value;
+
     const newCartItems = [...cartItems];
     const groupedIndex = cartItems.findIndex(item => item.milkId === groupedCartItems[index].milkId);
-    newCartItems[groupedIndex][field] = value;
+    newCartItems[groupedIndex][field] = newValue;
+
     setCartItems(newCartItems);
     sessionStorage.setItem('cart', JSON.stringify(newCartItems));
     updateGroupedItems();
     updateTotals();
   };
+
 
   const handleDeleteItem = (index) => {
     // Xác định sản phẩm cần xoá từ groupedCartItems
@@ -227,11 +232,14 @@ const Cart = () => {
                       <tr key={index}>
                         <td>
                           <input
-                            type="checkbox"
-                            checked={item.selected || false}
-                            onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => handleItemChange(index, 'quantity', Math.min(parseInt(e.target.value), 50))}
+                            min="1"
+                            max="50"
                           />
                         </td>
+
                         <td>
                           {product && product.milkPictures && product.milkPictures.length > 0 && (
                             <img src={product.milkPictures[0].picture} alt={product.milkName} width="50" />
