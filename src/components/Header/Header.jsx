@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './Header.css'; // Tạo file này cho CSS cụ thể của header
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [string, setString] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState([]);
   const [cartQuantity, setCartQuantity] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Kiểm tra trạng thái đăng nhập khi component được mount
     const loggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
     if (loggedIn) {
@@ -47,6 +49,11 @@ const Header = () => {
 
   const handleSubmitClick = (event) => {
     event.preventDefault();
+    if (string.trim() === '') {
+      setShowModal(true);
+      return;
+    }
+    setShowModal(false);
     const encodedString = encodeURIComponent(string);
     navigate(`/search-page?search=${encodedString}`);
   };
@@ -54,6 +61,8 @@ const Header = () => {
   const handleMilkTypeClick = (milkTypeId) => {
     navigate(`/search-page?milkTypeId=${milkTypeId}`);
   };
+
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <header className="header">
@@ -107,11 +116,29 @@ const Header = () => {
               placeholder="Tìm kiếm..."
               name="string"
               value={string}
-              onChange={(e) => setString(e.target.value)}
+              onChange={(e) => {
+                setString(e.target.value);
+                if (e.target.value.trim() !== '') {
+                  setShowModal(false);
+                }
+              }}
+              style={{ borderColor: showModal ? 'red' : '#ff66b2' }}
             />
             <button type="submit" onClick={handleSubmitClick}>
               <i className="bi-search icon-small"></i>
             </button>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Thông báo</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>Vui lòng nhập từ khóa tìm kiếm.</Modal.Body>
+              <Modal.Footer>
+                <Button variant="primary" onClick={handleCloseModal}>
+                  Đóng
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </div>
           <div className="user-cart-container">
             <a href="/cart">
