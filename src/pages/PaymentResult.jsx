@@ -20,20 +20,20 @@ const PaymentResult = () => {
 
   const formatDate = (dateString) => {
     const formats = [
-        'M/D/YYYY h:mm:ss A',
-        'M/D/YYYY H:mm:ss',
-        'MM/DD/YYYY h:mm:ss A',
-        'MM/DD/YYYY H:mm:ss',
-        'M/D/YY h:mm:ss A',
-        'M/D/YY H:mm:ss',
-        'MM/DD/YY h:mm:ss A',
-        'MM/DD/YY H:mm:ss',
-        'YYYY-MM-DDTHH:mm:ssZ', // ISO format
-        'YYYY-MM-DDTHH:mm:ss.SSSZ' // ISO format with milliseconds
+      'M/D/YYYY h:mm:ss A',
+      'M/D/YYYY H:mm:ss',
+      'MM/DD/YYYY h:mm:ss A',
+      'MM/DD/YYYY H:mm:ss',
+      'M/D/YY h:mm:ss A',
+      'M/D/YY H:mm:ss',
+      'MM/DD/YY h:mm:ss A',
+      'MM/DD/YY H:mm:ss',
+      'YYYY-MM-DDTHH:mm:ssZ', // ISO format
+      'YYYY-MM-DDTHH:mm:ss.SSSZ' // ISO format with milliseconds
     ];
     const date = moment(dateString, formats, true);
     return date.isValid() ? date.toISOString() : 'Invalid date';
-};
+  };
 
 
   useEffect(() => {
@@ -46,15 +46,14 @@ const PaymentResult = () => {
         console.log('Current Order:', currentOrder);
 
         try {
-          if (currentOrder.voucherId) {
-            const voucherData = await voucherService.getVouchersById(currentOrder.voucherId);
-            console.log('Voucher Data:', voucherData);
-
-            if (voucherData) {
-              const voucher = voucherData;
-              console.log('Start Date: ', voucher.startDate);
-              console.log('End Date: ', voucher.endDate);
-              if (paymentStatus === '0') {
+          if (paymentStatus === '0') {
+            if (currentOrder.voucherId) {
+              const voucherData = await voucherService.getVouchersById(currentOrder.voucherId);
+              console.log('Voucher Data:', voucherData);
+              if (voucherData) {
+                const voucher = voucherData;
+                console.log('Start Date: ', voucher.startDate);
+                console.log('End Date: ', voucher.endDate);
                 voucher.quantity -= 1;
                 const voucherDetail = {
                   title: voucher.title,
@@ -65,25 +64,23 @@ const PaymentResult = () => {
                   voucherStatusId: voucher.voucherStatusId
                 };
                 await voucherService.updateVoucher(voucherDetail, voucher.voucherId);
-
-                const orderDetail = {
-                  voucherId: currentOrder.voucherId ? currentOrder.voucherId : null,
-                  statusId: 1
-                };
-                await orderService.updateOrder(orderDetail, currentOrder.orderId);
-              }
-              else
-              {
-                const orderDetail = {
-                  voucherId: currentOrder.voucherId ? currentOrder.voucherId : null,
-                  statusId: 2
-                };
-                await orderService.updateOrder(orderDetail, currentOrder.orderId);
               }
             }
+            const orderDetail = {
+              voucherId: currentOrder.voucherId ? currentOrder.voucherId : null,
+              statusId: 1
+            };
+            await orderService.updateOrder(orderDetail, currentOrder.orderId);
+          }
+          else {
+            const orderDetail = {
+              voucherId: currentOrder.voucherId ? currentOrder.voucherId : null,
+              statusId: 2
+            };
+            await orderService.updateOrder(orderDetail, currentOrder.orderId);
           }
           sessionStorage.removeItem('orders');
-          sessionStorage.removeItem('cart');
+          sessionStorage.removeItem('selectCart');
           console.log('Orders and cart removed from session storage');
         } catch (error) {
           console.error('Failed to update voucher quantity:', error.response ? error.response.data : error.message);
@@ -92,7 +89,7 @@ const PaymentResult = () => {
     };
 
     fetchVoucher();
-  }, [paymentStatus]); // Thêm paymentStatus vào dependency array để useEffect chạy lại khi paymentStatus thay đổi
+  }, [paymentStatus]);
 
   return (
     <div>

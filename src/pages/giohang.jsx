@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [selectedCartItems, setSelectedCartItems] = useState([]);
   const [groupedCartItems, setGroupedCartItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [milks, setMilks] = useState([]);
@@ -42,7 +43,9 @@ const Cart = () => {
 
   useEffect(() => {
     const storedCart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const storedSelectedCart = JSON.parse(sessionStorage.getItem('selectCart')) || [];
     setCartItems(storedCart);
+    setSelectedCartItems(storedSelectedCart);
   }, []);
 
   useEffect(() => {
@@ -72,13 +75,13 @@ const Cart = () => {
 
   useEffect(() => {
     updateTotals();
-  }, [groupedCartItems, selectedVoucher]);
+  }, [selectedCartItems, selectedCartItems, selectedVoucher]);
 
   const updateGroupedItems = () => {
-    const grouped = cartItems.reduce((acc, item) => {
+    const grouped = [...cartItems, ...selectedCartItems].reduce((acc, item) => {
       const key = item.milkId;
       if (!acc[key]) {
-        acc[key] = { ...item, quantity: 0 };
+        acc[key] = { ...item, quantity: 0, selected: false };
       }
       acc[key].quantity += item.quantity;
       return acc;
@@ -94,12 +97,10 @@ const Cart = () => {
 
   const updateTotals = () => {
     let newSubtotal = 0;
-    groupedCartItems.forEach(item => {
-      if (item.selected) {
-        const product = getProductById(item.milkId);
-        if (product) {
-          newSubtotal += item.quantity * product.price;
-        }
+    selectedCartItems.forEach(item => {
+      const product = getProductById(item.milkId);
+      if (product) {
+        newSubtotal += item.quantity * product.price;
       }
     });
     setSubtotal(newSubtotal);
@@ -119,16 +120,17 @@ const Cart = () => {
     updateTotals();
   };
 
-
   const handleDeleteItem = (index) => {
-    // Xác định sản phẩm cần xoá từ groupedCartItems
     const productToDelete = groupedCartItems[index];
-    // Tạo danh sách mới loại bỏ sản phẩm cần xoá
     const newCartItems = cartItems.filter(item => item.milkId !== productToDelete.milkId);
+    const newSelectedCartItems = selectedCartItems.filter(item => item.milkId !== productToDelete.milkId);
+
     setCartItems(newCartItems);
-    // Cập nhật lại session storage
+    setSelectedCartItems(newSelectedCartItems);
+
     sessionStorage.setItem('cart', JSON.stringify(newCartItems));
-    // Cập nhật lại danh sách sản phẩm đã nhóm và tổng tiền
+    sessionStorage.setItem('selectCart', JSON.stringify(newSelectedCartItems));
+
     updateGroupedItems();
     updateTotals();
   };
@@ -150,6 +152,21 @@ const Cart = () => {
     }
   };
 
+  const handleItemSelect = (index, selected) => {
+    const item = groupedCartItems[index];
+    if (selected) {
+      const newSelectedCartItems = [...selectedCartItems, item];
+      setSelectedCartItems(newSelectedCartItems);
+      sessionStorage.setItem('selectCart', JSON.stringify(newSelectedCartItems));
+    } else {
+      const newSelectedCartItems = selectedCartItems.filter(selectedItem => selectedItem.milkId !== item.milkId);
+      setSelectedCartItems(newSelectedCartItems);
+      sessionStorage.setItem('selectCart', JSON.stringify(newSelectedCartItems));
+    }
+    updateTotals();
+  };
+
+
   const handleSubmitClick = async (e) => {
     e.preventDefault();
     if (!user || !user.userId) {
@@ -165,13 +182,10 @@ const Cart = () => {
         statusId: 4,
       };
 
-      console.log("Creating order with data:", orderData); // Log order data
-
       const order = await orderService.createOrder(orderData);
-      console.log("Order created:", order); // Log created order
 
-      for (let index = 0; index < cartItems.length; index++) {
-        const item = cartItems[index];
+      for (let index = 0; index < selectedCartItems.length; index++) {
+        const item = selectedCartItems[index];
         const orderDetail = {
           orderId: order.orderId,
           milkId: item.milkId,
@@ -179,11 +193,20 @@ const Cart = () => {
         };
         await orderDetailService.createOrderDetail(orderDetail);
       }
+
+      // Clear only the selected items from cart
+      const newCartItems = cartItems.filter(item => !selectedCartItems.some(selectedItem => selectedItem.milkId === item.milkId));
+      setCartItems(newCartItems);
+      sessionStorage.setItem('cart', JSON.stringify(newCartItems));
+
+      sessionStorage.removeItem('selectCart');
+      setSelectedCartItems([]);
       navigate(`/pay?orderId=${order.orderId}&userId=${user.userId}`);
     } catch (error) {
       console.error('Error creating order or order details:', error);
     }
   };
+
 
   const formatPrice = (amount) => {
     const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
@@ -211,10 +234,9 @@ const Cart = () => {
                         type="checkbox"
                         onChange={(e) => {
                           const selected = e.target.checked;
-                          const newCartItems = cartItems.map(item => ({ ...item, selected }));
-                          setCartItems(newCartItems);
-                          sessionStorage.setItem('cart', JSON.stringify(newCartItems));
-                          updateGroupedItems();
+                          const newSelectedCartItems = selected ? [...groupedCartItems] : [];
+                          setSelectedCartItems(newSelectedCartItems);
+                          sessionStorage.setItem('selectCart', JSON.stringify(newSelectedCartItems));
                           updateTotals();
                         }}
                       />
@@ -233,8 +255,8 @@ const Cart = () => {
                         <td>
                           <input
                             type="checkbox"
-                            checked={item.selected || false}
-                            onChange={(e) => handleItemChange(index, 'selected', e.target.checked)}
+                            checked={selectedCartItems.some(selectedItem => selectedItem.milkId === item.milkId)}
+                            onChange={(e) => handleItemSelect(index, e.target.checked)}
                           />
                         </td>
                         <td>
@@ -247,12 +269,11 @@ const Cart = () => {
                           <input
                             type="number"
                             value={item.quantity}
-                            onChange={(e) => handleItemChange(index, 'quantity', Math.min(parseInt(e.target.value), 50))}
                             min="1"
                             max="50"
+                            onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value))}
                           />
                         </td>
-
                         <td>
                           {product ? formatPrice(product.price) : 'Không xác định'}
                         </td>
