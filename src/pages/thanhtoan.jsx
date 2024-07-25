@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../css/thanhtoan.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getUserByUserId, updateUser } from '../api/userService';
-import { getOrdersById } from '../api/orderService';
+import { getOrdersById, deleteOrder } from '../api/orderService';
+import { deleteOrderDetail, getOrderDetailsByOrderId } from '../api/orderDetailService';
 
 const Invoice = () => {
   const location = useLocation();
@@ -73,6 +74,7 @@ const Invoice = () => {
 
       updateUser(data.userId, updatedData);
       const newUser = await getUserByUserId(data.userId);
+      console.log("New user: ", newUser);
       setData(newUser);
       setIsEditing(false);
     } catch (error) {
@@ -96,10 +98,23 @@ const Invoice = () => {
     navigate(`/momo-payment/${dataOrder.amount}`);
   };
 
-  const handleCancel = (e) => {
+  const handleCancel = async (e) => {
     e.preventDefault();
-    navigate("/cart");
-  }
+
+    try {
+      const resOrderDetail = await getOrderDetailsByOrderId(dataOrder.orderId);
+      for (let orderDetail of resOrderDetail) {
+        await deleteOrderDetail(orderDetail.orderDetailId);
+      }
+
+      await deleteOrder(dataOrder.orderId);
+
+      navigate("/cart");
+    } catch (error) {
+      console.error("Error canceling the order:", error);
+    }
+  };
+
 
   const formatPrice = (amount) => {
     const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
