@@ -53,11 +53,6 @@ function CustomerForm() {
     e.preventDefault();
     const { userName, phone, dateOfBirth, gender, address, profilePicture } = formData;
 
-    if (!userName || !phone || !dateOfBirth || !gender || !address || !profilePicture) {
-      setErrorMessage('Please fill out all fields');
-      return;
-    }
-
     try {
       const imageName = `${phone}`;
       const imageRef = ref(storage, `UserImage/${imageName}`);
@@ -162,10 +157,9 @@ function CustomerForm() {
                           type="checkbox"
                           id="male"
                           name="gender"
-                          value="male"
-                          checked={formData.gender === 'male'}
+                          value="Nam"
+                          checked={formData.gender === 'Nam'}
                           onChange={handleChange}
-                          required
                         /> Nam
                       </label>
                       <label>
@@ -173,10 +167,9 @@ function CustomerForm() {
                           type="checkbox"
                           id="female"
                           name="gender"
-                          value="female"
-                          checked={formData.gender === 'female'}
+                          value="Nữ"
+                          checked={formData.gender === 'Nữ'}
                           onChange={handleChange}
-                          required
                         /> Nữ
                       </label>
                     </div>
